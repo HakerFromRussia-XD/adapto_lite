@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chat_cv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/massage_type_1_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="100dp"
+        android:background="@drawable/massage_type_1_bg"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_left1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_right2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/massage_type_1_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="Profile change basal speed to 0.5U/h флоаисйоцриасфрглоымисйпрлмснйцлпрумснпцлфурыамисгнлрофкиышмсдолфткышмдслофитымшдофиымрофыимгфырлокимфгырломиыгомbiuwefuywhbcuyabgsefuyajhwgebfuyawbweufyhghqwyuiefcvbasevcagywevfqycwteavyjscghvasgjhcvagjyechvawyjgechvwyqjgahcvayghcevwqbfuashbvuabuwqbcuwebcuebcuqwebcuqwbecubcuwebcubсгшыисгцисгниуысгиусгицсгис"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right2"
+            app:layout_constraintStart_toStartOf="@+id/gl_andex_alert_dialog_layout_image_left1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/timestamp_type_1_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="8:42 PM"
+            android:textColor="#993C3C43"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right2"
+            app:layout_constraintTop_toBottomOf="@+id/massage_type_1_tv"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/massage_type_2_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="100dp"
+        android:background="@drawable/massage_type_2_bg"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_left12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_right22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/massage_type_2_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="Profile change basal speed to 0.5U/h флоаисйоцриасфрглоымисйпрлмснйцлпрумснпцлфурыамисгнлрофкиышмсдолфткышмдслофитымшдофиымрофыимгфырлокимфгырломиыгомbiuwefuywhbcuyabgsefuyajhwgebfuyawbweufyhghqwyuiefcvbasevcagywevfqycwteavyjscghvasgjhcvagjyechvawyjgechvwyqjgahcvayghcevwqbfuashbvuabuwqbcuwebcuebcuqwebcuqwbecubcuwebcubсгшыисгцисгниуысгиусгицсгис"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right22"
+            app:layout_constraintStart_toStartOf="@+id/gl_andex_alert_dialog_layout_image_left12"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/timestamp_type_2_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="8:42 PM"
+            android:textColor="#993C3C43"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right22"
+            app:layout_constraintTop_toBottomOf="@+id/massage_type_2_tv"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/massage_type_3_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/massage_type_3_bg"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_left123"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_andex_alert_dialog_layout_image_right223"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/massage_type_3_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="Profile change basal speed to 0.5U/h флоаисйоцриасфрглоымисйпрлмснйцлпрумснпцлфурыамисгнлрофкиышмсдолфткышмдслофитымшдофиымрофыимгфырлокимфгырломиыгомbiuwefuywhbcuyabgsefuyajhwgebfuyawbweufyhghqwyuiefcvbasevcagywevfqycwteavyjscghvasgjhcvagjyechvawyjgechvwyqjgahcvayghcevwqbfuashbvuabuwqbcuwebcuebcuqwebcuqwbecubcuwebcubсгшыисгцисгниуысгиусгицсгис"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right223"
+            app:layout_constraintStart_toStartOf="@+id/gl_andex_alert_dialog_layout_image_left123"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/timestamp_type_3_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="8:42 PM"
+            android:textColor="#616161"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_andex_alert_dialog_layout_image_right223"
+            app:layout_constraintTop_toBottomOf="@+id/massage_type_3_tv"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/invalidate_cell"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/invalidate_chat_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_display_light"
+            android:text="etc"
+            android:textAlignment="center"
+            android:textColor="#993C3C43"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+        <View
+            android:id="@+id/invalidate_chat_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.3312820512820513" />
+        <entry key="app/src/main/res/drawable-hdpi/ic_top_bar_profile_settings.xml" value="0.153" />
+        <entry key="app/src/main/res/drawable-hdpi/rectangle_bg.xml" value="0.153" />
+        <entry key="app/src/main/res/drawable-hdpi/switch_thumb.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable-hdpi/switch_truck.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable-hdpi/thumb.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable-hdpi/track.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable-v24/andex_alert_dialog_et_background_selector2.xml" value="0.1145" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-xxhdpi/andex_alert_dialog_et_background_selector.xml" value="0.174" />
+        <entry key="app/src/main/res/drawable-xxhdpi/massage_type_1_bg.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable-xxhdpi/massage_type_2_bg.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable-xxhdpi/massage_type_3_bg.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable/chevron_down.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/chevron_down_disabled.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/edit_text_foreground.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/form.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_add.xml" value="0.127" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_circle_add.xml" value="0.127" />
+        <entry key="app/src/main/res/drawable/ic_dec.xml" value="0.1565" />
+        <entry key="app/src/main/res/drawable/ic_done.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable/ic_top_bar.xml" value="0.127" />
+        <entry key="app/src/main/res/drawable/spinner_background.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-v26/dialog_enter_pump_pin.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout-v26/dialog_go_bolus.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout-v26/dialog_go_super_bolus.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout-v26/dialog_info.xml" value="0.3129240567235162" />
+        <entry key="app/src/main/res/layout-v26/dialog_info_basal.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout-v26/dialog_instruction_refilling.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout-v26/fragment_menu.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1874077718766009" />
+        <entry key="app/src/main/res/layout/battery_dialog.xml" value="0.5621181262729125" />
+        <entry key="app/src/main/res/layout/dialog_active_boluses.xml" value="0.3069053708439898" />
+        <entry key="app/src/main/res/layout/dialog_battery.xml" value="0.3458544142702792" />
+        <entry key="app/src/main/res/layout/dialog_delete_active_boluses.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_delete_profile_basal.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_enter_app_pin.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_enter_pin.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_enter_settings_pin.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_refill.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_rename_profile_basal.xml" value="0.42824074074074076" />
+        <entry key="app/src/main/res/layout/dialog_select_profile_basal.xml" value="0.5576230662737707" />
+        <entry key="app/src/main/res/layout/dialog_speed_period_basal.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/dialog_time_period_basal.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.2607503255208333" />
+        <entry key="app/src/main/res/layout/fragment_basal_profile_settings.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_bolus.xml" value="0.3255020141601564" />
+        <entry key="app/src/main/res/layout/fragment_box.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_box_selection.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_dual_pattern_bolus.xml" value="0.3701324462890625" />
+        <entry key="app/src/main/res/layout/fragment_extended_bolus.xml" value="0.2696797688802083" />
+        <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.40361785888671875" />
+        <entry key="app/src/main/res/layout/fragment_options.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_pin.xml" value="0.15569168832295982" />
+        <entry key="app/src/main/res/layout/fragment_profile_settings.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_profiles.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/fragment_refilled.xml" value="0.28644765218098955" />
+        <entry key="app/src/main/res/layout/fragment_refilling.xml" value="0.22823842366536456" />
+        <entry key="app/src/main/res/layout/fragment_scanning.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.3293047453227796" />
+        <entry key="app/src/main/res/layout/fragment_step_bolus.xml" value="0.34406875168778894" />
+        <entry key="app/src/main/res/layout/fragment_super_bolus.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_temporary_basal.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/frg.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/ic_reservoir.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/item_box.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/item_chat.xml" value="0.2970387776692707" />
+        <entry key="app/src/main/res/layout/item_period_profile.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/item_profile.xml" value="0.3168433451118963" />
+        <entry key="app/src/main/res/layout/item_scan.xml" value="0.20767638294409346" />
+        <entry key="app/src/main/res/layout/item_spinner.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/profile_item.xml" value="0.41089070638020836" />
+        <entry key="app/src/main/res/layout/profile_period_item.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1295" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

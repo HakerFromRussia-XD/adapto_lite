@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:background="@color/background_title_fragment"
+        android:elevation="5dp">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chart_separate1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chart_separate2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.27" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chart_separate3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chart_separate4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.72" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chart_separate5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/profile_period_chart"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="-28dp"
+            android:layout_marginEnd="-15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/chart_separate_view"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:background="@color/chart_separate"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_period_chart"
+            app:layout_constraintStart_toStartOf="@+id/chart_separate1"
+            app:layout_constraintTop_toTopOf="@+id/profile_period_chart" />
+
+        <View
+            android:id="@+id/chart_separate_view2"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:background="@color/chart_separate"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_period_chart"
+            app:layout_constraintStart_toStartOf="@+id/chart_separate2"
+            app:layout_constraintTop_toTopOf="@+id/profile_period_chart" />
+
+        <View
+            android:id="@+id/chart_separate_view3"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:background="@color/chart_separate"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_period_chart"
+            app:layout_constraintEnd_toStartOf="@+id/chart_separate3"
+            app:layout_constraintStart_toStartOf="@+id/chart_separate3"
+            app:layout_constraintTop_toTopOf="@+id/profile_period_chart" />
+
+        <View
+            android:id="@+id/chart_separate_view4"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:background="@color/chart_separate"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_period_chart"
+            app:layout_constraintStart_toStartOf="@+id/chart_separate4"
+            app:layout_constraintTop_toTopOf="@+id/profile_period_chart" />
+
+        <View
+            android:id="@+id/chart_separate_view5"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:background="@color/chart_separate"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_period_chart"
+            app:layout_constraintStart_toStartOf="@+id/chart_separate5"
+            app:layout_constraintTop_toTopOf="@+id/profile_period_chart" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profile_periods_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"/>
+
+</LinearLayout>
