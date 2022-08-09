@@ -1,33 +1,24 @@
 package ua.cn.stu.navigation
 
 import android.Manifest
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
 import android.bluetooth.*
 import android.content.*
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.os.Parcelable
-import android.provider.Settings
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ExpandableListView
 import android.widget.SimpleExpandableListAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -40,11 +31,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_delete_active_boluses.view.*
-import kotlinx.android.synthetic.main.dialog_go_bolus.*
-import kotlinx.android.synthetic.main.dialog_info.*
-import kotlinx.android.synthetic.main.dialog_info_basal.*
-import kotlinx.android.synthetic.main.dialog_instruction_refilling.*
 import ua.cn.stu.navigation.ble.BluetoothLeService
 import ua.cn.stu.navigation.ble.SampleGattAttributes.*
 import ua.cn.stu.navigation.connection.ScanItem
@@ -77,14 +63,12 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_CONFIRM
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_CONFIRM_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_STRECHED_AMOUNT_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_TYPE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_TYPE_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.DATE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.DATE_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROFILE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENDED_AND_DUAL_PATTERN_BOLUS_TIME_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.FAKE_DATA_REGISTER
@@ -93,7 +77,6 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING_R
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.LOG_UPDATE_DEPTH
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.MAX_COUNT_PROFILES
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.MY_PERMISSIONS_REQUEST_LOCATION
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE_REGISTER
@@ -144,7 +127,6 @@ import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PIN_CODE_SETTI
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PROFILE_NAMES
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.SELECTED_PROFILE
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.START_TIME_ALL_PERIODS_MAIN
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TEST_SAVE
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMPS_LIST_MAIN
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMP_LAST_LOG_MASSAGE
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMP_LAST_READ_LOG
@@ -249,10 +231,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         if (savedInstanceState == null) {
             if (activatePinCodeApp) {
-                supportFragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragmentContainer, PinFragment())
-                    .commit()
+//                supportFragmentManager
+//                    .beginTransaction()
+//                    .add(R.id.fragmentContainer, ScanningFragment())
+//                    .commit()
             } else {
                 supportFragmentManager
                     .beginTransaction()
@@ -372,18 +354,40 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun showScanScreen() { launchFragment(ScanningFragment()) }
-    override fun showTemporaryBasalScreen() { launchFragment(TemoraryBasalFragment()) }
-    override fun showBasalProfileSettingsScreen() { launchFragment(ProfileSettingsFragment()) }
-    override fun showProfileScreen() { launchFragment(ProfilesFragment()) }
-    override fun showSettingsScreen() { launchFragment(SettingsFragment()) }
-    override fun showBolusScreen() { launchFragment(BolusFragment()) }
-    override fun showStepBolusScreen() { launchFragment(StepBolusFragment()) }
-    override fun showExtendedBolusScreen() { launchFragment(ExtendedBolusFragment()) }
-    override fun showDualPatternBolusScreen() { launchFragment(DualPatternBolusFragment()) }
-    override fun showSuperBolusScreen() { launchFragment(SuperBolusFragment()) }
-    override fun showRefillingScreen() { launchFragmentWihtoutStack(RefillingFragment()) }
-    override fun showRefilledScreen() { launchFragmentWihtoutStack(RefilledFragment()) }
-    override fun showMenuScreen() { launchFragmentWihtoutStack(MenuFragment()) }
+    override fun showTemporaryBasalScreen() {
+//        launchFragment(TemoraryBasalFragment())
+    }
+    override fun showBasalProfileSettingsScreen() {
+//        launchFragment(ProfileSettingsFragment())
+    }
+    override fun showProfileScreen() {
+//        launchFragment(ProfilesFragment())
+    }
+    override fun showSettingsScreen() {
+//        launchFragment(SettingsFragment())
+    }
+    override fun showBolusScreen() {
+//        launchFragment(BolusFragment())
+    }
+    override fun showStepBolusScreen() {
+//        launchFragment(StepBolusFragment())
+    }
+    override fun showExtendedBolusScreen() {
+//        launchFragment(ExtendedBolusFragment())
+    }
+    override fun showDualPatternBolusScreen() {
+//        launchFragment(DualPatternBolusFragment())
+    }
+    override fun showSuperBolusScreen() {
+//        launchFragment(SuperBolusFragment())
+    }
+    override fun showRefillingScreen() {
+//        launchFragmentWihtoutStack(RefillingFragment())
+    }
+    override fun showRefilledScreen() {
+//        launchFragmentWihtoutStack(RefilledFragment())
+    }
+    override fun showMenuScreen() { launchFragmentWihtoutStack(HomeFragment()) }
     override fun showBottomNavigationMenu (show: Boolean) {
         if (show) bottom_menu_cl.visibility = View.VISIBLE
         else bottom_menu_cl.visibility = View.GONE
@@ -392,7 +396,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun firstOpenMenu() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, MenuFragment())
+            .replace(R.id.fragmentContainer, HomeFragment())
             .commit()
     }
     override fun goBack() {
@@ -766,57 +770,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         return result
     }
 
-    @SuppressLint("InflateParams")
-    override fun showGoBolusDialog(title: String, massage: String, numberOfHundredthsInsulin: Int, numberOfHundredStrechedInsulin: Int, timeBolus: Int) {
-        val dialogBinding = layoutInflater.inflate(R.layout.dialog_go_bolus, null)
-        val myDialog = Dialog(this)
-        myDialog.setContentView(dialogBinding)
-        myDialog.setCancelable(false)
-        myDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        myDialog.show()
-
-        myDialog.dialog_enter_bolus_title_tv.text = title
-        myDialog.dialog_enter_bolus_massage_tv.text = massage
-
-        val yesBtn = dialogBinding.findViewById<View>(R.id.dialog_enter_bolus_confirm)
-        yesBtn.setOnClickListener {
-//            if (bolusType == 0)  runBolus(numberOfHundredthsInsulin)
-//            if (bolusType == 1)  superBoluseGoFlag = true
-//            if (bolusType == 2)  runExtendedBolus(numberOfHundredthsInsulin, timeBolus)
-//            if (bolusType == 3)  runDualPatternBolus(numberOfHundredthsInsulin, numberOfHundredStrechedInsulin, timeBolus)
-            goToMenu()
-            myDialog.dismiss()
-        }
-        val noBtn = dialogBinding.findViewById<View>(R.id.dialog_enter_bolus_cancel)
-        noBtn.setOnClickListener {
-            myDialog.dismiss()
-        }
-    }
-
-
-    @SuppressLint("InflateParams")
-    private fun showLocationPermissionDialog() {
-        val dialogBinding = layoutInflater.inflate(R.layout.dialog_instruction_refilling, null)
-        val myDialog = Dialog(this)
-        myDialog.setContentView(dialogBinding)
-        myDialog.setCancelable(false)
-        myDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        myDialog.show()
-
-        myDialog.dialog_instraction_refilling_title_tv.text = getString(R.string.location_permission)
-        myDialog.instraction_refilling_dialog_massage_tv.text = getString(R.string.gps_network_not_enabled)
-        myDialog.dialog_instraction_refilling_cancel_tv.text = getString(R.string.open_location_settings)
-
-
-        val yesBtn = dialogBinding.findViewById<View>(R.id.dialog_instraction_refilling_confirm)
-        yesBtn.setOnClickListener {
-            startActivity(
-                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            )
-            myDialog.dismiss()
-        }
-    }
-
 
     // сохранение и загрузка данных
     override fun saveIntArrayList(key: String, list: ArrayList<IntArray>) {
@@ -1157,18 +1110,18 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (mScanning) { scanLeDevice(false) }
     }
     private fun reconnectThread() {
-//        System.err.println("--> reconnectThread started")
+        System.err.println("--> reconnectThread started")
         var j = 1
         val reconnectThread = Thread {
             while (reconnectThreadFlag) {
                 runOnUiThread {
                     if(j % 5 == 0) {
                         reconnectThreadFlag = false
-//                        scanLeDevice(true)
-//                        System.err.println("DeviceControlActivity------->   Переподключение со сканированием №$j")
+                        scanLeDevice(true)
+                        System.err.println("DeviceControlActivity------->   Переподключение со сканированием №$j")
                     } else {
                         reconnect()
-//                        System.err.println("DeviceControlActivity------->   Переподключение без сканирования №$j")
+                        System.err.println("DeviceControlActivity------->   Переподключение без сканирования №$j")
                     }
                     j++
                 }
@@ -1194,7 +1147,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (mBluetoothLeService != null) {
             mBluetoothLeService!!.connect(getString(CONNECTES_DEVICE_ADDRESS))
         } else {
-//            println("--> вызываем функцию коннекта к устройству $connectedDevice = null")
+            println("--> вызываем функцию коннекта к устройству $connectedDevice = null")
         }
     }
     override fun disconnect () {
@@ -1289,7 +1242,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         if (!gpsEnabled) {
             // notify user
-            showLocationPermissionDialog()
+//            showLocationPermissionDialog()
         }
     }
     private fun addLEDeviceToScanList(item: String, device: BluetoothDevice?) {

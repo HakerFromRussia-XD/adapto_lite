@@ -144,6 +144,8 @@
     <string name="update_basal_profiles_info_massage">Synchronize %d</string>
     <string name="done2">done</string>
     <string name="home">home</string>
+    <string name="statistic">statistic</string>
+    <string name="bms">bms</string>
 
 
     <plurals name="boxes">

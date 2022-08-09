@@ -150,6 +150,22 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
+                <TextView
+                    android:id="@+id/bottom_menu_0_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="5dp"
+                    android:fontFamily="@font/sf_pro_display_light"
+                    android:gravity="center"
+                    android:text="@string/statistic"
+                    android:textAlignment="center"
+                    android:textColor="@color/system_blue"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <View
                     android:id="@+id/left_fragment_btn"
                     android:layout_width="match_parent"
@@ -201,6 +217,22 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/bottom_menu_2_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="5dp"
+                    android:fontFamily="@font/sf_pro_display_light"
+                    android:gravity="center"
+                    android:text="@string/bms"
+                    android:textAlignment="center"
+                    android:textColor="@color/system_blue"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/right_fragment_btn"
