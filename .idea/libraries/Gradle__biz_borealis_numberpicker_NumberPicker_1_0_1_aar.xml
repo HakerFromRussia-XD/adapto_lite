@@ -1,17 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: biz.borealis.numberpicker:NumberPicker:1.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e12d9f960c291600eb9b9f50e9261599/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e12d9f960c291600eb9b9f50e9261599/transformed/jetified-NumberPicker-1.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e12d9f960c291600eb9b9f50e9261599/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b7e670c57b58409f3227188d5176c24b/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b7e670c57b58409f3227188d5176c24b/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b7e670c57b58409f3227188d5176c24b/transformed/jetified-NumberPicker-1.0.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/df27ebb805100ff86ba172e6616419d5/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/df27ebb805100ff86ba172e6616419d5/transformed/jetified-NumberPicker-1.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/df27ebb805100ff86ba172e6616419d5/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0bad0c5092bf28d9b50132f873501621/transformed/jetified-NumberPicker-1.0.1/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0bad0c5092bf28d9b50132f873501621/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0bad0c5092bf28d9b50132f873501621/transformed/jetified-NumberPicker-1.0.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0bad0c5092bf28d9b50132f873501621/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

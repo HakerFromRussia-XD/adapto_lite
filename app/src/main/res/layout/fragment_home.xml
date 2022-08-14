@@ -60,7 +60,7 @@
             app:layout_constraintGuide_percent="0.7" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/main_iv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/display_center"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/main_iv" />
 
         <View
             android:id="@+id/view2"

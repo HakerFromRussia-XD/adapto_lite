@@ -1,17 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding2:rxbinding:2.2.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a5e34f07bec23ede12e3057333d8da3e/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5e34f07bec23ede12e3057333d8da3e/transformed/jetified-rxbinding-2.2.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5e34f07bec23ede12e3057333d8da3e/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/985f7c24afd26487447dbca22213d48b/transformed/jetified-rxbinding-2.2.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/985f7c24afd26487447dbca22213d48b/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/985f7c24afd26487447dbca22213d48b/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/02891511b5865ad00ac72813f9fc2685/transformed/jetified-rxbinding-2.2.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/02891511b5865ad00ac72813f9fc2685/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/02891511b5865ad00ac72813f9fc2685/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7f4cf6309aca8670638902e55f321207/transformed/jetified-rxbinding-2.2.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7f4cf6309aca8670638902e55f321207/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7f4cf6309aca8670638902e55f321207/transformed/jetified-rxbinding-2.2.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7f4cf6309aca8670638902e55f321207/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

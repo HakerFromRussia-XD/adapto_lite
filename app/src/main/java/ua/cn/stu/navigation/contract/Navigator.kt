@@ -36,10 +36,11 @@ interface Navigator {
     fun disconnect ()
     fun reconnect ()
     fun bleCommand(byteArray: ByteArray?, command: String, typeCommand: String)
+    fun reconnectThread()
 //    fun showGoBolusDialog(title: String, massage: String, numberOfHundredthsInsulin: Int, numberOfHundredStrechedInsulin: Int, timeBolus: Int)
 
 
-    fun firstOpenMenu()
+    fun firstOpenHome()
     fun goBack()
     fun goToMenu()
 

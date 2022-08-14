@@ -159,7 +159,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     private var inputSpeedAllPeriods = ArrayList<Int>()
 
     private var readRegisterPointer: ByteArray? = null
-    var reconnectThreadFlag: Boolean = false
     private var mConnected = false
     private var endFlag = false
     var percentSynchronize = 0
@@ -174,6 +173,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 finish()
             }
             if (!flagScanWithoutConnect) {
+
                 mBluetoothLeService?.connect(connectedDeviceAddress)
             }
         }
@@ -270,7 +270,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         // инициализация блютуз
         checkLocationPermission()
         initBLEStructure()
-        scanLeDevice(true)
+//        scanLeDevice(true)
 
         RxUpdateMainEvent.getInstance().refiliingObservable
             .observeOn(AndroidSchedulers.mainThread())
@@ -311,10 +311,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             connectedDevice =  getString(CONNECTES_DEVICE)
             connectedDeviceAddress =  getString(CONNECTES_DEVICE_ADDRESS)
         }
-        if (!mConnected) {
-            reconnectThreadFlag = true
-            reconnectThread()
-        }
+//        if (!mConnected) {
+//            reconnectThreadFlag = true
+//            reconnectThread()
+//        }
     }
     override fun onPause() {
         super.onPause()
@@ -393,7 +393,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         else bottom_menu_cl.visibility = View.GONE
     }
 
-    override fun firstOpenMenu() {
+    override fun firstOpenHome() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, HomeFragment())
@@ -534,6 +534,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun initAllVariables() {
         //init
         lastConnectDeviceAddress = ""
+        reconnectThreadFlag = false
         //the main
         battryPercent = 0
         liIonPercent = 0
@@ -600,7 +601,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         pumpStatusNotifyDataThreadFlag = true
         showInfoDialogsFlag = false
         inScanFragmentFlag = false
-        tupOnList = false
         if (getString(CONNECTES_DEVICE_ADDRESS) == "NOT SET!") {
             lastConnectDeviceAddress = ""
             saveString(CONNECTES_DEVICE_ADDRESS, activateSuperBolus.toString())
@@ -881,6 +881,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                     if(!reconnectThreadFlag && !mScanning && !inScanFragmentFlag){
                         reconnectThreadFlag = true
                         reconnectThread()
+                        println("--> ACTION_GATT_DISCONNECTED  reconnectThread()")
                     }
                 }
                 BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED == action -> {
@@ -1109,7 +1110,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         mGattServicesList!!.setAdapter(gattServiceAdapter)
         if (mScanning) { scanLeDevice(false) }
     }
-    private fun reconnectThread() {
+    override fun reconnectThread() {
         System.err.println("--> reconnectThread started")
         var j = 1
         val reconnectThread = Thread {
@@ -1171,6 +1172,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         if(!reconnectThreadFlag && !mScanning && !inScanFragmentFlag){
             reconnectThreadFlag = true
             reconnectThread()
+            println("--> disconnect  reconnectThread()")
         }
         flagScanWithoutConnect = true
     }
@@ -1205,6 +1207,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                         scanLeDevice(false)
                         reconnectThreadFlag = true
                         reconnectThread()
+                        println("--> mLeScanCallback  reconnectThread()")
                     }
                 }
                 addLEDeviceToScanList(device.name, device)
@@ -1474,6 +1477,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         @JvmStatic private val KEY_RESULT = "RESULT"
 
         var lastConnectDeviceAddress by Delegates.notNull<String>()
+        var reconnectThreadFlag by Delegates.notNull<Boolean>()
 
         //переменные апбара
         var battryPercent by Delegates.notNull<Int>()
@@ -1559,7 +1563,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         var attemptsToUnlock by Delegates.notNull<Int>()
 
         var showInfoDialogsFlag by Delegates.notNull<Boolean>()
-        var tupOnList by Delegates.notNull<Boolean>()
         var inScanFragmentFlag by Delegates.notNull<Boolean>()
         var scanList by Delegates.notNull<ArrayList<ScanItem>>()
         var connectionPassword by Delegates.notNull<String>()

@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDevice
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
-import ua.cn.stu.navigation.MainActivity.Companion.tupOnList
+import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
 import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.contract.*
 import ua.cn.stu.navigation.databinding.FragmentScanningBinding
@@ -31,22 +31,24 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
         binding = FragmentScanningBinding.inflate(inflater, container, false)
         navigator().showBottomNavigationMenu(false)
 
+        println("Scanning fragment started")
+
         RxUpdateMainEvent.getInstance().scanListObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { scanItem ->
                 println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
-                if (scanItem.getAddr() == lastConnectDeviceAddress) {
-                    connectedDevice = scanItem.getTitle()
-                    connectedDeviceAddress = lastConnectDeviceAddress
-                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-                    navigator().scanLeDevice(false)
-                    goToMenu()
-                }
+//                if (scanItem.getAddr() == lastConnectDeviceAddress) {
+//                    connectedDevice = scanItem.getTitle()
+//                    connectedDeviceAddress = lastConnectDeviceAddress
+//                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
+//                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+//                    navigator().scanLeDevice(false)
+//                    goToHome()
+//                    reconnectThreadFlag = true
+//                    navigator().reconnectThread()
+//                }
                 addScanListItem()
             }
-
-
 
         initAdapter(binding.scanningRv)
         return binding.root
@@ -70,9 +72,9 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
                 navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
                 navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
                 navigator().scanLeDevice(false)
-                tupOnList = true
-                goToMenu()
-//                onCancelPressed()
+                goToHome()
+                reconnectThreadFlag = true
+                navigator().reconnectThread()
             }
         })
         profile_rv.adapter = adapter
@@ -84,12 +86,12 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
     override fun getReturnAction(): ReturnAction {
         return ReturnAction(
             onReturnAction = {
-                goToMenu()
+                goToHome()
             }
         )
     }
 
-    private fun goToMenu() {
-        navigator().firstOpenMenu()
+    private fun goToHome() {
+        navigator().firstOpenHome()
     }
 }
