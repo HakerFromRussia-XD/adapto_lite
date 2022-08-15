@@ -40,6 +40,7 @@ class HomeFragment : Fragment(), HasBatteryAction {
 //            AnimationUtils.loadAnimation(requireContext(), android.R.anim.fade_out)
 
 //        binding.mainIv.startAnimation(myRotation)
+        binding.mainIv.rotation = binding.mainIv.rotation + 90
 
         binding.profilesButton.setOnClickListener {
             println("I love Yanochka")

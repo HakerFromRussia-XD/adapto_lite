@@ -173,7 +173,6 @@ class MainActivity : AppCompatActivity(), Navigator {
                 finish()
             }
             if (!flagScanWithoutConnect) {
-
                 mBluetoothLeService?.connect(connectedDeviceAddress)
             }
         }
@@ -270,7 +269,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         // инициализация блютуз
         checkLocationPermission()
         initBLEStructure()
-//        scanLeDevice(true)
+        scanLeDevice(true)
 
         RxUpdateMainEvent.getInstance().refiliingObservable
             .observeOn(AndroidSchedulers.mainThread())

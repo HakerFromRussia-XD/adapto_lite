@@ -37,16 +37,16 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { scanItem ->
                 println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
-//                if (scanItem.getAddr() == lastConnectDeviceAddress) {
-//                    connectedDevice = scanItem.getTitle()
-//                    connectedDeviceAddress = lastConnectDeviceAddress
-//                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-//                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-//                    navigator().scanLeDevice(false)
-//                    goToHome()
-//                    reconnectThreadFlag = true
-//                    navigator().reconnectThread()
-//                }
+                if (scanItem.getAddr() == lastConnectDeviceAddress) {
+                    connectedDevice = scanItem.getTitle()
+                    connectedDeviceAddress = lastConnectDeviceAddress
+                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
+                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+                    navigator().scanLeDevice(false)
+                    goToHome()
+                    reconnectThreadFlag = true
+                    navigator().reconnectThread()
+                }
                 addScanListItem()
             }
 
