@@ -36,18 +36,23 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
         RxUpdateMainEvent.getInstance().scanListObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { scanItem ->
-                println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
-                if (scanItem.getAddr() == lastConnectDeviceAddress) {
-                    connectedDevice = scanItem.getTitle()
-                    connectedDeviceAddress = lastConnectDeviceAddress
-                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-                    navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-                    navigator().scanLeDevice(false)
-                    goToHome()
-                    reconnectThreadFlag = true
-                    navigator().reconnectThread()
+                try {
+                    println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
+                    if (scanItem.getAddr() == lastConnectDeviceAddress) {
+                        connectedDevice = scanItem.getTitle()
+                        connectedDeviceAddress = lastConnectDeviceAddress
+                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
+                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+                        navigator().scanLeDevice(false)
+                        goToHome()
+                        reconnectThreadFlag = true
+                        navigator().reconnectThread()
+                    }
+                    addScanListItem()
+                } catch (ignored: Exception) {
+                    println("ОШИБКА СКАНИРОВАНИЯ!!!")
                 }
-                addScanListItem()
+
             }
 
         initAdapter(binding.scanningRv)

@@ -1,14 +1,17 @@
 package ua.cn.stu.navigation.fragments
 
-import android.R
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ua.cn.stu.navigation.MainActivity
@@ -24,8 +27,10 @@ class HomeFragment : Fragment(), HasBatteryAction {
 
     private lateinit var binding: FragmentHomeBinding
     private var myDialogInfo: Dialog? = null
-//    private val myRotation: Animation =
-//        AnimationUtils.loadAnimation(requireContext(), R.anim.my_rotator)
+    private var timer: CountDownTimer? = null
+    private var actualAngle = 0f
+    private var finishAngle = 0f
+    private var animationAllowed = true
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
         "NotifyDataSetChanged"
@@ -36,11 +41,15 @@ class HomeFragment : Fragment(), HasBatteryAction {
         navigator().showBottomNavigationMenu(true)
         println("Home fragment started")
 
-//        val myRotation: Animation =
-//            AnimationUtils.loadAnimation(requireContext(), android.R.anim.fade_out)
+        binding.testSb.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-//        binding.mainIv.startAnimation(myRotation)
-        binding.mainIv.rotation = binding.mainIv.rotation + 90
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                finishAngle = progress.toFloat()
+                rotateArrow(progress.toFloat())
+            }
+        })
 
         binding.profilesButton.setOnClickListener {
             println("I love Yanochka")
@@ -76,6 +85,42 @@ class HomeFragment : Fragment(), HasBatteryAction {
 //                scrollToEndChat(binding.chatRv)
             }
         return binding.root
+    }
+
+
+    private fun rotateArrow(finishlAngleFunc: Float) {
+        if (animationAllowed) {
+            animationAllowed = false
+
+
+            val rotate = RotateAnimation(
+                actualAngle,
+                finishlAngleFunc,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f
+            )
+            rotate.duration = 1000
+            rotate.fillAfter = true
+            rotate.interpolator = LinearInterpolator()
+            binding.mainIv.startAnimation(rotate)
+
+
+            timer = object : CountDownTimer(1000, 1) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    animationAllowed = true
+                    actualAngle = finishAngle
+                    if (finishAngle != finishlAngleFunc) {
+                        println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle ")
+                        actualAngle = finishlAngleFunc
+                        rotateArrow(finishAngle)
+                    }
+                }
+            }.start()
+        }
     }
 
 
