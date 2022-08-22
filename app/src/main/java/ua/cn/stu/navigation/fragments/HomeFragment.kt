@@ -104,7 +104,7 @@ class HomeFragment : Fragment(), HasBatteryAction {
             rotate.duration = 1000
             rotate.fillAfter = true
             rotate.interpolator = LinearInterpolator()
-            binding.mainIv.startAnimation(rotate)
+            binding.speedArrowIv.startAnimation(rotate)
 
 
             timer = object : CountDownTimer(1000, 1) {
