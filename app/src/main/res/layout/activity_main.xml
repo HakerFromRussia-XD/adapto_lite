@@ -132,7 +132,7 @@
         android:id="@+id/bottom_menu_cl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/background_title_fragment"
+        android:background="@color/tool_bar"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout

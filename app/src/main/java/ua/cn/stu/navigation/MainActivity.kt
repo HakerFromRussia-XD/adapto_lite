@@ -600,10 +600,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         pumpStatusNotifyDataThreadFlag = true
         showInfoDialogsFlag = false
         inScanFragmentFlag = false
-        if (getString(CONNECTES_DEVICE_ADDRESS) == "NOT SET!") {
-            lastConnectDeviceAddress = ""
-            saveString(CONNECTES_DEVICE_ADDRESS, activateSuperBolus.toString())
-        } else { lastConnectDeviceAddress =  getString(CONNECTES_DEVICE_ADDRESS)}
+//
 
         if (getInt(ATTEMPTS_TO_UN_LOCK) == 65000) {
             attemptsToUnlock = 3

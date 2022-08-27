@@ -204,7 +204,7 @@ public class BluetoothLeService extends Service {
      */
     public boolean connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
-//            Timber.tag(TAG).w("BluetoothAdapter not initialized or unspecified address.");
+//            Timber.tag(TAG).("BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
 
@@ -220,7 +220,10 @@ public class BluetoothLeService extends Service {
             }
         }
 
-        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        System.err.println("address: "+address);
+        final BluetoothDevice device;
+        device = mBluetoothAdapter.getRemoteDevice(address);
+
         if (device == null) {
 //            Timber.tag(TAG).w("Device not found.  Unable to connect.");
             return false;
