@@ -32,6 +32,7 @@ class HomeFragment : Fragment(), HasBatteryAction {
     private var finishAngle = 0f
     private var tripCount = 0
     private var odoCount = 0
+    private var coveredDistance = 0
     private var animationAllowed = true
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
@@ -64,27 +65,20 @@ class HomeFragment : Fragment(), HasBatteryAction {
                     if (tripCount < 100) binding.odoTv.text = "ODO: 000$odoCount"
                     if (tripCount < 10) binding.odoTv.text = "ODO: 0000$odoCount"
                 }
+                binding.percentBatteryTv.text = (progress.toFloat()/10).toInt().toString()
+                if (progress%100 == 0) {
+                    coveredDistance += 1
+                    binding.coveredDistanceTv.text = coveredDistance.toString()
+                }
+                binding.percentDistanceTv.text = progress.toString()
+
+                if (progress < 10) { binding.dotsTv.text = ".  .  .  . " }
+                if (progress >= 10) { binding.dotsTv.text = ".  .  . " }
+                if (progress >= 100) { binding.dotsTv.text = ".  ." }
+
+                binding.mainTemperatureTv.text = "$progress°"
             }
         })
-
-//        binding.profilesButton.setOnClickListener {
-//            if (MainActivity.refreshBasalProfile) {
-////                showInfoBasalProfileDialog()
-//            }
-//            else { onProfilePressed() }
-//        }
-//        binding.settingsButton.setOnClickListener { onSettingsPressed() }
-//        binding.bolusButton.setOnClickListener { onBolusPressed() }
-//        binding.basalButton.setOnClickListener {
-//            if (MainActivity.temporaryBasalActivated) {
-////                navigator().runTemporaryBasalStatus()
-//            }
-//            else { onTemporaryBasalPressed() }
-//        }
-
-//        if (profileNames.size > 1) {
-//            binding.profilesButtonMassageTv.text = profileNames[selectedProfile]
-//        }
 
         RxUpdateMainEvent.getInstance().selectBasalProfileSubjectObservable
             .observeOn(AndroidSchedulers.mainThread())

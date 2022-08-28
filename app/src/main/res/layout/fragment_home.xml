@@ -182,7 +182,8 @@
             android:textSize="100sp"
             app:layout_constraintBottom_toBottomOf="@+id/trip_tv"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
-            app:layout_constraintStart_toStartOf="@+id/guidline_mid" />
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
         <TextView
             android:id="@+id/main_speed_units_tv"
             android:layout_width="wrap_content"
@@ -194,7 +195,8 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/main_speed_tv"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
-            app:layout_constraintStart_toStartOf="@+id/guidline_mid" />
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText"/>
         <TextView
             android:id="@+id/trip_tv"
             android:layout_width="wrap_content"
@@ -206,7 +208,8 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/speed_arrow_iv"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
-            app:layout_constraintStart_toStartOf="@+id/guidline_mid" />
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText"/>
         <TextView
             android:id="@+id/odo_tv"
             android:layout_width="wrap_content"
@@ -217,7 +220,8 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
             app:layout_constraintStart_toStartOf="@+id/guidline_mid"
-            app:layout_constraintTop_toBottomOf="@+id/trip_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/trip_tv"
+            tools:ignore="HardcodedText"/>
         <TextView
             android:id="@+id/mode_tv"
             android:layout_width="wrap_content"
@@ -229,7 +233,8 @@
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="@+id/mode_type_tv"
-            app:layout_constraintStart_toStartOf="@+id/guidline_mid" />
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText"/>
         <TextView
             android:id="@+id/mode_type_tv"
             android:layout_width="wrap_content"
@@ -241,8 +246,8 @@
             android:textColor="@color/white_70"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/main_speed_tv"
-            app:layout_constraintStart_toStartOf="@+id/guidline_mid" />
-
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText,SmallSp"/>
         <TextView
             android:id="@+id/power_tv"
             android:layout_width="wrap_content"
@@ -254,7 +259,8 @@
             android:textColor="@color/power_mint"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="@+id/main_speed_tv"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_mid" />
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
         <TextView
             android:id="@+id/power_units_tv"
             android:layout_width="wrap_content"
@@ -267,7 +273,150 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/power_tv"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
-             />
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/percent_battery_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="130dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="81"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/trip_tv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/percent_battery_units_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="115dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="%"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/percent_battery_tv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/covered_distance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="130dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="22"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            app:layout_constraintTop_toBottomOf="@+id/odo_tv"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/covered_distance_units_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="km"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/covered_distance_tv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/dots_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=".  .  .  . "
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@+id/covered_distance_units_tv"
+            app:layout_constraintTop_toTopOf="@+id/odo_tv"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/percent_distance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:layout_marginEnd="40dp"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            app:layout_constraintTop_toBottomOf="@+id/odo_tv"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/percent_distance_units_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25sp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="%"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/covered_distance_tv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/temperature_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            app:layout_constraintTop_toBottomOf="@+id/odo_tv"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/temperature_units_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="°C"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/covered_distance_tv"
+            app:layout_constraintStart_toEndOf="@+id/temperature_tv"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/main_temperature_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="63°"
+            android:textColor="@color/limon"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/trip_tv"
+            app:layout_constraintStart_toStartOf="@+id/guidline_mid"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/main_temperature_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="CONTROLLER"
+            android:textColor="@color/white_70"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/mode_type_tv"
+            app:layout_constraintTop_toBottomOf="@+id/main_temperature_tv"
+            tools:ignore="HardcodedText,SmallSp" />
 
         <SeekBar
             android:id="@+id/test_sb"

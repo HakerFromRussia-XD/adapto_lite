@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
+import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDevice
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDeviceAddress
-import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
+import ua.cn.stu.navigation.MainActivity.Companion.scanList
 import ua.cn.stu.navigation.R
+import ua.cn.stu.navigation.connection.ScanItem
 import ua.cn.stu.navigation.contract.*
 import ua.cn.stu.navigation.databinding.FragmentScanningBinding
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys
@@ -25,6 +27,8 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
     private lateinit var binding: FragmentScanningBinding
     private var linearLayoutManager: LinearLayoutManager? = null
     private var adapter: ScanningAdapter? = null
+    private var scanListLocal: ArrayList<ScanItem>? = null
+
 
     @SuppressLint("CheckResult")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -36,23 +40,23 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
         RxUpdateMainEvent.getInstance().scanListObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { scanItem ->
-                try {
-                    println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
-                    if (scanItem.getAddr() == lastConnectDeviceAddress) {
-                        connectedDevice = scanItem.getTitle()
-                        connectedDeviceAddress = lastConnectDeviceAddress
-                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-                        navigator().scanLeDevice(false)
-                        goToHome()
-                        reconnectThreadFlag = true
-                        navigator().reconnectThread()
-                    }
-                    addScanListItem()
-                } catch (ignored: Exception) {
-                    println("ОШИБКА СКАНИРОВАНИЯ!!!")
-                }
-
+                addScanListItem()
+//                try {
+//                    println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
+//                    if (scanItem.getAddr() == lastConnectDeviceAddress) {
+//                        connectedDevice = scanItem.getTitle()
+//                        connectedDeviceAddress = lastConnectDeviceAddress
+//                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
+//                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+//                        navigator().scanLeDevice(false)
+//                        goToHome()
+//                        reconnectThreadFlag = true
+//                        navigator().reconnectThread()
+//                    }
+//                    addScanListItem()
+//                } catch (ignored: Exception) {
+//                    println("ОШИБКА СКАНИРОВАНИЯ!!!")
+//                }
             }
 
         initAdapter(binding.scanningRv)
@@ -61,7 +65,27 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun addScanListItem() {
-        adapter?.notifyItemChanged(adapter!!.itemCount-1)
+//        try {
+        activity?.runOnUiThread {
+            adapter?.notifyItemChanged(adapter?.itemCount?.minus(1) ?: 0)
+        }
+//            setItems()
+//        } catch (ignored: Exception) {
+//            println("ОШИБКА ДОБАВЛЕНИЯ НОВОГО УСТРОЙСТВА!!!")
+//        }
+    }
+
+    fun setItems() {
+        //get the current items
+        val currentSize: Int = scanListLocal?.size ?: 0
+        //remove the current items
+        scanListLocal?.clear()
+        //add all the new items
+        scanListLocal?.addAll(scanList)
+        //tell the recycler view that all the old items are gone
+        adapter?.notifyItemRangeRemoved(0, currentSize)
+        //tell the recycler view how many new items we added
+        adapter?.notifyItemRangeInserted(0, scanList.size)
     }
 
     private fun initAdapter(profile_rv: RecyclerView) {
@@ -84,7 +108,6 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
         })
         profile_rv.adapter = adapter
     }
-
 
 
     override fun getTitleRes(): String = getString(R.string.scanning_ble_device)
