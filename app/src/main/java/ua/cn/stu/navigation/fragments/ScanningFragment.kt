@@ -12,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDevice
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDeviceAddress
+import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
 import ua.cn.stu.navigation.MainActivity.Companion.scanList
 import ua.cn.stu.navigation.R
@@ -40,23 +41,22 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
         RxUpdateMainEvent.getInstance().scanListObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { scanItem ->
-                addScanListItem()
-//                try {
-//                    println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
-//                    if (scanItem.getAddr() == lastConnectDeviceAddress) {
-//                        connectedDevice = scanItem.getTitle()
-//                        connectedDeviceAddress = lastConnectDeviceAddress
-//                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-//                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-//                        navigator().scanLeDevice(false)
-//                        goToHome()
-//                        reconnectThreadFlag = true
-//                        navigator().reconnectThread()
-//                    }
-//                    addScanListItem()
-//                } catch (ignored: Exception) {
-//                    println("ОШИБКА СКАНИРОВАНИЯ!!!")
-//                }
+                try {
+                    println("validate lastConnectDeviceAddress: $lastConnectDeviceAddress  scanItem.getAddr(): ${scanItem.getAddr()}")
+                    if (scanItem.getAddr() == lastConnectDeviceAddress) {
+                        connectedDevice = scanItem.getTitle()
+                        connectedDeviceAddress = lastConnectDeviceAddress
+                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
+                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+                        navigator().scanLeDevice(false)
+                        goToHome()
+                        reconnectThreadFlag = true
+                        navigator().reconnectThread()
+                    }
+                    addScanListItem()
+                } catch (ignored: Exception) {
+                    println("ОШИБКА СКАНИРОВАНИЯ!!!")
+                }
             }
 
         initAdapter(binding.scanningRv)
@@ -65,28 +65,11 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun addScanListItem() {
-//        try {
         activity?.runOnUiThread {
             adapter?.notifyItemChanged(adapter?.itemCount?.minus(1) ?: 0)
         }
-//            setItems()
-//        } catch (ignored: Exception) {
-//            println("ОШИБКА ДОБАВЛЕНИЯ НОВОГО УСТРОЙСТВА!!!")
-//        }
     }
 
-    fun setItems() {
-        //get the current items
-        val currentSize: Int = scanListLocal?.size ?: 0
-        //remove the current items
-        scanListLocal?.clear()
-        //add all the new items
-        scanListLocal?.addAll(scanList)
-        //tell the recycler view that all the old items are gone
-        adapter?.notifyItemRangeRemoved(0, currentSize)
-        //tell the recycler view how many new items we added
-        adapter?.notifyItemRangeInserted(0, scanList.size)
-    }
 
     private fun initAdapter(profile_rv: RecyclerView) {
         linearLayoutManager = LinearLayoutManager(context)
@@ -98,8 +81,10 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
                 println("tup scan name = $name    address = $address")
                 connectedDevice = name
                 connectedDeviceAddress = address
+                lastConnectDeviceAddress = address
                 navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
                 navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+                navigator().saveString(PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS, lastConnectDeviceAddress)
                 navigator().scanLeDevice(false)
                 goToHome()
                 reconnectThreadFlag = true

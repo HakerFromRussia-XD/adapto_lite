@@ -120,6 +120,7 @@ import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVI
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTION_PASSWORD
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.DATA_ALL_CHARTS
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.INPUT_SPEED_ALL_PERIODS_MAIN
+import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.MASSAGES_LIST_MAIN
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PERIOD_NAMES_MAIN
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PIN_CODE_APP
@@ -601,6 +602,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         showInfoDialogsFlag = false
         inScanFragmentFlag = false
 //
+        if (getString(LAST_CONNECTES_DEVICE_ADDRESS) == "NOT SET!") {
+            lastConnectDeviceAddress = ""
+            saveString(LAST_CONNECTES_DEVICE_ADDRESS, lastConnectDeviceAddress)
+        } else { lastConnectDeviceAddress =  getString(LAST_CONNECTES_DEVICE_ADDRESS)}
 
         if (getInt(ATTEMPTS_TO_UN_LOCK) == 65000) {
             attemptsToUnlock = 3
