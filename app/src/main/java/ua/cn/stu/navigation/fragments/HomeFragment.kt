@@ -1,5 +1,7 @@
 package ua.cn.stu.navigation.fragments
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
@@ -7,18 +9,17 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
+import android.view.animation.*
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.MainActivity.Companion.activatePinCodeSettings
-import ua.cn.stu.navigation.MainActivity.Companion.profileNames
-import ua.cn.stu.navigation.MainActivity.Companion.selectedProfile
-import ua.cn.stu.navigation.contract.*
+import ua.cn.stu.navigation.R
+import ua.cn.stu.navigation.contract.BatteryAction
+import ua.cn.stu.navigation.contract.HasBatteryAction
+import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 
@@ -30,10 +31,13 @@ class HomeFragment : Fragment(), HasBatteryAction {
     private var timer: CountDownTimer? = null
     private var actualAngle = 0f
     private var finishAngle = 0f
+    private var actualPercentAlpha = 0f
+    private var finishPercentAlpha = 0f
     private var tripCount = 0
     private var odoCount = 0
     private var coveredDistance = 0
     private var animationAllowed = true
+    private var myImage: ImageView? = null
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
         "NotifyDataSetChanged"
@@ -43,6 +47,7 @@ class HomeFragment : Fragment(), HasBatteryAction {
         myDialogInfo = Dialog(requireContext())
         navigator().showBottomNavigationMenu(true)
         println("Home fragment started")
+        myImage = view?.findViewById(R.id.speed_arrow_iv)
 
         binding.testSb.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -50,7 +55,8 @@ class HomeFragment : Fragment(), HasBatteryAction {
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 finishAngle = progress.toFloat() - 109f
-                rotateArrow(progress.toFloat() - 109f)
+                finishPercentAlpha = progress.toFloat()/146*100
+                rotateArrow(finishAngle, finishPercentAlpha)
                 binding.mainSpeedTv.text = progress.toString()
                 binding.powerTv.text = "+" + (14 - (progress.toFloat()/10).toInt()) + "." + progress%10
                 if (progress%24 == 0) {
@@ -70,7 +76,8 @@ class HomeFragment : Fragment(), HasBatteryAction {
                     coveredDistance += 1
                     binding.coveredDistanceTv.text = coveredDistance.toString()
                 }
-                binding.percentDistanceTv.text = progress.toString()
+                binding.percentDistanceTv.text = (progress.toFloat()/146*100).toInt().toString()
+
 
                 if (progress < 10) { binding.dotsTv.text = ".  .  .  . " }
                 if (progress >= 10) { binding.dotsTv.text = ".  .  . " }
@@ -98,23 +105,37 @@ class HomeFragment : Fragment(), HasBatteryAction {
     }
 
 
-    private fun rotateArrow(finishlAngleFunc: Float) {
+    @SuppressLint("Recycle")
+    private fun rotateArrow(finishlAngleFunc: Float, finishlAlphaFunc: Float) {
         if (animationAllowed) {
             animationAllowed = false
 
+            val rotatinA: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.speedArrowIv, View.ROTATION, actualAngle, finishlAngleFunc)
+            rotatinA.duration = 1000
+            rotatinA.interpolator = LinearInterpolator()
 
-            val rotate = RotateAnimation(
-                actualAngle,
-                finishlAngleFunc,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f
-            )
-            rotate.duration = 1000
-            rotate.fillAfter = true
-            rotate.interpolator = LinearInterpolator()
-            binding.speedArrowIv.startAnimation(rotate)
+            val alphaA: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowIv, View.ALPHA, 1.5f - actualPercentAlpha/100, 1.5f - finishlAlphaFunc/100)
+            alphaA.duration = 1000
+            alphaA.interpolator = LinearInterpolator()
+
+            val anim = AnimatorSet()
+            anim.play(rotatinA).with(alphaA)
+            anim.start()
+
+            val rotatinA2: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ROTATION, actualAngle, finishlAngleFunc)
+            rotatinA2.duration = 1000
+            rotatinA2.interpolator = LinearInterpolator()
+
+            val alphaA2: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ALPHA,  actualPercentAlpha/75 - 0.5f, finishlAlphaFunc/75 - 0.5f)
+            alphaA2.duration = 1000
+            alphaA2.interpolator = LinearInterpolator()
+
+            val anim2 = AnimatorSet()
+            anim2.play(rotatinA2).with(alphaA2)
+            anim2.start()
+
 
             val rotate2 = RotateAnimation(
                 25f - actualAngle,
@@ -161,10 +182,12 @@ class HomeFragment : Fragment(), HasBatteryAction {
                 override fun onFinish() {
                     animationAllowed = true
                     actualAngle = finishAngle
+                    actualPercentAlpha = finishPercentAlpha
                     if (finishAngle != finishlAngleFunc) {
                         println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle ")
                         actualAngle = finishlAngleFunc
-                        rotateArrow(finishAngle)
+                        actualPercentAlpha = finishlAlphaFunc
+                        rotateArrow(finishAngle, finishPercentAlpha)
                     }
                 }
             }.start()
