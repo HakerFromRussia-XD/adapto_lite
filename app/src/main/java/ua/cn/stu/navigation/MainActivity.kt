@@ -212,11 +212,11 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
 
-        createChatList()
+        createStatList()
         scanList = reinitScanList()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
 
-        binding.leftFragmentBtn.setOnClickListener {}
+        binding.leftFragmentBtn.setOnClickListener { showStatisticScreen() }
         binding.centerFragmentBtn.setOnClickListener { showMenuScreen() }
         binding.rightFragmentBtn.setOnClickListener { showBMSScreen() }
 
@@ -288,43 +288,9 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun showScanScreen() { launchFragment(ScanningFragment()) }
-    override fun showTemporaryBasalScreen() {
-//        launchFragment(TemoraryBasalFragment())
-    }
-    override fun showBasalProfileSettingsScreen() {
-//        launchFragment(ProfileSettingsFragment())
-    }
-    override fun showProfileScreen() {
-//        launchFragment(ProfilesFragment())
-    }
-    override fun showSettingsScreen() {
-//        launchFragment(SettingsFragment())
-    }
-    override fun showBolusScreen() {
-//        launchFragment(BolusFragment())
-    }
-    override fun showStepBolusScreen() {
-//        launchFragment(StepBolusFragment())
-    }
-    override fun showExtendedBolusScreen() {
-//        launchFragment(ExtendedBolusFragment())
-    }
-    override fun showDualPatternBolusScreen() {
-//        launchFragment(DualPatternBolusFragment())
-    }
-    override fun showSuperBolusScreen() {
-//        launchFragment(SuperBolusFragment())
-    }
-    override fun showRefillingScreen() {
-//        launchFragmentWihtoutStack(RefillingFragment())
-    }
-    override fun showRefilledScreen() {
-//        launchFragmentWihtoutStack(RefilledFragment())
-    }
-    override fun showBMSScreen() {
-        launchFragmentWihtoutStack(BMSFragment())
-    }
+    override fun showStatisticScreen() { launchFragmentWihtoutStack(StatisticFragment()) }
     override fun showMenuScreen() { launchFragmentWihtoutStack(HomeFragment()) }
+    override fun showBMSScreen() { launchFragmentWihtoutStack(BMSFragment()) }
     override fun showBottomNavigationMenu (show: Boolean) {
         if (show) bottom_menu_cl.visibility = View.VISIBLE
         else bottom_menu_cl.visibility = View.GONE
@@ -458,26 +424,23 @@ class MainActivity : AppCompatActivity(), Navigator {
             saveString(CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
         } else { connectedDeviceAddress =  getString(CONNECTES_DEVICE_ADDRESS)}
     }
-    private fun createChatList(){
-        if (loadArrayList<String>(TYPE_CELLS_LIST_MAIN).size == 0) {
-            val listT = ArrayList<String>()
-            listT.add("type_2")
-            listT.add("invalidate")
-            typeCellsListMain = listT
-
-            val listM = ArrayList<String>()
-            listM.add("Привет, сюда будет выводиться лог событий помпы. Нажми на кнопку \"etc\", чтобы его обновить")
-            massagesListMain = listM
-
-            val listTS = ArrayList<String>()
-            listTS.add("${(System.currentTimeMillis()/1000L)}")
-            timestampsListMain = listTS
-        } else {
-            // читаем из памяти
-            typeCellsListMain = loadArrayList(TYPE_CELLS_LIST_MAIN)
-            massagesListMain = loadArrayList(MASSAGES_LIST_MAIN)
-            timestampsListMain = loadArrayList(TIMESTAMPS_LIST_MAIN)
-        }
+    private fun createStatList(){
+        val listA = ArrayList<String>()
+        listA.add("statistic 1 cell")
+        listA.add("statistic 2 cell")
+        listA.add("statistic 3 cell")
+        listA.add("statistic 4 cell")
+        listA.add("statistic 5 cell")
+        listA.add("statistic 6 cell")
+        listA.add("statistic 7 cell")
+        listA.add("statistic 8 cell")
+        listA.add("statistic 9 cell")
+        listA.add("statistic 10 cell")
+        listA.add("statistic 11 cell")
+        listA.add("statistic 12 cell")
+        listA.add("statistic 13 cell")
+        listA.add("statistic 14 cell")
+        statList = listA
     }
     private fun reinitScanList():ArrayList<ScanItem> {
         val result = ArrayList<ScanItem>()
@@ -1129,6 +1092,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         var showInfoDialogsFlag by Delegates.notNull<Boolean>()
         var inScanFragmentFlag by Delegates.notNull<Boolean>()
         var scanList by Delegates.notNull<ArrayList<ScanItem>>()
+        var statList by Delegates.notNull<ArrayList<String>>()
         var connectedDevice by Delegates.notNull<String>()
         var connectedDeviceAddress by Delegates.notNull<String>()
     }

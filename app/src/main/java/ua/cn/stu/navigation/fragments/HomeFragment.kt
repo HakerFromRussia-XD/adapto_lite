@@ -13,13 +13,11 @@ import android.view.animation.*
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
-import ua.cn.stu.navigation.contract.BatteryAction
-import ua.cn.stu.navigation.contract.HasBatteryAction
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment(), HasBatteryAction {
+class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var myDialogInfo: Dialog? = null
@@ -79,7 +77,6 @@ class HomeFragment : Fragment(), HasBatteryAction {
                 binding.mainTemperatureTv.text = "$progress°"
             }
         })
-
 
         return binding.root
     }
@@ -172,31 +169,5 @@ class HomeFragment : Fragment(), HasBatteryAction {
                 }
             }.start()
         }
-    }
-
-
-    override fun getBatteryAction(): BatteryAction {
-        return BatteryAction(
-            onBatteryAction = {
-//                showBatteryDialog()
-            }
-        )
-    }
-
-    private fun onProfilePressed() {
-        navigator().showProfileScreen()
-    }
-    private fun onSettingsPressed() {
-//        if (activatePinCodeSettings) {
-//            showPinCodeSettigsDialog()
-//        } else {
-//            navigator().showSettingsScreen()
-//        }
-    }
-    private fun onBolusPressed() {
-        navigator().showBolusScreen()
-    }
-    private fun onTemporaryBasalPressed() {
-        navigator().showTemporaryBasalScreen()
     }
 }
