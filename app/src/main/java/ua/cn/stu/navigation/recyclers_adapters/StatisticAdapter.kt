@@ -28,7 +28,6 @@ class StatisticAdapter(private val onStatClickListener: OnStatClickListener
     override fun onBindViewHolder(holder: StatViewHolder, position: Int) {
         holder.deviceName.text = statList[position]
 
-
         holder.selectDeviceBtn.setOnClickListener {
             onStatClickListener.onClicked(statList[position])
         }

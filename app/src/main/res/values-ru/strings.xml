@@ -144,9 +144,9 @@
     <string name="update_basal_profiles_info">Обновление базальных профилей</string>
     <string name="update_basal_profiles_info_massage">Синхронизация %d</string>
     <string name="done2">ок</string>
-    <string name="home">дом</string>
-    <string name="statistic">статистика</string>
-    <string name="bms">бмс</string>
+    <string name="home">ДОМ</string>
+    <string name="statistic">СТАТИСТИКА</string>
+    <string name="bms">БМС</string>
 
     <plurals name="boxes" tools:ignore="UnusedQuantity">
         <item quantity="zero">%1$d коробок</item>
