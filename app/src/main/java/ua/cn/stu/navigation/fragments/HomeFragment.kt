@@ -10,18 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
-import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import ua.cn.stu.navigation.MainActivity.Companion.activatePinCodeSettings
-import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.contract.BatteryAction
 import ua.cn.stu.navigation.contract.HasBatteryAction
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
-import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 
 
 class HomeFragment : Fragment(), HasBatteryAction {
@@ -37,7 +32,6 @@ class HomeFragment : Fragment(), HasBatteryAction {
     private var odoCount = 0
     private var coveredDistance = 0
     private var animationAllowed = true
-    private var myImage: ImageView? = null
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
         "NotifyDataSetChanged"
@@ -47,7 +41,6 @@ class HomeFragment : Fragment(), HasBatteryAction {
         myDialogInfo = Dialog(requireContext())
         navigator().showBottomNavigationMenu(true)
         println("Home fragment started")
-        myImage = view?.findViewById(R.id.speed_arrow_iv)
 
         binding.testSb.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -87,20 +80,7 @@ class HomeFragment : Fragment(), HasBatteryAction {
             }
         })
 
-        RxUpdateMainEvent.getInstance().selectBasalProfileSubjectObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-//                if (selectedProfile < profileNames.size) {
-//                    binding.profilesButtonMassageTv.text = profileNames[selectedProfile]
-//                }
-            }
 
-        RxUpdateMainEvent.getInstance().updateChatSubjectObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-//                adapter?.notifyDataSetChanged()
-//                scrollToEndChat(binding.chatRv)
-            }
         return binding.root
     }
 
@@ -207,11 +187,11 @@ class HomeFragment : Fragment(), HasBatteryAction {
         navigator().showProfileScreen()
     }
     private fun onSettingsPressed() {
-        if (activatePinCodeSettings) {
+//        if (activatePinCodeSettings) {
 //            showPinCodeSettigsDialog()
-        } else {
-            navigator().showSettingsScreen()
-        }
+//        } else {
+//            navigator().showSettingsScreen()
+//        }
     }
     private fun onBolusPressed() {
         navigator().showBolusScreen()

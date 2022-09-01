@@ -15,6 +15,7 @@ interface Navigator {
     fun showScanScreen()
     fun showTemporaryBasalScreen()
     fun showBasalProfileSettingsScreen()
+    fun showBMSScreen()
     fun showProfileScreen()
     fun showSettingsScreen()
     fun showBolusScreen()
