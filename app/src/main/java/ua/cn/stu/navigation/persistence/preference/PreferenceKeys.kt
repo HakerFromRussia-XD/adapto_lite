@@ -1,6 +1,5 @@
 package ua.cn.stu.navigation.persistence.preference
 
-import android.util.Pair
 
 object PreferenceKeys {
   const val TYPE_CELLS_LIST_MAIN = "TYPE_CELLS_LIST_MAIN"

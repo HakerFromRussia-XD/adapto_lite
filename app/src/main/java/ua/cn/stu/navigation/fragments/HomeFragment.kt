@@ -30,6 +30,7 @@ class HomeFragment : Fragment() {
     private var odoCount = 0
     private var coveredDistance = 0
     private var animationAllowed = true
+    private val ANIMATION_DURATION = 300L
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
         "NotifyDataSetChanged"
@@ -89,11 +90,11 @@ class HomeFragment : Fragment() {
 
             val rotatinA: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.speedArrowIv, View.ROTATION, actualAngle, finishlAngleFunc)
-            rotatinA.duration = 300
+            rotatinA.duration = ANIMATION_DURATION
             rotatinA.interpolator = LinearInterpolator()
 
             val alphaA: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowIv, View.ALPHA, 1.5f - actualPercentAlpha/100, 1.5f - finishlAlphaFunc/100)
-            alphaA.duration = 300
+            alphaA.duration = ANIMATION_DURATION
             alphaA.interpolator = LinearInterpolator()
 
             val anim = AnimatorSet()
@@ -102,11 +103,11 @@ class HomeFragment : Fragment() {
 
             val rotatinA2: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ROTATION, actualAngle, finishlAngleFunc)
-            rotatinA2.duration = 300
+            rotatinA2.duration = ANIMATION_DURATION
             rotatinA2.interpolator = LinearInterpolator()
 
             val alphaA2: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ALPHA,  actualPercentAlpha/75 - 0.5f, finishlAlphaFunc/75 - 0.5f)
-            alphaA2.duration = 300
+            alphaA2.duration = ANIMATION_DURATION
             alphaA2.interpolator = LinearInterpolator()
 
             val anim2 = AnimatorSet()
@@ -122,7 +123,7 @@ class HomeFragment : Fragment() {
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             )
-            rotate2.duration = 1000
+            rotate2.duration = ANIMATION_DURATION
             rotate2.fillAfter = true
             rotate2.interpolator = LinearInterpolator()
             binding.powerArrowIv.startAnimation(rotate2)
@@ -135,7 +136,7 @@ class HomeFragment : Fragment() {
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             )
-            rotate3.duration = 1000
+            rotate3.duration = ANIMATION_DURATION
             rotate3.fillAfter = true
             rotate3.interpolator = LinearInterpolator()
             binding.percentBatteryIv.startAnimation(rotate3)
@@ -148,12 +149,12 @@ class HomeFragment : Fragment() {
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             )
-            rotate4.duration = 1000
+            rotate4.duration = ANIMATION_DURATION
             rotate4.fillAfter = true
             rotate4.interpolator = LinearInterpolator()
             binding.temperatureIv.startAnimation(rotate4)
 
-            timer = object : CountDownTimer(300, 1) {
+            timer = object : CountDownTimer(ANIMATION_DURATION, 1) {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
