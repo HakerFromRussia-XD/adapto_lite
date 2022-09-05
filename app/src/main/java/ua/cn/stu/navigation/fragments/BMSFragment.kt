@@ -123,7 +123,6 @@ class BMSFragment : Fragment() {
         val output = mutableListOf<Int>()
 
         for(cellVoltage in cellsVoltage){
-            println("cellVoltage $cellVoltage")
             if (cellVoltage < 3.985f) { output.add(Color.rgb(61, 255, 88)) }
             if (cellVoltage > 3.985f && cellVoltage < 4.13f) { output.add(Color.rgb(253, 192, 48)) }
             if (cellVoltage > 4.13f) { output.add(Color.rgb(225, 28, 41)) }
