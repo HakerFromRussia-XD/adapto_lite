@@ -299,7 +299,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun firstOpenHome() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, HomeFragment())
+            .replace(R.id.fragmentContainer, BMSFragment())//HomeFragment
             .commit()
     }
     override fun goBack() {
@@ -433,7 +433,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         listA.add("statistic 5 cell")
         listA.add("statistic 6 cell")
         listA.add("statistic 7 cell")
-        listA.add("statistic 8 cell")
+        listA.add("statistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cell")
         listA.add("statistic 9 cell")
         listA.add("statistic 10 cell")
         listA.add("statistic 11 cell")

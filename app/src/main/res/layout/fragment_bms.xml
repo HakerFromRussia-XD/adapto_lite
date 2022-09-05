@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ijhfiuevbnioasjhviuer"
@@ -42,6 +41,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidline_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_20"
             android:layout_width="wrap_content"
@@ -49,11 +55,17 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.2" />
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidline_635"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.635" />
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_70"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
+            app:layout_constraintGuide_percent="0.695" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_95"
             android:layout_width="wrap_content"
@@ -63,14 +75,119 @@
 
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/chart_mainchart"
+            android:id="@+id/battery_chart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="-20dp"
             android:foregroundGravity="center"
             app:layout_constraintBottom_toTopOf="@+id/guidline_70"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20" />
+            app:layout_constraintTop_toBottomOf="@+id/guidline_15" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/bms_left_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/bms_bottom_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_635"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/bms_top_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/textView"
+            tools:ignore="ContentDescription" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Δ 1.00V"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="3.74 V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_635"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="4.23 V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="HardcodedText" />
+
 
         <SeekBar
             android:id="@+id/test_sb"
@@ -85,9 +202,6 @@
             tools:ignore="MissingConstraints"
             tools:targetApi="o" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--    </androidx.cardview.widget.CardView>-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

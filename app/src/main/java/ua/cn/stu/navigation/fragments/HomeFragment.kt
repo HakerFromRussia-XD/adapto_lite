@@ -89,11 +89,11 @@ class HomeFragment : Fragment() {
 
             val rotatinA: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.speedArrowIv, View.ROTATION, actualAngle, finishlAngleFunc)
-            rotatinA.duration = 1000
+            rotatinA.duration = 300
             rotatinA.interpolator = LinearInterpolator()
 
             val alphaA: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowIv, View.ALPHA, 1.5f - actualPercentAlpha/100, 1.5f - finishlAlphaFunc/100)
-            alphaA.duration = 1000
+            alphaA.duration = 300
             alphaA.interpolator = LinearInterpolator()
 
             val anim = AnimatorSet()
@@ -102,11 +102,11 @@ class HomeFragment : Fragment() {
 
             val rotatinA2: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ROTATION, actualAngle, finishlAngleFunc)
-            rotatinA2.duration = 1000
+            rotatinA2.duration = 300
             rotatinA2.interpolator = LinearInterpolator()
 
             val alphaA2: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ALPHA,  actualPercentAlpha/75 - 0.5f, finishlAlphaFunc/75 - 0.5f)
-            alphaA2.duration = 1000
+            alphaA2.duration = 300
             alphaA2.interpolator = LinearInterpolator()
 
             val anim2 = AnimatorSet()
@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
             rotate4.interpolator = LinearInterpolator()
             binding.temperatureIv.startAnimation(rotate4)
 
-            timer = object : CountDownTimer(1000, 1) {
+            timer = object : CountDownTimer(300, 1) {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
