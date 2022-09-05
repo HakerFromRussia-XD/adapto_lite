@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.github.mikephil.charting.model.GradientColor
 import com.github.mikephil.charting.utils.MPPointF
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentBmsBinding
@@ -46,14 +45,9 @@ class BMSFragment : Fragment() {
         }
 
         val set = BarDataSet(values, "Data Set")
+        set.colors = createColorsList(createFakeDataChart())
         set.iconsOffset = MPPointF(0F, 5F)
         set.valueTextColor = Color.TRANSPARENT
-        val startColor4 = Color.rgb(163, 254, 124)
-        val endColor3 = Color.rgb(110, 217, 64)
-        val myMyGradient = GradientColor(startColor4, endColor3)
-        val gradientFills: MutableList<GradientColor> = java.util.ArrayList<GradientColor>()
-        gradientFills.add(myMyGradient)
-        set.gradientColors = gradientFills
 
         val dataSets = java.util.ArrayList<IBarDataSet>()
         dataSets.add(set)
@@ -122,5 +116,19 @@ class BMSFragment : Fragment() {
         dataChart.add(3.75f)
         dataChart.add(3.85f)
         return dataChart
+    }
+
+
+    private fun createColorsList(cellsVoltage: ArrayList<Float>): List<Int> {
+        val output = mutableListOf<Int>()
+
+        for(cellVoltage in cellsVoltage){
+            println("cellVoltage $cellVoltage")
+            if (cellVoltage < 3.985f) { output.add(Color.rgb(61, 255, 88)) }
+            if (cellVoltage > 3.985f && cellVoltage < 4.13f) { output.add(Color.rgb(253, 192, 48)) }
+            if (cellVoltage > 4.13f) { output.add(Color.rgb(225, 28, 41)) }
+        }
+
+        return output
     }
 }
