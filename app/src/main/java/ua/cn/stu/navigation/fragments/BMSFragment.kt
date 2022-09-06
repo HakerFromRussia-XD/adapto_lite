@@ -1,28 +1,43 @@
 package ua.cn.stu.navigation.fragments
 
+
+import android.R.attr.left
+import android.R.attr.right
 import android.graphics.Color
+import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentBmsBinding
+import kotlin.math.roundToInt
 
-class BMSFragment : Fragment() {
+
+class BMSFragment : Fragment(), OnChartValueSelectedListener {
     private lateinit var binding: FragmentBmsBinding
+    private var scale = 0f
+    private var leftMargin = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentBmsBinding.inflate(inflater, container, false)
         navigator().showBottomNavigationMenu(true)
         println("BMS fragment started")
+        scale = resources.displayMetrics.density
+        leftMargin = ((binding.cellHighlightIv.layoutParams as MarginLayoutParams).leftMargin/scale).roundToInt()+5
 
         initializedChart(binding.batteryChart)
         createSet(binding.batteryChart, createFakeDataChart())
@@ -36,8 +51,8 @@ class BMSFragment : Fragment() {
     private fun createSet(chart: BarChart, dataChart: ArrayList<Float>): BarDataSet {
         val values = ArrayList<BarEntry>()
 
-        if (dataChart.count() >= 25) {
-            for (i in 0 until 25) {
+        if (dataChart.count() >= 24) {
+            for (i in 0 until 24) {
                 val `val` = dataChart[i]
 
                 values.add(BarEntry(i * 1.0f, `val`))
@@ -46,8 +61,12 @@ class BMSFragment : Fragment() {
 
         val set = BarDataSet(values, "Data Set")
         set.colors = createColorsList(createFakeDataChart())
+        set.highLightAlpha = 1
         set.iconsOffset = MPPointF(0F, 5F)
         set.valueTextColor = Color.TRANSPARENT
+
+
+
 
         val dataSets = java.util.ArrayList<IBarDataSet>()
         dataSets.add(set)
@@ -60,12 +79,13 @@ class BMSFragment : Fragment() {
     }
     private fun initializedChart(chart: BarChart) {
         chart.contentDescription
-        chart.setTouchEnabled(false)
-        chart.isDragEnabled = false
-        chart.isDragDecelerationEnabled = false
+        chart.setTouchEnabled(true)
+        chart.setOnChartValueSelectedListener(this)
+        chart.isDragEnabled = true
+        chart.isDragDecelerationEnabled = true
         chart.setScaleEnabled(false)
         chart.setDrawGridBackground(false)
-        chart.setPinchZoom(false)
+        chart.setPinchZoom(true)
         chart.setBackgroundColor(Color.TRANSPARENT)
         chart.getHighlightByTouchPoint(1f, 1f)
         val data = BarData()
@@ -76,6 +96,7 @@ class BMSFragment : Fragment() {
         chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chart.xAxis.setDrawGridLines(false)
         chart.xAxis.setDrawAxisLine(false)
+        chart.xAxis.gridLineWidth = 5f
         chart.xAxis.textColor = Color.TRANSPARENT
 
         chart.axisLeft.setDrawGridLines(false)
@@ -92,29 +113,28 @@ class BMSFragment : Fragment() {
         val dataChart = ArrayList<Float>()
         dataChart.add(4.23f)
         dataChart.add(4.23f)
-        dataChart.add(3.75f)
+        dataChart.add(3.85f)
         dataChart.add(4f)
         dataChart.add(3.95f)
         dataChart.add(4.15f)
         dataChart.add(4.19f)
         dataChart.add(4.23f)
-        dataChart.add(3.75f)
+        dataChart.add(3.85f)
         dataChart.add(4.07f)
         dataChart.add(3.83f)
         dataChart.add(3.88f)
-        dataChart.add(3.75f)
+        dataChart.add(3.85f)
         dataChart.add(4.23f)
         dataChart.add(3.98f)
-        dataChart.add(3.75f)
+        dataChart.add(3.85f)
         dataChart.add(4.23f)
         dataChart.add(4.04f)
-        dataChart.add(3.75f)
+        dataChart.add(3.85f)
         dataChart.add(3.89f)
         dataChart.add(4.2f)
-        dataChart.add(3.75f)
-        dataChart.add(3.78f)
-        dataChart.add(3.75f)
         dataChart.add(3.85f)
+        dataChart.add(3.83f)
+        dataChart.add(3.8f)
         return dataChart
     }
 
@@ -129,5 +149,38 @@ class BMSFragment : Fragment() {
         }
 
         return output
+    }
+
+    private val onValueSelectedRectF = RectF()
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        binding.cellHighlightIv.visibility = View.VISIBLE
+
+        val bounds: RectF = onValueSelectedRectF
+        binding.batteryChart.getBarBounds(e as BarEntry?, bounds)
+
+//        val marginParams = MarginLayoutParams(binding.cellHighlightIv.layoutParams)
+//        val layoutParams = RelativeLayout.LayoutParams(marginParams)
+//        binding.cellHighlightIv.layoutParams = layoutParams
+
+
+//        val lp = ImageView.LayoutParams(binding.cellHighlightIv.layoutParams)
+////        lp.setMargins((bounds.left/scale).roundToInt(), 2, 0, 0)
+//        binding.cellHighlightIv.layoutParams = lp
+
+//        val params = ConstraintLayout.LayoutParams(binding.cellHighlightIv.layoutParams)
+//        params.setMargins((bounds.left).toInt(), 0, 0, 0)
+//        binding.cellHighlightIv.layoutParams = params
+
+        if (binding.cellHighlightIv.layoutParams is MarginLayoutParams) {
+            val p = binding.cellHighlightIv.layoutParams as MarginLayoutParams
+            p.setMargins(leftMargin+(bounds.left).toInt(), 0, 0, 0)
+            binding.cellHighlightIv.requestLayout()
+        }
+
+        System.err.println("Margin left: ${(bounds.left/scale).toInt()}  Highlight: ${(h?.x)?.toInt()}")
+    }
+
+    override fun onNothingSelected() {
+        binding.cellHighlightIv.visibility = View.GONE
     }
 }
