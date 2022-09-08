@@ -40,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.03" />
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_15"
@@ -72,6 +73,104 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.95" />
+
+
+        <TextView
+            android:id="@+id/title_bms_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="BATTERY MONITOR"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_5" />
+
+        <TextView
+            android:id="@+id/title_cell_info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="SELECT CELL"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toBottomOf="@+id/title_bms_tv" />
+
+        <TextView
+            android:id="@+id/voltage_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="2.42"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/title_cell_info_tv"
+            app:layout_constraintTop_toBottomOf="@+id/title_bms_tv" />
+
+        <TextView
+            android:id="@+id/voltage_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" V"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/voltage_number_tv"
+            app:layout_constraintTop_toBottomOf="@+id/title_bms_tv" />
+
+        <TextView
+            android:id="@+id/resistance_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="20"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/title_cell_info_tv"
+            app:layout_constraintTop_toBottomOf="@+id/voltage_number_tv" />
+
+        <TextView
+            android:id="@+id/resistance_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" mOm"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/resistance_number_tv"
+            app:layout_constraintTop_toBottomOf="@+id/voltage_number_tv" />
+
+        <TextView
+            android:id="@+id/capacity_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="320"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/title_cell_info_tv"
+            app:layout_constraintTop_toBottomOf="@+id/resistance_number_tv" />
+
+        <TextView
+            android:id="@+id/capacity_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" mWh"
+            android:textColor="@color/white_70"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/capacity_number_tv"
+            app:layout_constraintTop_toBottomOf="@+id/resistance_unit_tv" />
 
 
         <com.github.mikephil.charting.charts.BarChart
@@ -115,7 +214,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="0dp"
             android:scaleType="fitXY"
-            android:visibility="visible"
+            android:visibility="gone"
             android:src="@drawable/cell_highlight"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,9 +305,6 @@
             tools:ignore="HardcodedText" />
 
 
-
-
-
         <SeekBar
             android:id="@+id/test_sb"
             android:layout_width="200dp"
@@ -216,6 +312,7 @@
             android:max="146"
             android:min="0"
             android:progress="60"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guidline_right"
             app:layout_constraintStart_toStartOf="@+id/guidline_left"

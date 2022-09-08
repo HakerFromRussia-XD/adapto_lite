@@ -137,6 +137,18 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
         <ImageView
+            android:id="@+id/temperature_alert_circle_iv"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:src="@drawable/temperature_alert_circle"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintTop_toTopOf="@+id/power_arrow_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+        <ImageView
             android:id="@+id/closing_temperature_batttery_layer_iv"
             android:layout_width="0dp"
             android:layout_height="300dp"

@@ -3,6 +3,7 @@ package ua.cn.stu.navigation.fragments
 
 import android.R.attr.left
 import android.R.attr.right
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.RectF
 import android.os.Bundle
@@ -134,7 +135,7 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener {
         dataChart.add(4.2f)
         dataChart.add(3.85f)
         dataChart.add(3.83f)
-        dataChart.add(3.8f)
+        dataChart.add(3.74f)
         return dataChart
     }
 
@@ -152,24 +153,24 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener {
     }
 
     private val onValueSelectedRectF = RectF()
+    @SuppressLint("SetTextI18n")
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         binding.cellHighlightIv.visibility = View.VISIBLE
+        binding.voltageNumberTv.visibility = View.VISIBLE
+        binding.resistanceNumberTv.visibility = View.VISIBLE
+        binding.capacityNumberTv.visibility = View.VISIBLE
+        binding.voltageUnitTv.visibility = View.VISIBLE
+        binding.resistanceUnitTv.visibility = View.VISIBLE
+        binding.capacityUnitTv.visibility = View.VISIBLE
 
         val bounds: RectF = onValueSelectedRectF
         binding.batteryChart.getBarBounds(e as BarEntry?, bounds)
+        binding.titleCellInfoTv.text = "CELL  # " + ((h?.x)?.toInt()?.plus(1))
+        binding.voltageNumberTv.text = (h?.x)?.toInt()?.let { createFakeDataChart()[it] }.toString()
+        binding.resistanceNumberTv.text = (createFakeDataChart()[(h?.x)?.toInt()!!].toInt()*10).toString()
+        binding.capacityNumberTv.text = ((createFakeDataChart()[(h.x).toInt()]*10).toInt()*10).toString()
 
-//        val marginParams = MarginLayoutParams(binding.cellHighlightIv.layoutParams)
-//        val layoutParams = RelativeLayout.LayoutParams(marginParams)
-//        binding.cellHighlightIv.layoutParams = layoutParams
 
-
-//        val lp = ImageView.LayoutParams(binding.cellHighlightIv.layoutParams)
-////        lp.setMargins((bounds.left/scale).roundToInt(), 2, 0, 0)
-//        binding.cellHighlightIv.layoutParams = lp
-
-//        val params = ConstraintLayout.LayoutParams(binding.cellHighlightIv.layoutParams)
-//        params.setMargins((bounds.left).toInt(), 0, 0, 0)
-//        binding.cellHighlightIv.layoutParams = params
 
         if (binding.cellHighlightIv.layoutParams is MarginLayoutParams) {
             val p = binding.cellHighlightIv.layoutParams as MarginLayoutParams
@@ -182,5 +183,15 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener {
 
     override fun onNothingSelected() {
         binding.cellHighlightIv.visibility = View.GONE
+        binding.voltageNumberTv.visibility = View.GONE
+        binding.resistanceNumberTv.visibility = View.GONE
+        binding.capacityNumberTv.visibility = View.GONE
+
+        binding.voltageUnitTv.visibility = View.GONE
+        binding.resistanceUnitTv.visibility = View.GONE
+        binding.capacityUnitTv.visibility = View.GONE
+
+        binding.titleCellInfoTv.text  = "SELECT CELL"
+
     }
 }

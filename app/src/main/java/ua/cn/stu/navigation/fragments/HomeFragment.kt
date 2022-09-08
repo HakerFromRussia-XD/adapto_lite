@@ -97,22 +97,22 @@ class HomeFragment : Fragment() {
             alphaA.duration = ANIMATION_DURATION
             alphaA.interpolator = LinearInterpolator()
 
-            val anim = AnimatorSet()
-            anim.play(rotatinA).with(alphaA)
-            anim.start()
+            val animA = AnimatorSet()
+            animA.play(rotatinA).with(alphaA)
+            animA.start()
 
-            val rotatinA2: ObjectAnimator =
+            val rotatinB: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ROTATION, actualAngle, finishlAngleFunc)
-            rotatinA2.duration = ANIMATION_DURATION
-            rotatinA2.interpolator = LinearInterpolator()
+            rotatinB.duration = ANIMATION_DURATION
+            rotatinB.interpolator = LinearInterpolator()
 
-            val alphaA2: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ALPHA,  actualPercentAlpha/75 - 0.5f, finishlAlphaFunc/75 - 0.5f)
-            alphaA2.duration = ANIMATION_DURATION
-            alphaA2.interpolator = LinearInterpolator()
+            val alphaB: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowLvl3Iv, View.ALPHA,  actualPercentAlpha/75 - 0.5f, finishlAlphaFunc/75 - 0.5f)
+            alphaB.duration = ANIMATION_DURATION
+            alphaB.interpolator = LinearInterpolator()
 
-            val anim2 = AnimatorSet()
-            anim2.play(rotatinA2).with(alphaA2)
-            anim2.start()
+            val animB = AnimatorSet()
+            animB.play(rotatinB).with(alphaB)
+            animB.start()
 
 
             val rotate2 = RotateAnimation(
@@ -141,18 +141,37 @@ class HomeFragment : Fragment() {
             rotate3.interpolator = LinearInterpolator()
             binding.percentBatteryIv.startAnimation(rotate3)
 
-            val rotate4 = RotateAnimation(
-                15f - actualAngle/4 - 8f,
-                15f - finishlAngleFunc/4 - 8f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f
-            )
-            rotate4.duration = ANIMATION_DURATION
-            rotate4.fillAfter = true
-            rotate4.interpolator = LinearInterpolator()
-            binding.temperatureIv.startAnimation(rotate4)
+
+
+//            temperature_alert_circle_iv
+
+            val rotatin4A: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.temperatureIv, View.ROTATION, 15f - actualAngle/4 - 8f, 15f - finishlAngleFunc/4 - 8f)
+            rotatin4A.duration = ANIMATION_DURATION
+            rotatin4A.interpolator = LinearInterpolator()
+
+            val alpha4A: ObjectAnimator = ObjectAnimator.ofFloat(binding.temperatureIv, View.ALPHA, 1f - actualPercentAlpha /100, 1f - finishlAlphaFunc/100)
+            alpha4A.duration = ANIMATION_DURATION
+            alpha4A.interpolator = LinearInterpolator()
+
+            val anim4A = AnimatorSet()
+            anim4A.play(rotatin4A).with(alpha4A)
+            anim4A.start()
+
+            val rotatin4B: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.temperatureAlertCircleIv, View.ROTATION, 15f - actualAngle/4 - 8f, 15f - finishlAngleFunc/4 - 8f)
+            rotatin4B.duration = ANIMATION_DURATION
+            rotatin4B.interpolator = LinearInterpolator()
+
+            val alpha4B: ObjectAnimator = ObjectAnimator.ofFloat(binding.temperatureAlertCircleIv, View.ALPHA,  actualPercentAlpha /100, finishlAlphaFunc/100)
+            alpha4B.duration = ANIMATION_DURATION
+            alpha4B.interpolator = LinearInterpolator()
+
+            val anim4B = AnimatorSet()
+            anim4B.play(rotatin4B).with(alpha4B)
+            anim4B.start()
+
+
 
             timer = object : CountDownTimer(ANIMATION_DURATION, 1) {
                 override fun onTick(millisUntilFinished: Long) {}
