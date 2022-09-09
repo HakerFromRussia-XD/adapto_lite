@@ -14,7 +14,7 @@ interface Navigator {
 
     fun showScanScreen()
     fun showStatisticScreen()
-    fun showMenuScreen()
+    fun showHomeScreen()
     fun showBMSScreen()
     fun showBottomNavigationMenu(show: Boolean)
     fun <T> saveArrayList(key: String, list: ArrayList<T>)
@@ -37,7 +37,4 @@ interface Navigator {
 
     fun <T : Parcelable> publishResult(result: T)
     fun <T : Parcelable> listenResult(clazz: Class<T>, owner: LifecycleOwner, listener: ResultListener<T>)
-
-
-    fun setNewTitle(newTitle: String)
 }

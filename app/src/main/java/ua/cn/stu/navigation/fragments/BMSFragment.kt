@@ -1,8 +1,6 @@
 package ua.cn.stu.navigation.fragments
 
 
-import android.R.attr.left
-import android.R.attr.right
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.RectF
@@ -11,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis

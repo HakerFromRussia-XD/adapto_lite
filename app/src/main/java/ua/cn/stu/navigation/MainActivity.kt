@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.IBinder
 import android.os.Parcelable
 import android.view.Menu
@@ -29,7 +28,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import ua.cn.stu.navigation.ble.BluetoothLeService
 import ua.cn.stu.navigation.ble.SampleGattAttributes.*
@@ -76,7 +74,6 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.LOG_UPDATE_DEPTH
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.MY_PERMISSIONS_REQUEST_LOCATION
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE_REGISTER
@@ -108,32 +105,10 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.TIME_WORK_PUMP_RE
 import ua.cn.stu.navigation.databinding.ActivityMainBinding
 import ua.cn.stu.navigation.fragments.*
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_DUAL_PATTERN_BOLUS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_EXTENDED_BOLUS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_PIN_CODE_APP
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_PIN_CODE_SETTINGS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_STEP_BOLUS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ACTIVATE_SUPER_BOLUS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.ATTEMPTS_TO_UN_LOCK
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVICE
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVICE_ADDRESS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTION_PASSWORD
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.DATA_ALL_CHARTS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.INPUT_SPEED_ALL_PERIODS_MAIN
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.MASSAGES_LIST_MAIN
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PERIOD_NAMES_MAIN
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PIN_CODE_APP
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PIN_CODE_SETTINGS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.PROFILE_NAMES
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.SELECTED_PROFILE
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.START_TIME_ALL_PERIODS_MAIN
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMPS_LIST_MAIN
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMP_LAST_LOG_MASSAGE
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TIMESTAMP_LAST_READ_LOG
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.TYPE_CELLS_LIST_MAIN
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
-import ua.cn.stu.navigation.services.BasalPeriod
 import kotlin.properties.Delegates
 
 
@@ -201,14 +176,14 @@ class MainActivity : AppCompatActivity(), Navigator {
 
 
         if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragmentContainer, ScanningFragment())
-                .commit()
-//                supportFragmentManager
-//                    .beginTransaction()
-//                    .add(R.id.fragmentContainer, MenuFragment())
-//                    .commit()
+//            supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.fragmentContainer, ScanningFragment())
+//                .commit()
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragmentContainer, HomeFragment())
+                    .commit()
         }
 
 
@@ -217,7 +192,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
 
         binding.leftFragmentBtn.setOnClickListener { showStatisticScreen() }
-        binding.centerFragmentBtn.setOnClickListener { showMenuScreen() }
+        binding.centerFragmentBtn.setOnClickListener { showHomeScreen() }
         binding.rightFragmentBtn.setOnClickListener { showBMSScreen() }
 
 
@@ -289,7 +264,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun showScanScreen() { launchFragment(ScanningFragment()) }
     override fun showStatisticScreen() { launchFragmentWihtoutStack(StatisticFragment()) }
-    override fun showMenuScreen() { launchFragmentWihtoutStack(HomeFragment()) }
+    override fun showHomeScreen() { launchFragmentWihtoutStack(HomeFragment()) }
     override fun showBMSScreen() { launchFragmentWihtoutStack(BMSFragment()) }
     override fun showBottomNavigationMenu (show: Boolean) {
         if (show) bottom_menu_cl.visibility = View.VISIBLE
@@ -318,10 +293,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.setFragmentResultListener(clazz.name, owner) { _, bundle ->
             listener.invoke(bundle.getParcelable(KEY_RESULT)!!)
         }
-    }
-
-    override fun setNewTitle(newTitle: String) {
-//        binding.titleFragmentTv.text = newTitle
     }
 
     private fun launchFragment(fragment: Fragment) {

@@ -13,6 +13,7 @@ import android.view.animation.*
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
 
@@ -31,9 +32,10 @@ class HomeFragment : Fragment() {
     private var coveredDistance = 0
     private var animationAllowed = true
     private val ANIMATION_DURATION = 300L
+    private var stateMode = "NORMAL"
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
-        "NotifyDataSetChanged"
+        "NotifyDataSetChanged", "UseCompatLoadingForDrawables"
     )
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -78,6 +80,28 @@ class HomeFragment : Fragment() {
                 binding.mainTemperatureTv.text = "$progress°"
             }
         })
+
+        binding.modeBtn.setOnClickListener {
+            System.err.println("Click mode button")
+            when(stateMode) {
+                "ECO" -> {
+                    binding.modeTv.text = "ECO"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_green))
+                    stateMode = "NORMAL"
+                }
+                "NORMAL" -> {
+                    binding.modeTv.text = "NORMAL"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_blue))
+                    stateMode = "BOOST"
+                }
+                "BOOST" -> {
+                    binding.modeTv.text = "BOOST"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_red))
+                    stateMode = "ECO"
+                }
+            }
+
+        }
 
         return binding.root
     }

@@ -1,0 +1,130 @@
+#include <jni.h>
+#include "bt_drv.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
+#include <sched.h>
+#include <semaphore.h>
+#include <stdatomic.h>
+#include "xlib.h"
+#include "ble_tcp.h"
+#include "eth_mem.h"
+#include "eth_router.h"
+#include "ble_eth.h"
+
+// ====================================== startup =========================
+JavaVM* gJvm = NULL;
+jobject bleservice;
+jclass bleserv;
+jclass bleserv1;
+JNIEnv* send_env;
+JNIEnv* status_upd_env;
+
+jmethodID send_method;
+jmethodID status_upd_method;
+
+volatile int ble_connection_status=0;// 2 - connection up.
+
+int bt_send(uint8_t* dgr, uint16_t dglen) {
+    JNIEnv *env=send_env;
+    jbyteArray dgram=(*env)->NewByteArray(env, dglen);
+    if (dgram == NULL) return -1;
+
+    jbyteArray bytes = (*env)->GetObjectField(env, obj, sendId)
+    jbyte *stateJava = (*env)->GetByteArrayElements(env, dgram, NULL);
+    if (stateJava == NULL) return -1;
+    memcpy(stateJava, dgr, dglen);
+    int ret=-1;
+    if (send_method) ret=(*env)->CallStaticIntMethod(env, bleserv, send_method, dgram);
+    return ret;
+}
+
+void status_upd(int p, int v) {
+    JNIEnv *env=status_upd_env;
+    if (status_upd_method) (*env)->CallStaticVoidMethod(env, bleserv1, status_upd_method, p,v);
+}
+
+void status_upd_thread_register() {
+    JavaVMAttachArgs args;
+    args.version = JNI_VERSION_1_6; // choose your JNI version
+    args.name = NULL;
+    args.group = NULL;
+    jint ret=(*gJvm)->AttachCurrentThread(gJvm, &status_upd_env, &args);
+    if (ret) return;
+}
+
+void send_thread_register() {
+    JavaVMAttachArgs args;
+    args.version = JNI_VERSION_1_6; // choose your JNI version
+    args.name = NULL;
+    args.group = NULL;
+    jint ret=(*gJvm)->AttachCurrentThread(gJvm, &send_env, &args);
+    if (ret) return;
+}
+
+
+pthread_t thr;
+_Noreturn void status_thread(void* arg) {
+    status_upd_thread_register();
+    while(1) {
+        for (int i=1; i<=10; i++) status_upd(i, dbg[i]);
+        usleep(100000);
+    }
+}
+
+
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
+    gJvm = pjvm;
+    JNIEnv* env;
+    if ((*pjvm)->GetEnv(pjvm, &env, JNI_VERSION_1_6) != JNI_OK) {return JNI_ERR;}
+
+    bleserv = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "com/griboedoff/testble/service/BleService"));
+    if (bleserv == NULL) return JNI_ERR;
+    bleserv1 = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "com/griboedoff/testble/service/BleService"));
+    if (bleserv1 == NULL) return JNI_ERR;
+    send_method = (*env)->GetStaticMethodID(env, bleserv, "send_to_ble","([B)I");
+    if (send_method == NULL) return JNI_ERR;
+    status_upd_method = (*env)->GetStaticMethodID(env, bleserv, "upd_status_param","(II)V");
+    if (status_upd_method == NULL) return JNI_ERR;
+
+    TaskCreate(status_thread, &thr);
+    eth_router_init();
+    eth_ble_if_init();
+    ble_tcp_init();
+    return JNI_VERSION_1_6;
+}
+
+JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_service_1startup(JNIEnv *env, jobject thiz) {
+//    print_log("******** startup C service thiz: %d", (int)thiz);
+}
+
+
+JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_char_1wr_1cbk(JNIEnv *env, jobject thiz, jint status) {
+    ble_tx_complete(status);
+}
+
+JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_new_1dg_1from_1bt(JNIEnv *env, jobject thiz, jbyteArray jdgram) {
+    jbyte *stateJava = (*env)->GetByteArrayElements(env, jdgram, NULL);
+    if (stateJava == NULL) return ;
+    jint len = (*env)->GetArrayLength(env, jdgram);
+    if (len>0) process_gatt_data(stateJava, len);
+//    int pid=getpid();
+//    int ppid=getppid();
+//    int tid = gettid();
+//    print_log("tid %d pid %d ppid %d recvd %d bytes",tid, pid, ppid, len);
+    (*env)->ReleaseByteArrayElements(env, jdgram, stateJava, 0);
+}
+
+JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {
+// status:
+// 0 - service started
+// 1 - service shutdown request
+// 2 - ble connection up
+// 3 - ble connection down
+  ble_connection_status=status;
+}

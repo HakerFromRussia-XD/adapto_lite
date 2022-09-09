@@ -161,6 +161,18 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
         <ImageView
+            android:id="@+id/highlights_main_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:src="@drawable/side_highlights_green"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintTop_toTopOf="@+id/power_arrow_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+        <ImageView
             android:id="@+id/main_iv"
             android:layout_width="0dp"
             android:layout_height="300dp"
@@ -251,7 +263,7 @@
             android:fontFamily="@font/ropa_sans_pro_regular"
             android:text="ECO"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/mode_type_tv"
             app:layout_constraintStart_toStartOf="@+id/guidline_mid"
             tools:ignore="HardcodedText"/>
@@ -436,6 +448,20 @@
             app:layout_constraintStart_toStartOf="@+id/mode_type_tv"
             app:layout_constraintTop_toBottomOf="@+id/main_temperature_tv"
             tools:ignore="HardcodedText,SmallSp" />
+
+        <View
+            android:id="@+id/mode_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/mode_type_tv"
+            app:layout_constraintEnd_toEndOf="@+id/mode_type_tv"
+            app:layout_constraintStart_toStartOf="@+id/mode_tv"
+            app:layout_constraintTop_toTopOf="@+id/mode_tv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ijhfiuevbnioasjhviuer2"
