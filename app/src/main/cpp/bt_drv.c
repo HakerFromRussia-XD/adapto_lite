@@ -213,7 +213,7 @@ _Noreturn void status_thread(void* arg) {
 }
 
 JNIEXPORT void JNICALL
-Java_com_griboedoff_testble_service_BleService_change_1dbg_1scr(JNIEnv *env, jobject thiz, jint scr) {
+Java_ua_cn_stu_navigation_MainActivity_change_1dbg_1scr(JNIEnv *env, jobject thiz, jint scr) {
   dbg_scr_num=scr;
 }
 
@@ -222,9 +222,9 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     JNIEnv* env;
     if ((*pjvm)->GetEnv(pjvm, &env, JNI_VERSION_1_6) != JNI_OK) {return JNI_ERR;}
 
-    bleserv = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "com/griboedoff/testble/service/BleService"));
+    bleserv = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "ua/cn/stu/navigation/MainActivity"));
     if (bleserv == NULL) return JNI_ERR;
-    bleserv1 = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "com/griboedoff/testble/service/BleService"));
+    bleserv1 = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "ua/cn/stu/navigation/MainActivity"));
     if (bleserv1 == NULL) return JNI_ERR;
     send_method = (*env)->GetStaticMethodID(env, bleserv, "send_to_ble","([B)I");
     if (send_method == NULL) return JNI_ERR;
@@ -240,16 +240,11 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     return JNI_VERSION_1_6;
 }
 
-JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_service_1startup(JNIEnv *env, jobject thiz) {
-//    print_log("******** startup C service thiz: %d", (int)thiz);
-}
-
-
-JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_char_1wr_1cbk(JNIEnv *env, jobject thiz, jint status) {
+JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_char_1wr_1cbk(JNIEnv *env, jobject thiz, jint status) {
     ble_tx_complete(status);
 }
 
-JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_new_1dg_1from_1bt(JNIEnv *env, jobject thiz, jbyteArray jdgram) {
+JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_new_1dg_1from_1bt(JNIEnv *env, jobject thiz, jbyteArray jdgram) {
     jbyte *stateJava = (*env)->GetByteArrayElements(env, jdgram, NULL);
     if (stateJava == NULL) return ;
     jint len = (*env)->GetArrayLength(env, jdgram);
@@ -261,7 +256,7 @@ JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_new_1dg_1f
     (*env)->ReleaseByteArrayElements(env, jdgram, stateJava, 0);
 }
 
-JNIEXPORT void JNICALL Java_com_griboedoff_testble_service_BleService_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {
+JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {
 // status:
 // 0 - service started
 // 1 - service shutdown request

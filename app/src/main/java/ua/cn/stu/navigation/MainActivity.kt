@@ -26,9 +26,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LifecycleOwner
+import com.airbnb.lottie.parser.moshi.JsonReader
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import ua.cn.stu.navigation.ble.BluetoothLeService
 import ua.cn.stu.navigation.ble.SampleGattAttributes.*
 import ua.cn.stu.navigation.connection.ScanItem
@@ -109,6 +111,8 @@ import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVI
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVICE_ADDRESS
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
+import java.lang.Runnable
+import kotlin.coroutines.suspendCoroutine
 import kotlin.properties.Delegates
 
 
@@ -164,6 +168,11 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    external fun new_dg_from_bt(dgram: ByteArray)// отправить пакет gatt в обработку
+    external fun eth_ble_stack_control(status: Int)// оповестить обработчик пакетов что статус подключения поменялся
+    external fun char_wr_cbk(status: Int);// оповестить обработчик что кодограмма отправлена (и можно отправлять следующую)
+    external fun change_dbg_scr(scr: Int);// оповещаем какой дебаг экран показывать
+
     @SuppressLint("SetTextI18n", "CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,6 +195,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                     .commit()
         }
 
+//        postItem()
 
         createStatList()
         scanList = reinitScanList()
@@ -211,7 +221,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         worker.start()
     }
-
     override fun onResume() {
         super.onResume()
         if (!mBluetoothAdapter!!.isEnabled) {
@@ -1045,8 +1054,82 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
 
+
+//    fun postItem() {
+//        GlobalScope.launch { // launch a new coroutine in background and continue
+//            delay(2000L)
+//            println(">    World!")
+//        }
+//        println(">    Hello,") // main thread continues here immediately
+////        runBlocking {     // but this expression blocks the main thread
+////            delay(20000L)  // ... while we delay for 2 seconds to keep JVM alive
+////        }
+//
+//        val coroutinesScope = CoroutineScope(Dispatchers.IO)
+//        coroutinesScope.launch() {
+//            delay(1000L)
+//            println(">    Hello from coroutine")
+//        }
+//
+//        runBlocking {
+//            launch {
+//                delay(1500L)
+//                println(">    Hello from coroutine 2")
+//            }
+//        }
+//    }
+
+
+
     companion object {
         @JvmStatic private val KEY_RESULT = "RESULT"
+
+        @JvmStatic
+        fun send_to_ble(dg: ByteArray):Int {// вызов из NDK - отправить кодограмму в gatt.
+//              ble_rx_char?.setValue(dg)
+//              val ret = gattBle?.writeCharacteristic(ble_rx_char)
+//              Log.e("BleRouter", "Send dgram ${dg.size} bytes: ".plus(dg.toHex()))
+            return 1
+        }
+
+        @JvmStatic
+        fun upd_status_param(par_no:Int, s: ByteArray, v: ByteArray) {// вызов из NDK - обновить значения переменных
+            when(par_no) {
+                1 ->  {
+//                    param1.postValue(String(v))
+//                    param1name.postValue(String(s))
+                }
+//                2 ->  { param2.postValue(String(v));  param2name.postValue(String(s)) }
+//                3 ->  { param3.postValue(String(v));  param3name.postValue(String(s)) }
+//                4 ->  { param4.postValue(String(v));  param4name.postValue(String(s)) }
+//                5 ->  { param5.postValue(String(v));  param5name.postValue(String(s)) }
+//                6 ->  { param6.postValue(String(v));  param6name.postValue(String(s)) }
+//                7 ->  { param7.postValue(String(v));  param7name.postValue(String(s)) }
+//                8 ->  { param8.postValue(String(v));  param8name.postValue(String(s)) }
+//                9 ->  { param9.postValue(String(v));  param9name.postValue(String(s)) }
+//                10 -> { param10.postValue(String(v)); param10name.postValue(String(s)) }
+//                11 -> { param11.postValue(String(v)); param11name.postValue(String(s)) }
+//                12 -> { param12.postValue(String(v)); param12name.postValue(String(s)) }
+//                13 -> { param13.postValue(String(v)); param13name.postValue(String(s)) }
+//                14 -> { param14.postValue(String(v)); param14name.postValue(String(s)) }
+//                15 -> { param15.postValue(String(v)); param15name.postValue(String(s)) }
+//                16 -> { param16.postValue(String(v)); param16name.postValue(String(s)) }
+//                17 -> { param17.postValue(String(v)); param17name.postValue(String(s)) }
+//                18 -> { param18.postValue(String(v)); param18name.postValue(String(s)) }
+//                19 -> { param19.postValue(String(v)); param19name.postValue(String(s)) }
+//                20 -> { param20.postValue(String(v)); param20name.postValue(String(s)) }
+//                21 -> { param21.postValue(String(v)); param21name.postValue(String(s)) }
+//                22 -> { param22.postValue(String(v)); param22name.postValue(String(s)) }
+//                23 -> { param23.postValue(String(v)); param23name.postValue(String(s)) }
+//                24 -> { param24.postValue(String(v)); param24name.postValue(String(s)) }
+//                25 -> { param25.postValue(String(v)); param25name.postValue(String(s)) }
+//                26 -> { param26.postValue(String(v)); param26name.postValue(String(s)) }
+//                27 -> { param27.postValue(String(v)); param27name.postValue(String(s)) }
+//                28 -> { param28.postValue(String(v)); param28name.postValue(String(s)) }
+//                29 -> { param29.postValue(String(v)); param29name.postValue(String(s)) }
+//                30 -> { param30.postValue(String(v)); param30name.postValue(String(s)) }
+            }
+        }
 
         var lastConnectDeviceAddress by Delegates.notNull<String>()
         var reconnectThreadFlag by Delegates.notNull<Boolean>()

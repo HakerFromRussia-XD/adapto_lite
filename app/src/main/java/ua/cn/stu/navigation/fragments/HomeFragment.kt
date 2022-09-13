@@ -1,5 +1,7 @@
 package ua.cn.stu.navigation.fragments
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -9,7 +11,9 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.*
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
@@ -33,6 +37,7 @@ class HomeFragment : Fragment() {
     private var animationAllowed = true
     private val ANIMATION_DURATION = 300L
     private var stateMode = "NORMAL"
+    private var trackingAngle = 0f
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
         "NotifyDataSetChanged", "UseCompatLoadingForDrawables"
@@ -48,8 +53,8 @@ class HomeFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                finishAngle = progress.toFloat() - 109f
-                finishPercentAlpha = progress.toFloat()/146*100
+                finishAngle = progress.toFloat() - 135f
+                finishPercentAlpha = progress.toFloat()/172*100
                 rotateArrow(finishAngle, finishPercentAlpha)
                 binding.mainSpeedTv.text = progress.toString()
                 binding.powerTv.text = "+" + (14 - (progress.toFloat()/10).toInt()) + "." + progress%10
@@ -70,7 +75,7 @@ class HomeFragment : Fragment() {
                     coveredDistance += 1
                     binding.coveredDistanceTv.text = coveredDistance.toString()
                 }
-                binding.percentDistanceTv.text = (progress.toFloat()/146*100).toInt().toString()
+                binding.percentDistanceTv.text = (progress.toFloat()/172*100).toInt().toString()
 
 
                 if (progress < 10) { binding.dotsTv.text = ".  .  .  . " }
@@ -117,12 +122,8 @@ class HomeFragment : Fragment() {
             rotatinA.duration = ANIMATION_DURATION
             rotatinA.interpolator = LinearInterpolator()
 
-            val alphaA: ObjectAnimator = ObjectAnimator.ofFloat(binding.speedArrowIv, View.ALPHA, 1.5f - actualPercentAlpha/100, 1.5f - finishlAlphaFunc/100)
-            alphaA.duration = ANIMATION_DURATION
-            alphaA.interpolator = LinearInterpolator()
-
             val animA = AnimatorSet()
-            animA.play(rotatinA).with(alphaA)
+            animA.play(rotatinA)
             animA.start()
 
             val rotatinB: ObjectAnimator =
@@ -137,6 +138,15 @@ class HomeFragment : Fragment() {
             val animB = AnimatorSet()
             animB.play(rotatinB).with(alphaB)
             animB.start()
+
+            val rotate: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.speedArrowLvlMinus1Iv, View.ROTATION, actualAngle, finishlAngleFunc)
+            rotate.duration = ANIMATION_DURATION
+            rotate.interpolator = LinearInterpolator()
+
+            val anim = AnimatorSet()
+            anim.play(rotate)
+            anim.start()
 
 
             val rotate2 = RotateAnimation(
@@ -165,9 +175,6 @@ class HomeFragment : Fragment() {
             rotate3.interpolator = LinearInterpolator()
             binding.percentBatteryIv.startAnimation(rotate3)
 
-
-
-//            temperature_alert_circle_iv
 
             val rotatin4A: ObjectAnimator =
                 ObjectAnimator.ofFloat(binding.temperatureIv, View.ROTATION, 15f - actualAngle/4 - 8f, 15f - finishlAngleFunc/4 - 8f)
@@ -198,14 +205,34 @@ class HomeFragment : Fragment() {
 
 
             timer = object : CountDownTimer(ANIMATION_DURATION, 1) {
-                override fun onTick(millisUntilFinished: Long) {}
+                override fun onTick(millisUntilFinished: Long) {
+                    System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
+                    var delta = kotlin.math.abs(finishlAngleFunc - actualAngle)
+                    if (actualAngle > finishlAngleFunc) { delta *= -1 }
+                    val unitAngle = delta/ANIMATION_DURATION
+                    trackingAngle = actualAngle + (ANIMATION_DURATION - millisUntilFinished)*unitAngle
+                    System.err.println("finishlAngleFunc > delta:$delta   unitAngle:$unitAngle    millisUntilFinished:$millisUntilFinished  trackingAngle:$trackingAngle")
+
+
+                    if (trackingAngle < -112) {
+                        binding.speedArrowLvlMinus1Iv.visibility = View.VISIBLE
+                        binding.closingSpeedArrowLvlMinus1rIv.visibility = View.VISIBLE
+
+                        binding.speedArrowIv.visibility = View.GONE
+                    } else {
+                        binding.speedArrowLvlMinus1Iv.visibility = View.GONE
+                        binding.closingSpeedArrowLvlMinus1rIv.visibility = View.GONE
+
+                        binding.speedArrowIv.visibility = View.VISIBLE
+                    }
+                }
 
                 override fun onFinish() {
                     animationAllowed = true
                     actualAngle = finishAngle
                     actualPercentAlpha = finishPercentAlpha
                     if (finishAngle != finishlAngleFunc) {
-                        println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle ")
+                        System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
                         actualAngle = finishlAngleFunc
                         actualPercentAlpha = finishlAlphaFunc
                         rotateArrow(finishAngle, finishPercentAlpha)

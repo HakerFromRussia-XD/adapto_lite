@@ -60,6 +60,7 @@
             android:src="@drawable/speed_arrow_lv3"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="6dp"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="@+id/guidline_1_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +73,32 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="@+id/power_arrow_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+        <ImageView
+            android:id="@+id/speed_arrow_lvl_minus_1_iv"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:src="@drawable/speed_arrow_lvl_minus_1"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="6dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@+id/guidline_1_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+        <ImageView
+            android:id="@+id/closing_speed_arrow_lvl_minus_1r_iv"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:src="@drawable/closing_speed_arrow_lvl_minus_1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="@+id/power_arrow_iv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -238,7 +265,7 @@
             android:text="TRIP: 00000"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/speed_arrow_iv"
+            app:layout_constraintBottom_toBottomOf="@+id/power_arrow_iv"
             app:layout_constraintEnd_toStartOf="@+id/guidline_mid"
             app:layout_constraintStart_toStartOf="@+id/guidline_mid"
             tools:ignore="HardcodedText"/>
@@ -472,7 +499,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/closing_the_arrow_layer_iv">
+            app:layout_constraintTop_toBottomOf="@+id/power_arrow_iv">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidline_10"
@@ -815,7 +842,7 @@
             android:id="@+id/test_sb"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:max="146"
+            android:max="172"
             android:min="0"
             android:progress="60"
             app:layout_constraintBottom_toBottomOf="parent"
