@@ -217,6 +217,19 @@ Java_ua_cn_stu_navigation_MainActivity_change_1dbg_1scr(JNIEnv *env, jobject thi
   dbg_scr_num=scr;
 }
 
+
+//JNIEXPORT void JNICALL
+//Java_ua_cn_stu_navigation_ble_BluetoothLeService_eth_1ble_1stack_1control(JNIEnv *env, jclass clazz,
+//                                                                          jint status) {
+////    status:
+////    0 - service started
+////    1 - service shutdown request
+////    2 - ble connection up
+////    3 - ble connection down
+//    ble_connection_status=status;
+//    if (status==2) gatt_conn_reset();
+//}
+
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     gJvm = pjvm;
     JNIEnv* env;
@@ -240,7 +253,12 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     return JNI_VERSION_1_6;
 }
 
-JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_char_1wr_1cbk(JNIEnv *env, jobject thiz, jint status) {
+//JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_char_1wr_1cbk(JNIEnv *env, jobject thiz, jint status) {
+//    ble_tx_complete(status);
+//}
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_ble_BluetoothLeService_char_1wr_1cbk(JNIEnv *env, jclass clazz,
+                                                               jint status) {
     ble_tx_complete(status);
 }
 
@@ -256,12 +274,24 @@ JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_new_1dg_1from_1bt(
     (*env)->ReleaseByteArrayElements(env, jdgram, stateJava, 0);
 }
 
-JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz,
+                                                                jint status) {
 // status:
 // 0 - service started
 // 1 - service shutdown request
 // 2 - ble connection up
 // 3 - ble connection down
-  ble_connection_status=status;
-  if (status==2) gatt_conn_reset();
+    ble_connection_status=status;
+    if (status==2) gatt_conn_reset();
 }
+
+//JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {
+//// status:
+//// 0 - service started
+//// 1 - service shutdown request
+//// 2 - ble connection up
+//// 3 - ble connection down
+//  ble_connection_status=status;
+//  if (status==2) gatt_conn_reset();
+//}

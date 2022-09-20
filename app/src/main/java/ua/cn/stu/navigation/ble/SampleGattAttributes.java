@@ -8,14 +8,15 @@ import java.util.HashMap;
 public class SampleGattAttributes {
     private static final HashMap<String, String> attributes = new HashMap();
     // Sample Characteristics.
-    public static String MIO_MEASUREMENT_NEW_TEST = "43686172-4d74-726b-0201-526f64696f6e";
-
     public static String NOTIFICATION_PUMP_STATUS = "c8b61521-a676-4fba-968b-cbccbdd224c9";
     public static String LOG_POINTER = "c8b61522-a676-4fba-968b-cbccbdd224c9";
     public static String NOTIFICATION_PUMP_LOG = "c8b61523-a676-4fba-968b-cbccbdd224c9";
     public static String REGISTER_POINTER = "c8b61501-a676-4fba-968b-cbccbdd224c9"; //передаём сюда номер регистра в который пишем или из которого читаем
     public static String REGISTER_DATA = "c8b61502-a676-4fba-968b-cbccbdd224c9"; //передаём сюда номер регистра в который пишем или из которого читаем
     public static String PASS_DATA = "c8b61531-a676-4fba-968b-cbccbdd224c9"; //пароль помпы для первоначального подключения
+    //#### Characteristics adaptto
+    public static String RX_CHAR="6e400002-b5a3-f393-e0d3-e50e2426ca9e";
+    public static String TX_CHAR="6e400003-b5a3-f393-e0d3-e50e2426ca9e";
 
 //    public static String BOLUS_CONTROL = "c8b6150b-a676-4fba-968b-cbccbdd224c9";//передаём сюда количество единиц болюса, который хотим вколоть
 //    public static String PUMP_SEARCH = "c8b61501-a676-4fba-968b-cbccbdd224c9";// W 0-1 - включение режима поиска

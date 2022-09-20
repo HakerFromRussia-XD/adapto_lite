@@ -6,6 +6,8 @@ import android.app.AlertDialog
 import android.bluetooth.*
 import android.content.*
 import android.content.pm.PackageManager
+import android.database.DatabaseErrorHandler
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
@@ -26,6 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.parser.moshi.JsonReader
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -127,7 +130,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     private var mBluetoothLeService: BluetoothLeService? = null
     private var mGattCharacteristics = ArrayList<ArrayList<BluetoothGattCharacteristic>>()
     private var mGattServicesList: ExpandableListView? = null
-    private var mCharacteristic: BluetoothGattCharacteristic? = null
+//    private var mCharacteristic: BluetoothGattCharacteristic? = null
     private var mNotifyCharacteristic: BluetoothGattCharacteristic? = null
     private var globalSemaphore = true // флаг, который преостанавливает отправку новой
     private val queue = ua.cn.stu.navigation.services.BlockingQueue()
@@ -144,6 +147,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     private val mServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
             mBluetoothLeService = (service as BluetoothLeService.LocalBinder).service
+            gattBle = mBluetoothLeService?.myBluetoothGatt
             if (!mBluetoothLeService?.initialize()!!) {
                 finish()
             }
@@ -168,9 +172,8 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    external fun new_dg_from_bt(dgram: ByteArray)// отправить пакет gatt в обработку
+    private external fun new_dg_from_bt(dgram: ByteArray)// отправить пакет gatt в обработку
     external fun eth_ble_stack_control(status: Int)// оповестить обработчик пакетов что статус подключения поменялся
-    external fun char_wr_cbk(status: Int);// оповестить обработчик что кодограмма отправлена (и можно отправлять следующую)
     external fun change_dbg_scr(scr: Int);// оповещаем какой дебаг экран показывать
 
     @SuppressLint("SetTextI18n", "CheckResult")
@@ -181,21 +184,21 @@ class MainActivity : AppCompatActivity(), Navigator {
         mGattServicesList = findViewById(R.id.gatt_services_list)
         setSupportActionBar(binding.toolbar)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.menu_bottom_layout_bg)
+        eth_ble_stack_control(0)
         initAllVariables()
 
 
         if (savedInstanceState == null) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.fragmentContainer, ScanningFragment())
-//                .commit()
-                supportFragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragmentContainer, HomeFragment())
-                    .commit()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragmentContainer, ScanningFragment())
+                .commit()
+//                supportFragmentManager
+//                    .beginTransaction()
+//                    .add(R.id.fragmentContainer, HomeFragment())
+//                    .commit()
         }
 
-//        postItem()
 
         createStatList()
         scanList = reinitScanList()
@@ -204,6 +207,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         binding.leftFragmentBtn.setOnClickListener { showStatisticScreen() }
         binding.centerFragmentBtn.setOnClickListener { showHomeScreen() }
         binding.rightFragmentBtn.setOnClickListener { showBMSScreen() }
+        binding.rightTestFragmentBtn.setOnClickListener { showDebugScreen() }
 
 
         // инициализация блютуз
@@ -275,6 +279,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun showStatisticScreen() { launchFragmentWihtoutStack(StatisticFragment()) }
     override fun showHomeScreen() { launchFragmentWihtoutStack(HomeFragment()) }
     override fun showBMSScreen() { launchFragmentWihtoutStack(BMSFragment()) }
+    override fun showDebugScreen() { launchFragmentWihtoutStack(DebugFragment()) }
     override fun showBottomNavigationMenu (show: Boolean) {
         if (show) bottom_menu_cl.visibility = View.VISIBLE
         else bottom_menu_cl.visibility = View.GONE
@@ -535,7 +540,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                     invalidateOptionsMenu()
                     mGattServicesList!!.setAdapter(null as SimpleExpandableListAdapter?)
                     percentSynchronize = 0
-
+                    eth_ble_stack_control(3)
                     if(!reconnectThreadFlag && !mScanning && !inScanFragmentFlag){
                         reconnectThreadFlag = true
                         reconnectThread()
@@ -546,18 +551,17 @@ class MainActivity : AppCompatActivity(), Navigator {
                     mConnected = true
                     status_connection_tv.text = getString(R.string.connected)
                     status_connection_tv.setTextColor(Color.rgb(10, 132,255))
+                    setCharacteristicSend()
+                    eth_ble_stack_control(2)
                     if (mBluetoothLeService != null) {
                         displayGattServices(mBluetoothLeService!!.supportedGattServices)
                         println("Notify подписка mGattUpdateReceiver")
-                        bleCommand(null, NOTIFICATION_PUMP_STATUS, NOTIFY)
+                        sabscrubeNotification()
                     }
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE == action -> {
-                    if(intent.getByteArrayExtra(BluetoothLeService.PASS_DATA) != null) {
-                        intent.getStringExtra(BluetoothLeService.ACTION_STATE)?.let { setActionState(it) }
-                    }
-                    if(intent.getByteArrayExtra(BluetoothLeService.REGISTER_DATA) != null) displayDataRegister(intent.getByteArrayExtra(BluetoothLeService.REGISTER_DATA))
-                    if(intent.getByteArrayExtra(BluetoothLeService.LOG_POINTER) != null) displayLogPointer()
+                    if(intent.getByteArrayExtra(BluetoothLeService.RX_CHAR) != null) displayDataRegister(intent.getByteArrayExtra(BluetoothLeService.RX_CHAR))
+                    if(intent.getByteArrayExtra(BluetoothLeService.TX_CHAR) != null) displayDataRegister(intent.getByteArrayExtra(BluetoothLeService.TX_CHAR))
 
                     setSensorsDataThreadFlag(intent.getBooleanExtra(BluetoothLeService.SENSORS_DATA_THREAD_FLAG, true))
                 }
@@ -571,38 +575,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun displayDataRegister(data: ByteArray?) {
         if (data != null) {
-//            if (dataSortSemaphore == IOB) displayDataIOB(data)
-//            if (dataSortSemaphore == SUPPLIES_RSOURCE) displayDataCannuleTime(data)
-//            if (dataSortSemaphore == BATTERY_PERCENT) displayDataBatteryPercent(data)
-//            if (dataSortSemaphore == AKB_PERCENT) displayDataAkbPercent(data)
-//            if (dataSortSemaphore == BALANCE_DRUG) displayDataBalanceDrag(data)
-//            if (dataSortSemaphore == BASAL_SPEED) displayDataBasalSpeed(data)
-//            if (dataSortSemaphore == INIT_REFUELLING) {}
-//            if (dataSortSemaphore == BASAL_TEMPORARY_VALUE_ADJUSTMENT) displayDataBasalTemporaryValueAdjustment(data)
-//            if (dataSortSemaphore == BASAL_TEMPORARY_TIME) displayDataBasalTemporaryTime(data)
-//            if (dataSortSemaphore == BASAL_TEMPORARY_PERFORMANCE) {}
-//            if (dataSortSemaphore == BASAL_TEMPORARY_TYPE_ADJUSTMENT) {}
-//            if (dataSortSemaphore == NUM_BASAL_PROFILES) displayDataNumBasalProfiles(data)
-//            if (dataSortSemaphore == NUM_MODIFIED_BASAL_PROFILES) displayDataNumModifiedBasalProfiles(data)
-//            if (dataSortSemaphore == NAME_BASAL_PROFILE) displayDataNameBasalProfile(data)
-//            if (dataSortSemaphore == NUM_PERIODS_MODIFIED_BASAL_PROFILE) displayDataNumPeriodsModifiedBasalProfile(data)
-//            if (dataSortSemaphore == NUM_MODIFIED_PERIOD_MODIFIED_BASAL_PROFILE) {}
-//            if (dataSortSemaphore == PERIOD_BASAL_PROFILE_DATA) displayDataPeriodBasalProfile(data)
-//            if (dataSortSemaphore == BASAL_LOCK_CONTROL) {}
-//            if (dataSortSemaphore == ACTIVATE_BASAL_PROFILE) {}
-//            if (dataSortSemaphore == DELETE_BASAL_PROFILE) {}
-//            if (dataSortSemaphore == NUM_ACTIVE_BASAL_PROFILE) displayDataNumActiveBasalProfile(data)
-//            if (dataSortSemaphore == DATE) displayDatePump(data)
-//            if (dataSortSemaphore == TIME_WORK_PUMP) displayTimeWorkPump(data)
-
-//            if (dataSortSemaphore == BOLUS_DELETE_CONFIRM) {}
-//            if (dataSortSemaphore == BOLUS_DELETE) {}
-//            if (dataSortSemaphore == EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG) { displayDataExtendedBolusRestrictionLimit(data) }
-//            if (dataSortSemaphore == SUPER_BOLUS_RESTRICTION_FLAG) displayDataSuperBolusRestrictionLimit(data)
-//            if (dataSortSemaphore == BOLUS_TYPE) displayDataBolusType()
-//            if (dataSortSemaphore == BOLUS_AMOUNT) displayDataBolusAmount(data)
-//            if (dataSortSemaphore == SUPER_BOLUS_TIME) displayDataSuperBolusTime(data)
-//            if (dataSortSemaphore == SUPER_BOLUS_BASL_VOLIUM) displayDataSuperBolusBasalVolume(data)
+            new_dg_from_bt(data)
         }
         globalSemaphore = true
     }
@@ -909,117 +882,30 @@ class MainActivity : AppCompatActivity(), Navigator {
             }
         }
     }
-    override fun bleCommand(byteArray: ByteArray?, command: String, typeCommand: String){
-//        println("пароль command=$command")
+    private fun setCharacteristicSend() {
         for (i in mGattCharacteristics.indices) {
             for (j in mGattCharacteristics[i].indices) {
-//                println("пароль mGattCharacteristics[i][j]=${mGattCharacteristics[i][j].uuid}")
-                if (mGattCharacteristics[i][j].uuid.toString() == command) {
-                    mCharacteristic = mGattCharacteristics[i][j]
-//                    println("пароль command=$command")
-                    if (typeCommand == WRITE){
-//                        println("пароль WRITE")
-                        if (mCharacteristic?.properties!! and BluetoothGattCharacteristic.PROPERTY_WRITE > 0) {
-                            mCharacteristic?.value = byteArray
-//                            println("пароль WRITE!!!!")
-                            mBluetoothLeService?.writeCharacteristic(mCharacteristic)
-                        }
-                    }
-
-                    if (typeCommand == READ){
-                        if (mCharacteristic?.properties!! and BluetoothGattCharacteristic.PROPERTY_READ > 0) {
-                            mBluetoothLeService?.readCharacteristic(mCharacteristic)
-                        }
-                    }
-
-                    if (typeCommand == NOTIFY){
-                        if (mCharacteristic?.properties!! and BluetoothGattCharacteristic.PROPERTY_NOTIFY > 0) {
-                            mNotifyCharacteristic = mCharacteristic
-                            mBluetoothLeService!!.setCharacteristicNotification(
-                                mCharacteristic, true)
-                        }
-                    }
-
+                if (mGattCharacteristics[i][j].uuid.toString() == RX_CHAR) {
+                    bleSendCharacteristic = mGattCharacteristics[i][j]
                 }
             }
         }
     }
-
-    private fun readRegister(state: Int, stateMachineState: Int, registerPointer: ByteArray):Int {
-        var mStateMachineState = stateMachineState
-        when (state) {
-            0 -> { bleCommand(registerPointer, REGISTER_POINTER, WRITE) }
-            1 -> { bleCommand(READ_REGISTER, REGISTER_POINTER, READ) }
-            2 -> {
-                moveDataSortSemaphore()
-                return if (contentEquals(readRegisterPointer!!, registerPointer)) {
-                    mStateMachineState++
-                    mStateMachineState
-                } else {
-                    mStateMachineState -= 2
-                    mStateMachineState
+    private fun setCharacteristicReceive() {
+        for (i in mGattCharacteristics.indices) {
+            for (j in mGattCharacteristics[i].indices) {
+                if (mGattCharacteristics[i][j].uuid.toString() == TX_CHAR) {
+                    bleReceivedCharacteristic = mGattCharacteristics[i][j]
                 }
             }
-            3 -> { bleCommand(FAKE_DATA_REGISTER, REGISTER_DATA, READ) }
         }
-        return 555
     }
-    private fun writeRegister(state: Int, stateMachineState: Int, registerPointer: ByteArray, dataForRecord: ByteArray):Int {
-        var mStateMachineState = stateMachineState
-        when (state) {
-            0 -> { bleCommand(registerPointer, REGISTER_POINTER, WRITE) }
-            1 -> { bleCommand(READ_REGISTER, REGISTER_POINTER, READ) }
-            2 -> {
-                moveDataSortSemaphore()
-
-                return if (contentEquals(readRegisterPointer!!, registerPointer)) {
-                    mStateMachineState++
-                    mStateMachineState
-                } else {
-                    mStateMachineState -= 2
-                    mStateMachineState
-                }
-            }
-            3 -> { bleCommand(dataForRecord, REGISTER_DATA, WRITE) }
-        }
-        return 555
-    }
-    private fun writeLogCommand(state: Int, dataForRecord: ByteArray):Int {
-        when (state) {
-            0 -> { bleCommand(null, NOTIFICATION_PUMP_LOG, NOTIFY) }
-            1 -> { bleCommand(dataForRecord, LOG_POINTER, WRITE) }
-        }
-        return 555
+    private fun sabscrubeNotification() {
+        setCharacteristicReceive()
+        mBluetoothLeService!!.setCharacteristicNotification(bleReceivedCharacteristic, true)
     }
 
 
-    /**
-     * Создаёт массив двух байт из входного числа. Переполнение игнорирует.
-     * @param convertibleInt - конвертируемое число из диапазона 0-65535
-     */
-    private fun castIntToByteArray (convertibleInt: Int): ByteArray {
-        var seniorByte: Byte = 0x00
-        val result = byteArrayOf(0x00, 0x00)
-
-        if (convertibleInt % 255 > 0) {
-            seniorByte = (convertibleInt / 256).toByte()
-        }
-        val youngerByte: Byte = convertibleInt.toByte()
-        result[0] = seniorByte
-        result[1] = youngerByte
-        return result
-    }
-    /**
-     * Реализация перевода байта в обычное беззнаковое число диапазона 0-255
-     * @param Ubyte - диапазон -127 : 128
-     */
-    private fun castUnsignedCharToInt(Ubyte: Byte): Int {
-        var cast = Ubyte.toInt()
-        if (cast < 0) {
-            cast += 256
-        }
-        return cast
-    }
     //  Реализация сравнения двух массивов байт побайтно
     private fun contentEquals(array1: ByteArray, array2: ByteArray): Boolean {
         var equalsByteArray = true
@@ -1032,104 +918,122 @@ class MainActivity : AppCompatActivity(), Navigator {
         } else equalsByteArray = false
         return equalsByteArray
     }
-    //  Реализация toast доступного из BlockingQueue
-    private fun showToast(massage: String) {
-        runOnUiThread {
-            Toast.makeText(baseContext, massage, Toast.LENGTH_LONG).show()
-        }
-    }
-    private fun convertListStringToArray(convertedList: ArrayList<String>): Array<String> {
-        val result = Array(convertedList.size) { "" }
-        for (i in 0 until convertedList.size) {
-            result[i] = convertedList[i]
-        }
-        return result
-    }
-    private fun convertListIntToArray(convertedList: ArrayList<Int>) :IntArray {
-        val result = IntArray(convertedList.size)
-        for (i in 0 until convertedList.size) {
-            result[i] = convertedList[i]
-        }
-        return result
-    }
-
-
-
-//    fun postItem() {
-//        GlobalScope.launch { // launch a new coroutine in background and continue
-//            delay(2000L)
-//            println(">    World!")
-//        }
-//        println(">    Hello,") // main thread continues here immediately
-////        runBlocking {     // but this expression blocks the main thread
-////            delay(20000L)  // ... while we delay for 2 seconds to keep JVM alive
-////        }
-//
-//        val coroutinesScope = CoroutineScope(Dispatchers.IO)
-//        coroutinesScope.launch() {
-//            delay(1000L)
-//            println(">    Hello from coroutine")
-//        }
-//
-//        runBlocking {
-//            launch {
-//                delay(1500L)
-//                println(">    Hello from coroutine 2")
-//            }
-//        }
-//    }
-
 
 
     companion object {
         @JvmStatic private val KEY_RESULT = "RESULT"
 
+
+        var gattBle : BluetoothGatt?=null
+        var bleSendCharacteristic: BluetoothGattCharacteristic? = null
+        var bleReceivedCharacteristic: BluetoothGattCharacteristic? = null
+
         @JvmStatic
         fun send_to_ble(dg: ByteArray):Int {// вызов из NDK - отправить кодограмму в gatt.
-//              ble_rx_char?.setValue(dg)
-//              val ret = gattBle?.writeCharacteristic(ble_rx_char)
-//              Log.e("BleRouter", "Send dgram ${dg.size} bytes: ".plus(dg.toHex()))
-            return 1
+            System.err.println("-->  send_to_ble")
+            bleSendCharacteristic?.value = dg
+            val ret = gattBle?.writeCharacteristic(bleSendCharacteristic)
+            if (ret == true) return 1; else return 0
         }
 
         @JvmStatic
-        fun upd_status_param(par_no:Int, s: ByteArray, v: ByteArray) {// вызов из NDK - обновить значения переменных
+        fun upd_status_param(par_no:Int, v: ByteArray, s: ByteArray) {// вызов из NDK - обновить значения переменных
             when(par_no) {
-                1 ->  {
-//                    param1.postValue(String(v))
-//                    param1name.postValue(String(s))
-                }
-//                2 ->  { param2.postValue(String(v));  param2name.postValue(String(s)) }
-//                3 ->  { param3.postValue(String(v));  param3name.postValue(String(s)) }
-//                4 ->  { param4.postValue(String(v));  param4name.postValue(String(s)) }
-//                5 ->  { param5.postValue(String(v));  param5name.postValue(String(s)) }
-//                6 ->  { param6.postValue(String(v));  param6name.postValue(String(s)) }
-//                7 ->  { param7.postValue(String(v));  param7name.postValue(String(s)) }
-//                8 ->  { param8.postValue(String(v));  param8name.postValue(String(s)) }
-//                9 ->  { param9.postValue(String(v));  param9name.postValue(String(s)) }
-//                10 -> { param10.postValue(String(v)); param10name.postValue(String(s)) }
-//                11 -> { param11.postValue(String(v)); param11name.postValue(String(s)) }
-//                12 -> { param12.postValue(String(v)); param12name.postValue(String(s)) }
-//                13 -> { param13.postValue(String(v)); param13name.postValue(String(s)) }
-//                14 -> { param14.postValue(String(v)); param14name.postValue(String(s)) }
-//                15 -> { param15.postValue(String(v)); param15name.postValue(String(s)) }
-//                16 -> { param16.postValue(String(v)); param16name.postValue(String(s)) }
-//                17 -> { param17.postValue(String(v)); param17name.postValue(String(s)) }
-//                18 -> { param18.postValue(String(v)); param18name.postValue(String(s)) }
-//                19 -> { param19.postValue(String(v)); param19name.postValue(String(s)) }
-//                20 -> { param20.postValue(String(v)); param20name.postValue(String(s)) }
-//                21 -> { param21.postValue(String(v)); param21name.postValue(String(s)) }
-//                22 -> { param22.postValue(String(v)); param22name.postValue(String(s)) }
-//                23 -> { param23.postValue(String(v)); param23name.postValue(String(s)) }
-//                24 -> { param24.postValue(String(v)); param24name.postValue(String(s)) }
-//                25 -> { param25.postValue(String(v)); param25name.postValue(String(s)) }
-//                26 -> { param26.postValue(String(v)); param26name.postValue(String(s)) }
-//                27 -> { param27.postValue(String(v)); param27name.postValue(String(s)) }
-//                28 -> { param28.postValue(String(v)); param28name.postValue(String(s)) }
-//                29 -> { param29.postValue(String(v)); param29name.postValue(String(s)) }
-//                30 -> { param30.postValue(String(v)); param30name.postValue(String(s)) }
+                1 ->  { param1.postValue(String(v)); param1name.postValue(String(s)) }
+                2 ->  { param2.postValue(String(v));  param2name.postValue(String(s)) }
+                3 ->  { param3.postValue(String(v));  param3name.postValue(String(s)) }
+                4 ->  { param4.postValue(String(v));  param4name.postValue(String(s)) }
+                5 ->  { param5.postValue(String(v));  param5name.postValue(String(s)) }
+                6 ->  { param6.postValue(String(v));  param6name.postValue(String(s)) }
+                7 ->  { param7.postValue(String(v));  param7name.postValue(String(s)) }
+                8 ->  { param8.postValue(String(v));  param8name.postValue(String(s)) }
+                9 ->  { param9.postValue(String(v));  param9name.postValue(String(s)) }
+                10 -> { param10.postValue(String(v)); param10name.postValue(String(s)) }
+                11 -> { param11.postValue(String(v)); param11name.postValue(String(s)) }
+                12 -> { param12.postValue(String(v)); param12name.postValue(String(s)) }
+                13 -> { param13.postValue(String(v)); param13name.postValue(String(s)) }
+                14 -> { param14.postValue(String(v)); param14name.postValue(String(s)) }
+                15 -> { param15.postValue(String(v)); param15name.postValue(String(s)) }
+                16 -> { param16.postValue(String(v)); param16name.postValue(String(s)) }
+                17 -> { param17.postValue(String(v)); param17name.postValue(String(s)) }
+                18 -> { param18.postValue(String(v)); param18name.postValue(String(s)) }
+                19 -> { param19.postValue(String(v)); param19name.postValue(String(s)) }
+                20 -> { param20.postValue(String(v)); param20name.postValue(String(s)) }
+                21 -> { param21.postValue(String(v)); param21name.postValue(String(s)) }
+                22 -> { param22.postValue(String(v)); param22name.postValue(String(s)) }
+                23 -> { param23.postValue(String(v)); param23name.postValue(String(s)) }
+                24 -> { param24.postValue(String(v)); param24name.postValue(String(s)) }
+                25 -> { param25.postValue(String(v)); param25name.postValue(String(s)) }
+                26 -> { param26.postValue(String(v)); param26name.postValue(String(s)) }
+                27 -> { param27.postValue(String(v)); param27name.postValue(String(s)) }
+                28 -> { param28.postValue(String(v)); param28name.postValue(String(s)) }
+                29 -> { param29.postValue(String(v)); param29name.postValue(String(s)) }
+                30 -> { param30.postValue(String(v)); param30name.postValue(String(s)) }
             }
+            RxUpdateMainEvent.getInstance().updateDebugFragment()
         }
+
+        var param1: MutableLiveData<String> = MutableLiveData<String>()
+        var param2: MutableLiveData<String> = MutableLiveData<String>()
+        var param3: MutableLiveData<String> = MutableLiveData<String>()
+        var param4: MutableLiveData<String> = MutableLiveData<String>()
+        var param5: MutableLiveData<String> = MutableLiveData<String>()
+        var param6: MutableLiveData<String> = MutableLiveData<String>()
+        var param7: MutableLiveData<String> = MutableLiveData<String>()
+        var param8: MutableLiveData<String> = MutableLiveData<String>()
+        var param9: MutableLiveData<String> = MutableLiveData<String>()
+        var param10: MutableLiveData<String> = MutableLiveData<String>()
+        var param11: MutableLiveData<String> = MutableLiveData<String>()
+        var param12: MutableLiveData<String> = MutableLiveData<String>()
+        var param13: MutableLiveData<String> = MutableLiveData<String>()
+        var param14: MutableLiveData<String> = MutableLiveData<String>()
+        var param15: MutableLiveData<String> = MutableLiveData<String>()
+        var param16: MutableLiveData<String> = MutableLiveData<String>()
+        var param17: MutableLiveData<String> = MutableLiveData<String>()
+        var param18: MutableLiveData<String> = MutableLiveData<String>()
+        var param19: MutableLiveData<String> = MutableLiveData<String>()
+        var param20: MutableLiveData<String> = MutableLiveData<String>()
+        var param21: MutableLiveData<String> = MutableLiveData<String>()
+        var param22: MutableLiveData<String> = MutableLiveData<String>()
+        var param23: MutableLiveData<String> = MutableLiveData<String>()
+        var param24: MutableLiveData<String> = MutableLiveData<String>()
+        var param25: MutableLiveData<String> = MutableLiveData<String>()
+        var param26: MutableLiveData<String> = MutableLiveData<String>()
+        var param27: MutableLiveData<String> = MutableLiveData<String>()
+        var param28: MutableLiveData<String> = MutableLiveData<String>()
+        var param29: MutableLiveData<String> = MutableLiveData<String>()
+        var param30: MutableLiveData<String> = MutableLiveData<String>()
+
+        var param1name: MutableLiveData<String> = MutableLiveData<String>()
+        var param2name: MutableLiveData<String> = MutableLiveData<String>()
+        var param3name: MutableLiveData<String> = MutableLiveData<String>()
+        var param4name: MutableLiveData<String> = MutableLiveData<String>()
+        var param5name: MutableLiveData<String> = MutableLiveData<String>()
+        var param6name: MutableLiveData<String> = MutableLiveData<String>()
+        var param7name: MutableLiveData<String> = MutableLiveData<String>()
+        var param8name: MutableLiveData<String> = MutableLiveData<String>()
+        var param9name: MutableLiveData<String> = MutableLiveData<String>()
+        var param10name: MutableLiveData<String> = MutableLiveData<String>()
+        var param11name: MutableLiveData<String> = MutableLiveData<String>()
+        var param12name: MutableLiveData<String> = MutableLiveData<String>()
+        var param13name: MutableLiveData<String> = MutableLiveData<String>()
+        var param14name: MutableLiveData<String> = MutableLiveData<String>()
+        var param15name: MutableLiveData<String> = MutableLiveData<String>()
+        var param16name: MutableLiveData<String> = MutableLiveData<String>()
+        var param17name: MutableLiveData<String> = MutableLiveData<String>()
+        var param18name: MutableLiveData<String> = MutableLiveData<String>()
+        var param19name: MutableLiveData<String> = MutableLiveData<String>()
+        var param20name: MutableLiveData<String> = MutableLiveData<String>()
+        var param21name: MutableLiveData<String> = MutableLiveData<String>()
+        var param22name: MutableLiveData<String> = MutableLiveData<String>()
+        var param23name: MutableLiveData<String> = MutableLiveData<String>()
+        var param24name: MutableLiveData<String> = MutableLiveData<String>()
+        var param25name: MutableLiveData<String> = MutableLiveData<String>()
+        var param26name: MutableLiveData<String> = MutableLiveData<String>()
+        var param27name: MutableLiveData<String> = MutableLiveData<String>()
+        var param28name: MutableLiveData<String> = MutableLiveData<String>()
+        var param29name: MutableLiveData<String> = MutableLiveData<String>()
+        var param30name: MutableLiveData<String> = MutableLiveData<String>()
 
         var lastConnectDeviceAddress by Delegates.notNull<String>()
         var reconnectThreadFlag by Delegates.notNull<Boolean>()
@@ -1149,5 +1053,14 @@ class MainActivity : AppCompatActivity(), Navigator {
         var statList by Delegates.notNull<ArrayList<String>>()
         var connectedDevice by Delegates.notNull<String>()
         var connectedDeviceAddress by Delegates.notNull<String>()
+        init {
+            System.loadLibrary("bt_drv")
+        }
+    }
+
+
+    fun summX_Y(x: Int, y: Int): Int {
+        val summ = x + y
+        return summ
     }
 }

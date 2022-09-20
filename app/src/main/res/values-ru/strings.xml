@@ -147,6 +147,7 @@
     <string name="home">ДОМ</string>
     <string name="statistic">СТАТИСТИКА</string>
     <string name="bms">БМС</string>
+    <string name="debugging">ОТЛАДКА</string>
 
     <plurals name="boxes" tools:ignore="UnusedQuantity">
         <item quantity="zero">%1$d коробок</item>

@@ -1,7 +1,6 @@
 package ua.cn.stu.navigation.fragments
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -36,7 +35,10 @@ class HomeFragment : Fragment() {
     private var coveredDistance = 0
     private var animationAllowed = true
     private val ANIMATION_DURATION = 300L
-    private var stateMode = "NORMAL"
+    private var stateMode = "ECO"
+    private var statePower = "kW"
+    private var stateBattery = "%"
+    private var stateTemperatureSource = "CONTROLLER"
     private var trackingAngle = 0f
 
     @SuppressLint("InflateParams", "SetTextI18n", "ClickableViewAccessibility", "CheckResult",
@@ -90,22 +92,64 @@ class HomeFragment : Fragment() {
             System.err.println("Click mode button")
             when(stateMode) {
                 "ECO" -> {
-                    binding.modeTv.text = "ECO"
-                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_green))
+                    binding.modeTv.text = "NORMAL"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_blue))
                     stateMode = "NORMAL"
                 }
                 "NORMAL" -> {
-                    binding.modeTv.text = "NORMAL"
-                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_blue))
+                    binding.modeTv.text = "BOOST"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_red))
                     stateMode = "BOOST"
                 }
                 "BOOST" -> {
-                    binding.modeTv.text = "BOOST"
-                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_red))
+                    binding.modeTv.text = "ECO"
+                    binding.highlightsMainIv.setImageDrawable(context?.resources?.getDrawable(R.drawable.side_highlights_green))
                     stateMode = "ECO"
                 }
             }
+        }
 
+        binding.powerBtn.setOnClickListener {
+            when(statePower) {
+                "kW" -> {
+                    binding.powerUnitsTv.text = "A"
+                    statePower = "A"
+                }
+                "A" -> {
+                    binding.powerUnitsTv.text = "kW"
+                    statePower = "kW"
+                }
+            }
+        }
+
+        binding.batteryPercentBtn.setOnClickListener {
+            when(stateBattery) {
+                "%" -> {
+                    binding.percentBatteryUnitsTv.text = "A"
+                    stateBattery = "A"
+                }
+                "A" -> {
+                    binding.percentBatteryUnitsTv.text = "%"
+                    stateBattery = "%"
+                }
+            }
+        }
+
+        binding.temperatureSourceBtn.setOnClickListener {
+            when(stateTemperatureSource) {
+                "CONTROLLER" -> {
+                    binding.mainTemperatureUnitTv.text = "MOTOR"
+                    stateTemperatureSource = "MOTOR"
+                }
+                "MOTOR" -> {
+                    binding.mainTemperatureUnitTv.text = "BATTERY"
+                    stateTemperatureSource = "BATTERY"
+                }
+                "BATTERY" -> {
+                    binding.mainTemperatureUnitTv.text = "CONTROLLER"
+                    stateTemperatureSource = "CONTROLLER"
+                }
+            }
         }
 
         return binding.root

@@ -146,6 +146,7 @@
     <string name="home">HOME</string>
     <string name="statistic">STATISTIC</string>
     <string name="bms">BMS</string>
+    <string name="debugging">DEBUGGING</string>
 
 
     <plurals name="boxes">

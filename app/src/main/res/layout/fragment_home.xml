@@ -464,6 +464,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/trip_tv"
             app:layout_constraintStart_toStartOf="@+id/guidline_mid"
             tools:ignore="HardcodedText" />
+
         <TextView
             android:id="@+id/main_temperature_unit_tv"
             android:layout_width="wrap_content"
@@ -472,7 +473,7 @@
             android:text="CONTROLLER"
             android:textColor="@color/white_70"
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/mode_type_tv"
+            app:layout_constraintEnd_toEndOf="@+id/main_temperature_tv"
             app:layout_constraintTop_toBottomOf="@+id/main_temperature_tv"
             tools:ignore="HardcodedText,SmallSp" />
 
@@ -489,6 +490,48 @@
             app:layout_constraintEnd_toEndOf="@+id/mode_type_tv"
             app:layout_constraintStart_toStartOf="@+id/mode_tv"
             app:layout_constraintTop_toTopOf="@+id/mode_tv" />
+
+        <View
+            android:id="@+id/power_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/power_tv"
+            app:layout_constraintEnd_toEndOf="@+id/power_units_tv"
+            app:layout_constraintStart_toStartOf="@+id/power_tv"
+            app:layout_constraintTop_toTopOf="@+id/power_tv" />
+
+        <View
+            android:id="@+id/battery_percent_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/percent_battery_tv"
+            app:layout_constraintEnd_toEndOf="@+id/power_units_tv"
+            app:layout_constraintStart_toStartOf="@+id/power_tv"
+            app:layout_constraintTop_toBottomOf="@+id/power_btn" />
+
+        <View
+            android:id="@+id/temperature_source_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/main_temperature_unit_tv"
+            app:layout_constraintEnd_toEndOf="@+id/mode_type_tv"
+            app:layout_constraintStart_toStartOf="@+id/main_temperature_unit_tv"
+            app:layout_constraintTop_toBottomOf="@+id/mode_type_tv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ijhfiuevbnioasjhviuer2"

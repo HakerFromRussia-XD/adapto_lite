@@ -1,6 +1,5 @@
 package ua.cn.stu.navigation.ble;
 
-import static java.sql.DriverManager.println;
 import static ua.cn.stu.navigation.ble.SampleGattAttributes.NOTIFY;
 import static ua.cn.stu.navigation.ble.SampleGattAttributes.READ;
 import static ua.cn.stu.navigation.ble.SampleGattAttributes.SHOW_EVERYONE_RECEIVE_BYTE;
@@ -20,9 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -51,11 +47,12 @@ public class BluetoothLeService extends Service {
 
     public final static String SENSORS_DATA_THREAD_FLAG = "com.example.bluetooth.le.SENSORS_DATA_THREAD_FLAG";
     public final static String NOTIFICATION_PUMP_STATUS = "com.example.bluetooth.le.NOTIFICATION_PUMP_STATUS";
-    public final static String NOTIFICATION_PUMP_LOG = "com.example.bluetooth.le.NOTIFICATION_PUMP_LOG";
-    public final static String REGISTER_POINTER = "com.example.bluetooth.le.REGISTER_POINTER";
-    public final static String REGISTER_DATA = "com.example.bluetooth.le.REGISTER_DATA";
-    public final static String LOG_POINTER = "com.example.bluetooth.le.LOG_POINTER";
-    public static final String PASS_DATA = "com.example.bluetooth.le.PASS_DATA";
+    public final static String RX_CHAR = "com.example.bluetooth.le.RX_CHAR";
+    public final static String TX_CHAR = "com.example.bluetooth.le.TX_CHAR";
+
+
+    public static native void char_wr_cbk(int status);// оповестить обработчик что кодограмма
+    // отправлена (и можно отправлять следующую)
 
 
     // Implements callback methods for GATT events that the app cares about.  For example,
@@ -96,6 +93,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
+            char_wr_cbk(status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(characteristic, WRITE);
             } else if (status == BluetoothGatt.GATT_FAILURE) {
@@ -122,28 +120,10 @@ public class BluetoothLeService extends Service {
             for(byte byteChar : data){
                 if(SHOW_EVERYONE_RECEIVE_BYTE) System.err.println("BluetoothLeService-------------> append massage: " + String.format("%02X ", byteChar));
             }
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.PASS_DATA)){
-                if (state.equals(READ)) { intent.putExtra(PASS_DATA, data); intent.putExtra(ACTION_STATE, READ);}
-                if (state.equals(WRITE)) { intent.putExtra(PASS_DATA, data); intent.putExtra(ACTION_STATE, WRITE);}
-            }
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.REGISTER_DATA)){
-                if (state.equals(READ)) { intent.putExtra(REGISTER_DATA, data); intent.putExtra(ACTION_STATE, READ);}
-                if (state.equals(WRITE)) { intent.putExtra(REGISTER_DATA, data); intent.putExtra(ACTION_STATE, WRITE);}
-            }
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.LOG_POINTER)){
-                if (state.equals(READ)) { intent.putExtra(LOG_POINTER, data); intent.putExtra(ACTION_STATE, READ);}
-                if (state.equals(WRITE)) { intent.putExtra(LOG_POINTER, data); intent.putExtra(ACTION_STATE, WRITE);}
-            }
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.REGISTER_POINTER)){
-                intent.putExtra(REGISTER_POINTER, data);
-            }
 
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.NOTIFICATION_PUMP_STATUS)){
-                intent.putExtra(NOTIFICATION_PUMP_STATUS, data);
-            }
-
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.NOTIFICATION_PUMP_LOG)){
-                intent.putExtra(NOTIFICATION_PUMP_LOG, data);
+            if (String.valueOf(characteristic.getUuid()).equals(RX_CHAR)){
+                if (state.equals(READ)) { intent.putExtra(RX_CHAR, data); intent.putExtra(ACTION_STATE, READ);}
+                if (state.equals(WRITE)) { intent.putExtra(RX_CHAR, data); intent.putExtra(ACTION_STATE, WRITE);}
             }
         }
         sendBroadcast(intent);
@@ -231,7 +211,8 @@ public class BluetoothLeService extends Service {
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
         mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-//        Timber.d("Trying to create a new connection.");
+        //TODO включить после запуска соединения
+//        mBluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
         return true;
@@ -306,12 +287,15 @@ public class BluetoothLeService extends Service {
             System.err.println("Notify setCharacteristicNotification return");
             return;
         }
-        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-        mBluetoothGatt.writeDescriptor(descriptor);
-
-        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+        try {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+            mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+        } catch (Exception e) {
+            // иногда вылетало при попытке подписки
+        }
     }
 
     /**
@@ -324,5 +308,9 @@ public class BluetoothLeService extends Service {
         if (mBluetoothGatt == null) return null;
 
         return mBluetoothGatt.getServices();
+    }
+
+    public BluetoothGatt getMyBluetoothGatt() {
+        return mBluetoothGatt;
     }
 }

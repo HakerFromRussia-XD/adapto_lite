@@ -16,6 +16,7 @@ interface Navigator {
     fun showStatisticScreen()
     fun showHomeScreen()
     fun showBMSScreen()
+    fun showDebugScreen()
     fun showBottomNavigationMenu(show: Boolean)
     fun <T> saveArrayList(key: String, list: ArrayList<T>)
     fun saveIntArrayList(key: String, list: ArrayList<IntArray>)
@@ -26,7 +27,7 @@ interface Navigator {
     fun scanLeDevice(enable: Boolean)
     fun disconnect ()
     fun reconnect ()
-    fun bleCommand(byteArray: ByteArray?, command: String, typeCommand: String)
+//    fun bleCommand(byteArray: ByteArray?, command: String, typeCommand: String)
     fun reconnectThread()
 //    fun showGoBolusDialog(title: String, massage: String, numberOfHundredthsInsulin: Int, numberOfHundredStrechedInsulin: Int, timeBolus: Int)
 
