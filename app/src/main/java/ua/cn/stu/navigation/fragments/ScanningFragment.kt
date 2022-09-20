@@ -12,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDevice
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDeviceAddress
+import ua.cn.stu.navigation.MainActivity.Companion.flagScanWithoutConnect
 import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
 import ua.cn.stu.navigation.MainActivity.Companion.scanList
@@ -50,6 +51,7 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
                         navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
                         navigator().scanLeDevice(false)
                         goToHome()
+                        flagScanWithoutConnect = false
                         reconnectThreadFlag = true
                         navigator().reconnectThread()
                     }

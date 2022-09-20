@@ -6,8 +6,6 @@ import android.app.AlertDialog
 import android.bluetooth.*
 import android.content.*
 import android.content.pm.PackageManager
-import android.database.DatabaseErrorHandler
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
@@ -29,11 +27,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.airbnb.lottie.parser.moshi.JsonReader
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
 import ua.cn.stu.navigation.ble.BluetoothLeService
 import ua.cn.stu.navigation.ble.SampleGattAttributes.*
 import ua.cn.stu.navigation.connection.ScanItem
@@ -74,7 +70,6 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROF
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROFILE_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.FAKE_DATA_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB
@@ -94,7 +89,6 @@ import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_PERIODS_MODIF
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_PERIODS_MODIFIED_BASAL_PROFILE_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.PERIOD_BASAL_PROFILE_DATA
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.PERIOD_BASAL_PROFILE_DATA_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.READ_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.RECONNECT_BLE_PERIOD
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.REQUEST_ENABLE_BT
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_BASL_VOLIUM
@@ -115,7 +109,6 @@ import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVI
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 import java.lang.Runnable
-import kotlin.coroutines.suspendCoroutine
 import kotlin.properties.Delegates
 
 
@@ -160,7 +153,6 @@ class MainActivity : AppCompatActivity(), Navigator {
             mBluetoothLeService = null
         }
     }
-    private var flagScanWithoutConnect = false
 
     private val currentFragment: Fragment
         get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer)!!
@@ -175,6 +167,8 @@ class MainActivity : AppCompatActivity(), Navigator {
     private external fun new_dg_from_bt(dgram: ByteArray)// отправить пакет gatt в обработку
     external fun eth_ble_stack_control(status: Int)// оповестить обработчик пакетов что статус подключения поменялся
     external fun change_dbg_scr(scr: Int);// оповещаем какой дебаг экран показывать
+    external fun tap_detected(area: Int);// оповещаем какая область экрана была нажата
+
 
     @SuppressLint("SetTextI18n", "CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -247,7 +241,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
-        pumpStatusNotifyDataThreadFlag = false
         if (mBluetoothLeService != null) {
             unbindService(mServiceConnection)
             mBluetoothLeService = null
@@ -288,7 +281,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun firstOpenHome() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, BMSFragment())//HomeFragment
+            .replace(R.id.fragmentContainer, HomeFragment())//HomeFragment
             .commit()
     }
     override fun goBack() {
@@ -388,10 +381,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         //init
         lastConnectDeviceAddress = ""
         reconnectThreadFlag = false
+        flagScanWithoutConnect = true
 
 
         //settings
-        pumpStatusNotifyDataThreadFlag = true
         showInfoDialogsFlag = false
         inScanFragmentFlag = false
 //
@@ -556,133 +549,21 @@ class MainActivity : AppCompatActivity(), Navigator {
                     if (mBluetoothLeService != null) {
                         displayGattServices(mBluetoothLeService!!.supportedGattServices)
                         println("Notify подписка mGattUpdateReceiver")
-                        sabscrubeNotification()
+                        subscriptionNotification()
                     }
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE == action -> {
-                    if(intent.getByteArrayExtra(BluetoothLeService.RX_CHAR) != null) displayDataRegister(intent.getByteArrayExtra(BluetoothLeService.RX_CHAR))
                     if(intent.getByteArrayExtra(BluetoothLeService.TX_CHAR) != null) displayDataRegister(intent.getByteArrayExtra(BluetoothLeService.TX_CHAR))
-
-                    setSensorsDataThreadFlag(intent.getBooleanExtra(BluetoothLeService.SENSORS_DATA_THREAD_FLAG, true))
                 }
             }
         }
     }
-    fun setActionState(value: String) {
-        actionState = value
-    }
-    fun setSensorsDataThreadFlag(value: Boolean){ pumpStatusNotifyDataThreadFlag = value }
 
     private fun displayDataRegister(data: ByteArray?) {
         if (data != null) {
             new_dg_from_bt(data)
         }
         globalSemaphore = true
-    }
-    private fun displayLogPointer() {
-        globalSemaphore = true
-        println( "displayLogPointer logCommand globalSemaphore=$globalSemaphore")
-    }
-    private fun moveDataSortSemaphore() {
-        if (contentEquals(readRegisterPointer!!, IOB_REGISTER)) {
-            dataSortSemaphore = IOB
-        }
-        if (contentEquals(readRegisterPointer!!, SUPPLIES_RSOURCE_REGISTER)) {
-            dataSortSemaphore = SUPPLIES_RSOURCE
-        }
-        if (contentEquals(readRegisterPointer!!, BATTERY_PERCENT_REGISTER)) {
-            dataSortSemaphore = BATTERY_PERCENT
-        }
-        if (contentEquals(readRegisterPointer!!, AKB_PERCENT_REGISTER)) {
-            dataSortSemaphore = AKB_PERCENT
-        }
-        if (contentEquals(readRegisterPointer!!, BALANCE_DRUG_REGISTER)) {
-            dataSortSemaphore = BALANCE_DRUG
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_SPEED_REGISTER)) {
-            dataSortSemaphore = BASAL_SPEED
-        }
-        if (contentEquals(readRegisterPointer!!, INIT_REFUELLING_REGISTER)) {
-            dataSortSemaphore = INIT_REFUELLING
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_TEMPORARY_VALUE_ADJUSTMENT_REGISTER)) {
-            dataSortSemaphore = BASAL_TEMPORARY_VALUE_ADJUSTMENT
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_TEMPORARY_TIME_REGISTER)) {
-            dataSortSemaphore = BASAL_TEMPORARY_TIME
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_TEMPORARY_PERFORMANCE_REGISTER)) {
-            dataSortSemaphore = BASAL_TEMPORARY_PERFORMANCE
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_TEMPORARY_TYPE_ADJUSTMENT_REGISTER)) {
-            dataSortSemaphore = BASAL_TEMPORARY_TYPE_ADJUSTMENT
-        }
-        if (contentEquals(readRegisterPointer!!, NUM_BASAL_PROFILES_REGISTER)) {
-            dataSortSemaphore = NUM_BASAL_PROFILES
-        }
-        if (contentEquals(readRegisterPointer!!, NUM_MODIFIED_BASAL_PROFILES_REGISTER)) {
-            dataSortSemaphore = NUM_MODIFIED_BASAL_PROFILES
-        }
-        if (contentEquals(readRegisterPointer!!, NAME_BASAL_PROFILE_REGISTER)) {
-            dataSortSemaphore = NAME_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, NUM_PERIODS_MODIFIED_BASAL_PROFILE_REGISTER)) {
-            dataSortSemaphore = NUM_PERIODS_MODIFIED_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, NUM_MODIFIED_PERIOD_MODIFIED_BASAL_PROFILE_REGISTER)) {
-            dataSortSemaphore = NUM_MODIFIED_PERIOD_MODIFIED_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, PERIOD_BASAL_PROFILE_DATA_REGISTER)) {
-            dataSortSemaphore = PERIOD_BASAL_PROFILE_DATA
-        }
-        if (contentEquals(readRegisterPointer!!, BASAL_LOCK_CONTROL_REGISTER)) {
-            dataSortSemaphore = BASAL_LOCK_CONTROL
-        }
-        if (contentEquals(readRegisterPointer!!, ACTIVATE_BASAL_PROFILE_REGISTER)) {
-            dataSortSemaphore = ACTIVATE_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, DELETE_BASAL_PROFILE_REGISTER)) {
-            dataSortSemaphore = DELETE_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, NUM_ACTIVE_BASAL_PROFILES_REGISTER)) {
-            dataSortSemaphore = NUM_ACTIVE_BASAL_PROFILE
-        }
-        if (contentEquals(readRegisterPointer!!, DATE_REGISTER)) {
-            dataSortSemaphore = DATE
-        }
-        if (contentEquals(readRegisterPointer!!, TIME_WORK_PUMP_REGISTER)) {
-            dataSortSemaphore = TIME_WORK_PUMP
-        }
-
-
-
-        if (contentEquals(readRegisterPointer!!, BOLUS_DELETE_CONFIRM_REGISTER)) {
-            dataSortSemaphore = BOLUS_DELETE_CONFIRM
-        }
-        if (contentEquals(readRegisterPointer!!, BOLUS_DELETE_REGISTER)) {
-            dataSortSemaphore = BOLUS_DELETE
-        }
-        if (contentEquals(readRegisterPointer!!, EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG_REGISTER)) {
-            dataSortSemaphore = EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG
-        }
-        if (contentEquals(readRegisterPointer!!, SUPER_BOLUS_RESTRICTION_FLAG_REGISTER)) {
-            dataSortSemaphore = SUPER_BOLUS_RESTRICTION_FLAG
-        }
-        if (contentEquals(readRegisterPointer!!, BOLUS_TYPE_REGISTER)) {
-            dataSortSemaphore = BOLUS_TYPE
-        }
-        if (contentEquals(readRegisterPointer!!, BOLUS_AMOUNT_REGISTER)) {
-            dataSortSemaphore = BOLUS_AMOUNT
-        }
-        if (contentEquals(readRegisterPointer!!, BOLUS_ACTIVATE_REGISTER)) {
-            dataSortSemaphore = BOLUS_ACTIVATE
-        }
-        if (contentEquals(readRegisterPointer!!, SUPER_BOLUS_TIME_REGISTER)) {
-            dataSortSemaphore = SUPER_BOLUS_TIME
-        }
-        if (contentEquals(readRegisterPointer!!, SUPER_BOLUS_BASL_VOLIUM_REGISTER)) {
-            dataSortSemaphore = SUPER_BOLUS_BASL_VOLIUM
-        }
     }
 
     private fun displayGattServices(gattServices: List<BluetoothGattService>?) {
@@ -770,7 +651,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
     override fun disconnect () {
-        pumpStatusNotifyDataThreadFlag = false
         if (mBluetoothLeService != null) {
             println("--> дисконнектим всё к хуям и анбайндим")
             mBluetoothLeService!!.disconnect()
@@ -900,23 +780,9 @@ class MainActivity : AppCompatActivity(), Navigator {
             }
         }
     }
-    private fun sabscrubeNotification() {
+    private fun subscriptionNotification() {
         setCharacteristicReceive()
         mBluetoothLeService!!.setCharacteristicNotification(bleReceivedCharacteristic, true)
-    }
-
-
-    //  Реализация сравнения двух массивов байт побайтно
-    private fun contentEquals(array1: ByteArray, array2: ByteArray): Boolean {
-        var equalsByteArray = true
-        var j = 0
-        if ((array1.size - array2.size) == 0) { //защита от сравнения массивов разной длинны
-            while (j < array1.size){
-                if (array1[j] != array2[j]) equalsByteArray = false
-                j++
-            }
-        } else equalsByteArray = false
-        return equalsByteArray
     }
 
 
@@ -930,7 +796,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         @JvmStatic
         fun send_to_ble(dg: ByteArray):Int {// вызов из NDK - отправить кодограмму в gatt.
-            System.err.println("-->  send_to_ble")
+//            System.err.println("-->  send_to_ble")
             bleSendCharacteristic?.value = dg
             val ret = gattBle?.writeCharacteristic(bleSendCharacteristic)
             if (ret == true) return 1; else return 0
@@ -971,6 +837,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 30 -> { param30.postValue(String(v)); param30name.postValue(String(s)) }
             }
             RxUpdateMainEvent.getInstance().updateDebugFragment()
+            RxUpdateMainEvent.getInstance().updateHomeFragment()
         }
 
         var param1: MutableLiveData<String> = MutableLiveData<String>()
@@ -1037,6 +904,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         var lastConnectDeviceAddress by Delegates.notNull<String>()
         var reconnectThreadFlag by Delegates.notNull<Boolean>()
+        var flagScanWithoutConnect by Delegates.notNull<Boolean>()
 
         //переменные чата
         var typeCellsListMain by Delegates.notNull<ArrayList<String>>()
@@ -1045,22 +913,15 @@ class MainActivity : AppCompatActivity(), Navigator {
 
 
         //настройки
-        var pumpStatusNotifyDataThreadFlag by Delegates.notNull<Boolean>()
-
         var showInfoDialogsFlag by Delegates.notNull<Boolean>()
         var inScanFragmentFlag by Delegates.notNull<Boolean>()
         var scanList by Delegates.notNull<ArrayList<ScanItem>>()
         var statList by Delegates.notNull<ArrayList<String>>()
         var connectedDevice by Delegates.notNull<String>()
         var connectedDeviceAddress by Delegates.notNull<String>()
+//        var  by Delegates.notNull<Int>()
         init {
             System.loadLibrary("bt_drv")
         }
-    }
-
-
-    fun summX_Y(x: Int, y: Int): Int {
-        val summ = x + y
-        return summ
     }
 }

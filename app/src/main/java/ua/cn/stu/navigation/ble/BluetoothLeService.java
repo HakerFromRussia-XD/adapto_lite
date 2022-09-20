@@ -121,9 +121,8 @@ public class BluetoothLeService extends Service {
                 if(SHOW_EVERYONE_RECEIVE_BYTE) System.err.println("BluetoothLeService-------------> append massage: " + String.format("%02X ", byteChar));
             }
 
-            if (String.valueOf(characteristic.getUuid()).equals(RX_CHAR)){
-                if (state.equals(READ)) { intent.putExtra(RX_CHAR, data); intent.putExtra(ACTION_STATE, READ);}
-                if (state.equals(WRITE)) { intent.putExtra(RX_CHAR, data); intent.putExtra(ACTION_STATE, WRITE);}
+            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.TX_CHAR)){
+                if (state.equals(NOTIFY)) { intent.putExtra(TX_CHAR, data); intent.putExtra(ACTION_STATE, WRITE);}
             }
         }
         sendBroadcast(intent);
@@ -212,7 +211,7 @@ public class BluetoothLeService extends Service {
         // parameter to false.
         mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
         //TODO включить после запуска соединения
-//        mBluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
+        mBluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
         return true;

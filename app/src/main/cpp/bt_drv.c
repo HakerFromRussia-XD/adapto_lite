@@ -39,6 +39,8 @@ jmethodID status_upd_method;
 volatile int ble_connection_status=0;// 2 - connection up.
 
 int bt_send(uint8_t* dgr, uint16_t dglen) {
+    dbg[3]++;
+
     JNIEnv *env=send_env;
     jbyteArray dgram=(*env)->NewByteArray(env, dglen);
 //    jbyteArray dgram = env->NewByteArray(dglen);
@@ -113,6 +115,7 @@ _Noreturn void status_thread(void* arg) {
         int rx_spd=(rx_hist[p]-rx_hist[(p-10)&15])*1000/(htime[p]-htime[(p-10)&15]);
         p++;
         histptr=p&15;
+        dbg[1]=(dbg[1]+1)%170;
 
         int i = 1;
         if (dbg_scr_num==0) {
@@ -218,18 +221,6 @@ Java_ua_cn_stu_navigation_MainActivity_change_1dbg_1scr(JNIEnv *env, jobject thi
 }
 
 
-//JNIEXPORT void JNICALL
-//Java_ua_cn_stu_navigation_ble_BluetoothLeService_eth_1ble_1stack_1control(JNIEnv *env, jclass clazz,
-//                                                                          jint status) {
-////    status:
-////    0 - service started
-////    1 - service shutdown request
-////    2 - ble connection up
-////    3 - ble connection down
-//    ble_connection_status=status;
-//    if (status==2) gatt_conn_reset();
-//}
-
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     gJvm = pjvm;
     JNIEnv* env;
@@ -262,7 +253,10 @@ Java_ua_cn_stu_navigation_ble_BluetoothLeService_char_1wr_1cbk(JNIEnv *env, jcla
     ble_tx_complete(status);
 }
 
-JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_new_1dg_1from_1bt(JNIEnv *env, jobject thiz, jbyteArray jdgram) {
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_MainActivity_new_1dg_1from_1bt(JNIEnv *env, jobject thiz, jbyteArray jdgram) {
+    dbg[4]++;
+
     jbyte *stateJava = (*env)->GetByteArrayElements(env, jdgram, NULL);
     if (stateJava == NULL) return ;
     jint len = (*env)->GetArrayLength(env, jdgram);
@@ -284,6 +278,13 @@ Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, job
 // 3 - ble connection down
     ble_connection_status=status;
     if (status==2) gatt_conn_reset();
+}
+
+
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_MainActivity_tap_1detected(JNIEnv *env, jobject thiz, jint area) {
+    //    tap_detected(area);
+    dbg[2]++;
 }
 
 //JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {

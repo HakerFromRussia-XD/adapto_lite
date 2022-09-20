@@ -16,9 +16,14 @@ import android.view.animation.RotateAnimation
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import ua.cn.stu.navigation.MainActivity
+import ua.cn.stu.navigation.MainActivity.Companion.param2
+import ua.cn.stu.navigation.MainActivity.Companion.param2name
 import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
+import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 
 
 class HomeFragment : Fragment() {
@@ -152,6 +157,13 @@ class HomeFragment : Fragment() {
             }
         }
 
+        RxUpdateMainEvent.getInstance().homeFragmentObservable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                System.err.println("param2name  ${param2name.value?.toFloat()}")
+                binding.testSb.progress = param2name.value!!.toInt()
+            }
+
         return binding.root
     }
 
@@ -250,12 +262,12 @@ class HomeFragment : Fragment() {
 
             timer = object : CountDownTimer(ANIMATION_DURATION, 1) {
                 override fun onTick(millisUntilFinished: Long) {
-                    System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
+//                    System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
                     var delta = kotlin.math.abs(finishlAngleFunc - actualAngle)
                     if (actualAngle > finishlAngleFunc) { delta *= -1 }
                     val unitAngle = delta/ANIMATION_DURATION
                     trackingAngle = actualAngle + (ANIMATION_DURATION - millisUntilFinished)*unitAngle
-                    System.err.println("finishlAngleFunc > delta:$delta   unitAngle:$unitAngle    millisUntilFinished:$millisUntilFinished  trackingAngle:$trackingAngle")
+//                    System.err.println("finishlAngleFunc > delta:$delta   unitAngle:$unitAngle    millisUntilFinished:$millisUntilFinished  trackingAngle:$trackingAngle")
 
 
                     if (trackingAngle < -112) {
@@ -276,7 +288,7 @@ class HomeFragment : Fragment() {
                     actualAngle = finishAngle
                     actualPercentAlpha = finishPercentAlpha
                     if (finishAngle != finishlAngleFunc) {
-                        System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
+//                        System.err.println("finishlAngleFunc = $finishlAngleFunc     finishAngle = $finishAngle    actualAngle = $actualAngle")
                         actualAngle = finishlAngleFunc
                         actualPercentAlpha = finishlAlphaFunc
                         rotateArrow(finishAngle, finishPercentAlpha)
