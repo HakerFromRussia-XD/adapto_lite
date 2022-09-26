@@ -98,6 +98,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.1">
 
+                    <View
+                        android:id="@+id/connection_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
                     <TextView
                         android:id="@+id/status_connection_tv"
                         android:layout_width="wrap_content"

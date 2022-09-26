@@ -148,6 +148,8 @@
     <string name="statistic">СТАТИСТИКА</string>
     <string name="bms">БМС</string>
     <string name="debugging">ОТЛАДКА</string>
+    <string name="disconnection_from_the_device">Отключение от устройства</string>
+    <string name="are_you_sure_you_want_to_disconnect_from_your_device_and_go_to_the_scan_screen">Вы действительно хотите отключиться от устройства и перейти на экран сканирования?</string>
 
     <plurals name="boxes" tools:ignore="UnusedQuantity">
         <item quantity="zero">%1$d коробок</item>

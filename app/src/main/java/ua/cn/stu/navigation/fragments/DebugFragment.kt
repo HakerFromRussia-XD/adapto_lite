@@ -71,12 +71,14 @@ import ua.cn.stu.navigation.MainActivity.Companion.param27name
 import ua.cn.stu.navigation.MainActivity.Companion.param28name
 import ua.cn.stu.navigation.MainActivity.Companion.param29name
 import ua.cn.stu.navigation.MainActivity.Companion.param30name
+import ua.cn.stu.navigation.contract.DisconnectionAction
+import ua.cn.stu.navigation.contract.HasDisconnectionAction
 
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentDebugBinding
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 
-class DebugFragment : Fragment(), OnChartValueSelectedListener {
+class DebugFragment : Fragment(), HasDisconnectionAction {
     private lateinit var binding: FragmentDebugBinding
 
 
@@ -160,11 +162,15 @@ class DebugFragment : Fragment(), OnChartValueSelectedListener {
         binding.val30.text = param30name.value
     }
 
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-//        TODO("Not yet implemented")
+    override fun getDisconnectionAction(): DisconnectionAction {
+        return DisconnectionAction(
+            onDisconnectionAction = {
+                showDisconnectionDialog()
+            }
+        )
     }
 
-    override fun onNothingSelected() {
-//        TODO("Not yet implemented")
+    private fun showDisconnectionDialog() {
+        navigator().showDisconnectDialog()
     }
 }

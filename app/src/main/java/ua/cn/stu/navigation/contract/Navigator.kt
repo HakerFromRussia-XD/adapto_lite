@@ -18,6 +18,7 @@ interface Navigator {
     fun showBMSScreen()
     fun showDebugScreen()
     fun showBottomNavigationMenu(show: Boolean)
+    fun showDisconnectDialog()
     fun <T> saveArrayList(key: String, list: ArrayList<T>)
     fun saveIntArrayList(key: String, list: ArrayList<IntArray>)
     fun saveArrayStringList(key: String, list: ArrayList<Array<String>>)

@@ -17,16 +17,14 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ua.cn.stu.navigation.MainActivity
-import ua.cn.stu.navigation.MainActivity.Companion.param2
 import ua.cn.stu.navigation.MainActivity.Companion.param2name
 import ua.cn.stu.navigation.R
-import ua.cn.stu.navigation.contract.navigator
+import ua.cn.stu.navigation.contract.*
 import ua.cn.stu.navigation.databinding.FragmentHomeBinding
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HasDisconnectionAction {
 
     private lateinit var binding: FragmentHomeBinding
     private var myDialogInfo: Dialog? = null
@@ -296,5 +294,17 @@ class HomeFragment : Fragment() {
                 }
             }.start()
         }
+    }
+
+    override fun getDisconnectionAction(): DisconnectionAction {
+        return DisconnectionAction(
+            onDisconnectionAction = {
+                showDisconnectionDialog()
+            }
+        )
+    }
+
+    private fun showDisconnectionDialog() {
+        navigator().showDisconnectDialog()
     }
 }

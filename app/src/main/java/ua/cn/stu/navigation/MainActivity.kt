@@ -3,10 +3,12 @@ package ua.cn.stu.navigation
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.bluetooth.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.IBinder
@@ -34,79 +36,15 @@ import ua.cn.stu.navigation.ble.BluetoothLeService
 import ua.cn.stu.navigation.ble.SampleGattAttributes.*
 import ua.cn.stu.navigation.connection.ScanItem
 import ua.cn.stu.navigation.contract.*
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.ACTIVATE_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.ACTIVATE_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.AKB_PERCENT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.AKB_PERCENT_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BALANCE_DRUG
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BALANCE_DRUG_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_LOCK_CONTROL
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_LOCK_CONTROL_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_SPEED
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_SPEED_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_PERFORMANCE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_PERFORMANCE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_TIME
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_TIME_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_TYPE_ADJUSTMENT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_TYPE_ADJUSTMENT_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_VALUE_ADJUSTMENT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BASAL_TEMPORARY_VALUE_ADJUSTMENT_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BATTERY_PERCENT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BATTERY_PERCENT_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_ACTIVATE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_ACTIVATE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_AMOUNT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_AMOUNT_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_CONFIRM
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_CONFIRM_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_DELETE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_TYPE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.BOLUS_TYPE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.DATE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.DATE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.DELETE_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.EXTENEDED_AND_DUAL_PATTERN_BOLUS_RESTRICTION_FLAG_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.INIT_REFUELLING_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.IOB_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.MY_PERMISSIONS_REQUEST_LOCATION
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NAME_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_ACTIVE_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_ACTIVE_BASAL_PROFILES_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_BASAL_PROFILES
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_BASAL_PROFILES_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_MODIFIED_BASAL_PROFILES
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_MODIFIED_BASAL_PROFILES_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_MODIFIED_PERIOD_MODIFIED_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_MODIFIED_PERIOD_MODIFIED_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_PERIODS_MODIFIED_BASAL_PROFILE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.NUM_PERIODS_MODIFIED_BASAL_PROFILE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.PERIOD_BASAL_PROFILE_DATA
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.PERIOD_BASAL_PROFILE_DATA_REGISTER
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.RECONNECT_BLE_PERIOD
 import ua.cn.stu.navigation.contract.ConstantManager.Companion.REQUEST_ENABLE_BT
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_BASL_VOLIUM
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_BASL_VOLIUM_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_RESTRICTION_FLAG
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_RESTRICTION_FLAG_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_TIME
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPER_BOLUS_TIME_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPPLIES_RSOURCE
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.SUPPLIES_RSOURCE_REGISTER
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.TIME_WORK_PUMP
-import ua.cn.stu.navigation.contract.ConstantManager.Companion.TIME_WORK_PUMP_REGISTER
 import ua.cn.stu.navigation.databinding.ActivityMainBinding
 import ua.cn.stu.navigation.fragments.*
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVICE
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTES_DEVICE_ADDRESS
-import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS
+import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTED_DEVICE
+import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTED_DEVICE_ADDRESS
+import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTED_DEVICE_ADDRESS
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 import java.lang.Runnable
 import kotlin.properties.Delegates
@@ -226,8 +164,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
         if (mBluetoothLeService != null) {
-            connectedDevice =  getString(CONNECTES_DEVICE)
-            connectedDeviceAddress =  getString(CONNECTES_DEVICE_ADDRESS)
+            connectedDevice =  getString(CONNECTED_DEVICE)
+            connectedDeviceAddress =  getString(CONNECTED_DEVICE_ADDRESS)
         }
 //        if (!mConnected) {
 //            reconnectThreadFlag = true
@@ -268,7 +206,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         RxUpdateMainEvent.getInstance().updateBackPresedIvent()
     }
 
-    override fun showScanScreen() { launchFragment(ScanningFragment()) }
+    override fun showScanScreen() { launchFragmentWihtoutStack(ScanningFragment()) }
     override fun showStatisticScreen() { launchFragmentWihtoutStack(StatisticFragment()) }
     override fun showHomeScreen() { launchFragmentWihtoutStack(HomeFragment()) }
     override fun showBMSScreen() { launchFragmentWihtoutStack(BMSFragment()) }
@@ -350,6 +288,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
         if (fragment is HasReturnAction) { returned(fragment.getReturnAction()) }
+        if (fragment is HasDisconnectionAction) { connectionClicked(fragment.getDisconnectionAction()) }
         if (fragment is HasCustomAction) { createCustomToolbarAction(fragment.getCustomAction())
         } else { binding.toolbar.menu.clear() }
     }
@@ -375,6 +314,12 @@ class MainActivity : AppCompatActivity(), Navigator {
             return@setOnClickListener
         }
     }
+    private fun connectionClicked(action: DisconnectionAction) {
+        connection_btn.setOnClickListener {
+            action.onDisconnectionAction.run()
+            return@setOnClickListener
+        }
+    }
 
     //TODO тут инициализация переменных
     private fun initAllVariables() {
@@ -388,19 +333,19 @@ class MainActivity : AppCompatActivity(), Navigator {
         showInfoDialogsFlag = false
         inScanFragmentFlag = false
 //
-        if (getString(LAST_CONNECTES_DEVICE_ADDRESS) == "NOT SET!") {
+        if (getString(LAST_CONNECTED_DEVICE_ADDRESS) == "NOT SET!") {
             lastConnectDeviceAddress = ""
-            saveString(LAST_CONNECTES_DEVICE_ADDRESS, lastConnectDeviceAddress)
-        } else { lastConnectDeviceAddress =  getString(LAST_CONNECTES_DEVICE_ADDRESS)}
+            saveString(LAST_CONNECTED_DEVICE_ADDRESS, lastConnectDeviceAddress)
+        } else { lastConnectDeviceAddress =  getString(LAST_CONNECTED_DEVICE_ADDRESS)}
 
-        if (getString(CONNECTES_DEVICE) == "NOT SET!") {
+        if (getString(CONNECTED_DEVICE) == "NOT SET!") {
             connectedDevice = "BT-Pump 12"
-            saveString(CONNECTES_DEVICE, connectedDevice)
-        } else { connectedDevice =  getString(CONNECTES_DEVICE)}
-        if (getString(CONNECTES_DEVICE_ADDRESS) == "NOT SET!") {
+            saveString(CONNECTED_DEVICE, connectedDevice)
+        } else { connectedDevice =  getString(CONNECTED_DEVICE)}
+        if (getString(CONNECTED_DEVICE_ADDRESS) == "NOT SET!") {
             connectedDeviceAddress = "D7:77:A9:47:F9:EC"//"12:34:56:78:90:12"
-            saveString(CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-        } else { connectedDeviceAddress =  getString(CONNECTES_DEVICE_ADDRESS)}
+            saveString(CONNECTED_DEVICE_ADDRESS, connectedDeviceAddress)
+        } else { connectedDeviceAddress =  getString(CONNECTED_DEVICE_ADDRESS)}
     }
     private fun createStatList(){
         val listA = ArrayList<String>()
@@ -424,6 +369,36 @@ class MainActivity : AppCompatActivity(), Navigator {
         val result = ArrayList<ScanItem>()
         result.add(ScanItem("NOT SET!", "null"))
         return result
+    }
+
+
+    @SuppressLint("InflateParams")
+    override fun showDisconnectDialog() {
+        val dialogBinding = layoutInflater.inflate(R.layout.dialog_disconnection, null)
+        val myDialog = Dialog(this)
+        myDialog.setContentView(dialogBinding)
+        myDialog.setCancelable(false)
+        myDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        myDialog.show()
+
+        val yesBtn = dialogBinding.findViewById<View>(R.id.dialog_disconnection_confirm)
+        yesBtn.setOnClickListener {
+            disconnect()
+            initBLEStructure()
+            showScanScreen()
+            inScanFragmentFlag = true
+            showInfoDialogsFlag = true
+            scanLeDevice(true)
+            lastConnectDeviceAddress = ""
+            saveString(LAST_CONNECTED_DEVICE_ADDRESS, lastConnectDeviceAddress)
+            //TODO сделать сброс мак-адреса последнего подключённого устройства к дефолтному
+
+            myDialog.dismiss()
+        }
+        val noBtn = dialogBinding.findViewById<View>(R.id.dialog_disconnection_cancel)
+        noBtn.setOnClickListener {
+            myDialog.dismiss()
+        }
     }
 
 
@@ -645,7 +620,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         //BLE
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter())
         if (mBluetoothLeService != null) {
-            mBluetoothLeService!!.connect(getString(CONNECTES_DEVICE_ADDRESS))
+            mBluetoothLeService!!.connect(getString(CONNECTED_DEVICE_ADDRESS))
         } else {
             println("--> вызываем функцию коннекта к устройству $connectedDevice = null")
         }
@@ -793,10 +768,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         var gattBle : BluetoothGatt?=null
         var bleSendCharacteristic: BluetoothGattCharacteristic? = null
         var bleReceivedCharacteristic: BluetoothGattCharacteristic? = null
+        var mBluetoothLeService: BluetoothLeService? = null
 
         @JvmStatic
         fun send_to_ble(dg: ByteArray):Int {// вызов из NDK - отправить кодограмму в gatt.
-//            System.err.println("-->  send_to_ble")
             bleSendCharacteristic?.value = dg
             val ret = gattBle?.writeCharacteristic(bleSendCharacteristic)
             if (ret == true) return 1; else return 0

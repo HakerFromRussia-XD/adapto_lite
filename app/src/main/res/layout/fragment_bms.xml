@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.2" />
+            app:layout_constraintGuide_percent="0.244" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_635"
             android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:src="@drawable/bms_bottom_line"
+            android:src="@drawable/bms_top_line"
             app:layout_constraintBottom_toTopOf="@+id/guidline_635"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guidline_left"
@@ -236,6 +236,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/bms_top_line"
             app:layout_constraintBottom_toTopOf="@+id/guidline_20"
             app:layout_constraintEnd_toEndOf="parent"

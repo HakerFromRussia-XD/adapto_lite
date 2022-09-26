@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDevice
 import ua.cn.stu.navigation.MainActivity.Companion.connectedDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.flagScanWithoutConnect
 import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
-import ua.cn.stu.navigation.MainActivity.Companion.scanList
 import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.connection.ScanItem
 import ua.cn.stu.navigation.contract.*
@@ -47,8 +45,8 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
                     if (scanItem.getAddr() == lastConnectDeviceAddress) {
                         connectedDevice = scanItem.getTitle()
                         connectedDeviceAddress = lastConnectDeviceAddress
-                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-                        navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
+                        navigator().saveString(PreferenceKeys.CONNECTED_DEVICE, connectedDevice)
+                        navigator().saveString(PreferenceKeys.CONNECTED_DEVICE_ADDRESS, connectedDeviceAddress)
                         navigator().scanLeDevice(false)
                         goToHome()
                         flagScanWithoutConnect = false
@@ -84,11 +82,12 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
                 connectedDevice = name
                 connectedDeviceAddress = address
                 lastConnectDeviceAddress = address
-                navigator().saveString(PreferenceKeys.CONNECTES_DEVICE, connectedDevice)
-                navigator().saveString(PreferenceKeys.CONNECTES_DEVICE_ADDRESS, connectedDeviceAddress)
-                navigator().saveString(PreferenceKeys.LAST_CONNECTES_DEVICE_ADDRESS, lastConnectDeviceAddress)
+                navigator().saveString(PreferenceKeys.CONNECTED_DEVICE, connectedDevice)
+                navigator().saveString(PreferenceKeys.CONNECTED_DEVICE_ADDRESS, connectedDeviceAddress)
+                navigator().saveString(PreferenceKeys.LAST_CONNECTED_DEVICE_ADDRESS, lastConnectDeviceAddress)
                 navigator().scanLeDevice(false)
                 goToHome()
+                flagScanWithoutConnect = false
                 reconnectThreadFlag = true
                 navigator().reconnectThread()
             }

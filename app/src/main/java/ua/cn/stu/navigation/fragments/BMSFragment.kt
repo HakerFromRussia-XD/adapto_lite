@@ -20,12 +20,14 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
+import ua.cn.stu.navigation.contract.DisconnectionAction
+import ua.cn.stu.navigation.contract.HasDisconnectionAction
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentBmsBinding
 import kotlin.math.roundToInt
 
 
-class BMSFragment : Fragment(), OnChartValueSelectedListener {
+class BMSFragment : Fragment(), OnChartValueSelectedListener, HasDisconnectionAction {
     private lateinit var binding: FragmentBmsBinding
     private var scale = 0f
     private var leftMargin = 0
@@ -99,6 +101,7 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener {
 
         chart.axisLeft.setDrawGridLines(false)
         chart.axisLeft.setDrawAxisLine(false)
+        //TODO изменить нижний лимит и проверить как это повлияет на график без изменения датасета
         chart.axisLeft.mAxisMinimum = 3.75f
         chart.axisLeft.textColor = Color.TRANSPARENT
 
@@ -190,5 +193,17 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener {
 
         binding.titleCellInfoTv.text  = "SELECT CELL"
 
+    }
+
+    override fun getDisconnectionAction(): DisconnectionAction {
+        return DisconnectionAction(
+            onDisconnectionAction = {
+                showDisconnectionDialog()
+            }
+        )
+    }
+
+    private fun showDisconnectionDialog() {
+        navigator().showDisconnectDialog()
     }
 }
