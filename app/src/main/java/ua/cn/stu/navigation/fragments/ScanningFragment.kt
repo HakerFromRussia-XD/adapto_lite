@@ -15,7 +15,6 @@ import ua.cn.stu.navigation.MainActivity.Companion.flagScanWithoutConnect
 import ua.cn.stu.navigation.MainActivity.Companion.lastConnectDeviceAddress
 import ua.cn.stu.navigation.MainActivity.Companion.reconnectThreadFlag
 import ua.cn.stu.navigation.R
-import ua.cn.stu.navigation.connection.ScanItem
 import ua.cn.stu.navigation.contract.*
 import ua.cn.stu.navigation.databinding.FragmentScanningBinding
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys
@@ -27,7 +26,6 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
     private lateinit var binding: FragmentScanningBinding
     private var linearLayoutManager: LinearLayoutManager? = null
     private var adapter: ScanningAdapter? = null
-    private var scanListLocal: ArrayList<ScanItem>? = null
 
 
     @SuppressLint("CheckResult")

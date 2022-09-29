@@ -34,7 +34,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_5"
             android:layout_width="wrap_content"
@@ -42,13 +41,12 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.03" />
 
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.127" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_20"
             android:layout_width="wrap_content"
@@ -66,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.695" />
+            app:layout_constraintGuide_percent="0.76" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidline_95"
             android:layout_width="wrap_content"
@@ -74,6 +72,17 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.95" />
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/battery_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="-25dp"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidline_15" />
 
         <TextView
             android:id="@+id/title_bms_tv"
@@ -84,7 +93,232 @@
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_5" />
+            app:layout_constraintTop_toTopOf="@+id/guidline_5"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/cell_highlight_iv"
+            android:layout_width="1175dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/cell_highlight"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/overflow_cell_highlight_iv"
+            android:layout_width="1175dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/overflow_cell_highlight"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/battery_chart"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toTopOf="@+id/battery_chart"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/darkening_top_and_bottom_cell_highlight_iv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/darkening_top_and_bottom"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/battery_chart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/battery_chart"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/bms_left_line_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/bms_left_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toEndOf="@+id/delta_voltage_limit_tv"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/max_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bms_top_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_15"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/max_limit_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bms_top_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/min_limit_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/bms_top_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_635"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/min_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/bms_top_line"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_635"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/max_iv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toEndOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/max_iv"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/max_voltage_limit_tv"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toEndOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/max_voltage_limit_tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/min_voltage_limit_tv"
+            app:layout_constraintEnd_toEndOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/min_voltage_limit_tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="90dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bms_underlayer_for_numbers"
+            app:layout_constraintBottom_toBottomOf="@+id/min_iv"
+            app:layout_constraintEnd_toEndOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/min_iv"
+            tools:ignore="ContentDescription" />
+
+
+        <TextView
+            android:id="@+id/delta_voltage_limit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="Δ 1.00V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/min_voltage_limit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="3.74 V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_635"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/min_voltage_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="min V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/max_voltage_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="max V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/max_voltage_limit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="4.23 V"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/title_cell_info_tv"
@@ -172,140 +406,6 @@
             app:layout_constraintStart_toEndOf="@+id/capacity_number_tv"
             app:layout_constraintTop_toBottomOf="@+id/resistance_unit_tv" />
 
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/battery_chart"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="-25dp"
-            android:foregroundGravity="center"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guidline_15" />
-
-
-        <ImageView
-            android:id="@+id/bms_left_line_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:src="@drawable/bms_left_line"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/bms_underlayer_for_numbers"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/cell_highlight_iv"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="0dp"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            android:src="@drawable/cell_highlight"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView2"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/bms_top_line"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_635"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/bms_top_line"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/bms_underlayer_for_numbers"
-            app:layout_constraintBottom_toBottomOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="@+id/textView2"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/textView2"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/bms_underlayer_for_numbers"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/textView"
-            tools:ignore="ContentDescription" />
-
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ropa_sans_pro_regular"
-            android:text="Δ 1.00V"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ropa_sans_pro_regular"
-            android:text="3.74 V"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_635"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ropa_sans_pro_regular"
-            android:text="4.23 V"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/guidline_20"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_left"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            app:layout_constraintTop_toTopOf="@+id/guidline_20"
-            tools:ignore="HardcodedText" />
-
-
         <SeekBar
             android:id="@+id/test_sb"
             android:layout_width="200dp"
@@ -319,6 +419,13 @@
             app:layout_constraintStart_toStartOf="@+id/guidline_left"
             tools:ignore="MissingConstraints"
             tools:targetApi="o" />
+        <View
+            android:id="@+id/view"
+            android:layout_width="554dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_635"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidline_20" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
