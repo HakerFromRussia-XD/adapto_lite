@@ -7,9 +7,9 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
@@ -46,6 +46,7 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener, HasDisconnectionAc
 
         initializedChart(binding.batteryChart)
         createSet(binding.batteryChart, scalingOfInputData(createFakeDataChart(), maxLimit, minLimit))
+        setProgressBigBaterry(createFakeDataChart())
         binding.deltaVoltageLimitTv.text = "Δ ${maxLimit - minLimit} V"
         binding.maxVoltageLimitTv.text = "$maxLimit V"
         binding.minVoltageLimitTv.text = "$minLimit V"
@@ -203,6 +204,23 @@ class BMSFragment : Fragment(), OnChartValueSelectedListener, HasDisconnectionAc
         output[output.size-1] = Color.TRANSPARENT
 
         return output
+    }
+
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
+    private fun setProgressBigBaterry(inputData: ArrayList<Float>) {
+        val maxV = Collections.max(inputData)
+        var summ = 0f
+        for (i in 0 until inputData.size) summ += inputData[i]
+        val percent = ((summ/inputData.size)/(maxV/100)).toInt()
+        System.err.println("maxV: $maxV   summ:$summ    (summ/inputData.size):${(summ/inputData.size)}   percent: $percent")
+
+
+        binding.batteryIndicatorSb.progress = percent
+        binding.batteryAverageVoltageTv.text = String.format("%.2f", summ/inputData.size)
+        binding.percentTv.text = percent.toString()
+
+        //делаем сикбар некликабельным
+        binding.batteryIndicatorSb.setOnTouchListener { _, _ -> true }
     }
 
     private val onValueSelectedRectF = RectF()

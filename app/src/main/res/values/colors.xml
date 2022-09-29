@@ -13,6 +13,9 @@
     <color name="bottom_bar">#a3fe7c</color>
     <color name="add_btn_bg">#27ae60</color>
     <color name="system_green">#34c759</color>
+    <color name="full_battery">#3DFF58</color>
+    <color name="mid_battery">#FDC030</color>
+    <color name="low_battery">#E11C29</color>
     <color name="switch_bg">#29787880</color>
     <color name="menu_bottom_layout_bg">#434343</color>
     <color name="chart_separate">#808080</color>

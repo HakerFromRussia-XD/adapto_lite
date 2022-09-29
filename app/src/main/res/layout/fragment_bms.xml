@@ -96,6 +96,29 @@
             app:layout_constraintTop_toTopOf="@+id/guidline_5"
             tools:ignore="HardcodedText" />
 
+        <TextView
+            android:id="@+id/power_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="23.3"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toStartOf="@+id/power_unit_tv"
+            app:layout_constraintTop_toTopOf="@+id/guidline_5"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/power_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" kWh"
+            android:textColor="@color/white_70"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_right"
+            app:layout_constraintTop_toTopOf="@+id/guidline_5"
+            tools:ignore="HardcodedText" />
+
         <ImageView
             android:id="@+id/cell_highlight_iv"
             android:layout_width="1175dp"
@@ -406,19 +429,135 @@
             app:layout_constraintStart_toEndOf="@+id/capacity_number_tv"
             app:layout_constraintTop_toBottomOf="@+id/resistance_unit_tv" />
 
-        <SeekBar
-            android:id="@+id/test_sb"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:max="146"
-            android:min="0"
-            android:progress="60"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_right"
+        <TextView
+            android:id="@+id/title_battery_info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="BALANSING"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
             app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            tools:ignore="MissingConstraints"
-            tools:targetApi="o" />
+            tools:ignore="HardcodedText" />
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/fork"
+            app:layout_constraintBottom_toBottomOf="@+id/title_battery_info_tv"
+            app:layout_constraintStart_toEndOf="@+id/title_battery_info_tv"
+            app:layout_constraintTop_toTopOf="@+id/title_battery_info_tv"
+            tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/current_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="20.5"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/current_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" A"
+            android:textColor="@color/white_70"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintStart_toEndOf="@+id/current_tv"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/percent_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="100"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintEnd_toStartOf="@+id/percent_unit_tv"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/percent_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" %"
+            android:textColor="@color/white_70"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_70"
+            app:layout_constraintEnd_toStartOf="@+id/guidline_right"
+            tools:ignore="HardcodedText" />
+
+        <SeekBar
+            android:id="@+id/battery_indicator_sb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="22dp"
+            android:max="100"
+            android:progress="100"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/battery_shell_iv"
+            app:layout_constraintEnd_toEndOf="@+id/battery_shell_iv"
+            app:layout_constraintStart_toStartOf="@+id/battery_shell_iv"
+            app:layout_constraintTop_toTopOf="@+id/battery_shell_iv"
+            android:progressDrawable="@drawable/track_full"
+            android:thumb="@drawable/thumb_invisible" />
+        <ImageView
+            android:id="@+id/battery_shell_iv"
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/battery_shell"
+            app:layout_constraintBottom_toTopOf="@+id/guidline_95"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidline_70"
+            tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/signature_battery_info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="AVERAGE VOLTAGE   "
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintTop_toTopOf="@+id/battery_average_voltage_tv"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/battery_average_voltage_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text="4.3"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@+id/signature_battery_info_tv"
+            app:layout_constraintTop_toBottomOf="@+id/battery_indicator_sb" />
+        <TextView
+            android:id="@+id/battery_average_voltage_unit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/ropa_sans_pro_regular"
+            android:text=" V"
+            android:textColor="@color/white_70"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@+id/battery_average_voltage_tv"
+            app:layout_constraintTop_toBottomOf="@+id/battery_indicator_sb" />
+
         <View
             android:id="@+id/view"
             android:layout_width="554dp"

@@ -16,6 +16,11 @@
         <entry key="app/src/main/res/drawable-xxhdpi/massage_type_1_bg.xml" value="0.175" />
         <entry key="app/src/main/res/drawable-xxhdpi/massage_type_2_bg.xml" value="0.175" />
         <entry key="app/src/main/res/drawable-xxhdpi/massage_type_3_bg.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable-xxhdpi/thumb_invisible.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable-xxhdpi/track_full.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable-xxhdpi/track_le.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable-xxhdpi/track_low.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable-xxhdpi/track_mid.xml" value="0.223" />
         <entry key="app/src/main/res/drawable/chevron_down.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/chevron_down_disabled.xml" value="0.1295" />
         <entry key="app/src/main/res/drawable/edit_text_foreground.xml" value="0.1295" />
@@ -53,7 +58,7 @@
         <entry key="app/src/main/res/layout/dialog_time_period_basal.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.2607503255208333" />
         <entry key="app/src/main/res/layout/fragment_basal_profile_settings.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/fragment_bms.xml" value="0.169418736885767" />
+        <entry key="app/src/main/res/layout/fragment_bms.xml" value="0.2368552816711757" />
         <entry key="app/src/main/res/layout/fragment_bolus.xml" value="0.3255020141601564" />
         <entry key="app/src/main/res/layout/fragment_box.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_box_selection.xml" value="0.3098958333333333" />
