@@ -75,6 +75,8 @@ class MainActivity : AppCompatActivity(), Navigator {
     private val listName = "NAME"
     private val listUUID = "UUID"
     private var actionState = WRITE
+
+    //TODO работаем с этими местами 1
     private val mServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
             mBluetoothLeService = (service as BluetoothLeService.LocalBinder).service
@@ -121,16 +123,83 @@ class MainActivity : AppCompatActivity(), Navigator {
 
 
         if (savedInstanceState == null) {
+//            supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.fragmentContainer, ScanningFragment())
+//                .commit()
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragmentContainer, ScanningFragment())
+                .add(R.id.fragmentContainer, TerminalFragment())
                 .commit()
-//                supportFragmentManager
-//                    .beginTransaction()
-//                    .add(R.id.fragmentContainer, HomeFragment())
-//                    .commit()
         }
 
+
+//        setContent {
+//            JetpackComposeCanvasDrawImageTheme {
+//                // A surface container using the 'background' color from the theme
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colors.background
+//                ) {
+//                    val vector = ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
+//                    val painter = rememberVectorPainter(image = vector)//convert to painter
+//                    /////////////////////
+//                    val image = ImageBitmap.imageResource(id = R.drawable.dog)//raster image
+//                    Canvas(
+//                        modifier = Modifier
+//                    ){
+//                        //draw the vector
+//                        withTransform(
+//                            {
+//                                //rotate(45f)
+//                                //translate(100f,50f)
+//                                //scale(1f,2f)
+//                                transform(
+//                                    Matrix().apply {
+//                                        rotateZ(0f)//good
+//                                        scale(2f,2f)
+//                                        translate(150f,75f)
+//                                    }
+//                                )
+//                            }
+//                        ){
+//                            //translate(
+//                            //    100f,50f
+//                            //) {
+//                            //    rotate(45f){
+//                            //        scale(
+//                            //            1f,1f
+//                            //        ){
+//                            with(painter) {
+//                                draw(
+//                                    painter.intrinsicSize
+//                                )
+//                            }
+//                            //        }
+//                            //    }
+//                            //}
+//
+//
+//
+//                            drawImage(
+//                                image = image,
+//                                topLeft = Offset(x = 150f, y = 500f)
+//                            )
+//                        }
+//                        drawImage(
+//                            image = image,
+//                            topLeft = Offset(x = 150f, y = 500f)
+//                        )
+//
+//                        with(painter) {
+//                            draw(
+//                                painter.intrinsicSize
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         createStatList()
         scanList = reinitScanList()
@@ -321,7 +390,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    //TODO тут инициализация переменных
     private fun initAllVariables() {
         //init
         lastConnectDeviceAddress = ""
@@ -372,6 +440,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
 
+    //TODO работаем с этими местами 2
     @SuppressLint("InflateParams")
     override fun showDisconnectDialog() {
         val dialogBinding = layoutInflater.inflate(R.layout.dialog_disconnection, null)
@@ -584,6 +653,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         mGattServicesList!!.setAdapter(gattServiceAdapter)
         if (mScanning) { scanLeDevice(false) }
     }
+    //TODO работаем с этими местами 3
     override fun reconnectThread() {
         System.err.println("--> reconnectThread started")
         var j = 1
@@ -657,6 +727,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE)
         return intentFilter
     }
+    //TODO работаем с этими местами 4
     override fun scanLeDevice(enable: Boolean) {
         if (enable) {
             mScanning = true
@@ -721,6 +792,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 //            showLocationPermissionDialog()
         }
     }
+    //TODO работаем с этими местами 5
     private fun addLEDeviceToScanList(item: String, device: BluetoothDevice?) {
         var canAdd = true
         for (i in scanList.indices) {

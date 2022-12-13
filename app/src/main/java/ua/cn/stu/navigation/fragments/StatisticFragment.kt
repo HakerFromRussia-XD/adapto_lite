@@ -23,7 +23,7 @@ class StatisticFragment: Fragment(), HasDisconnectionAction {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentStatisticBinding.inflate(inflater, container, false)
         navigator().showBottomNavigationMenu(true)
-        println("BMS fragment started")
+        println("STATISTIC fragment started")
 
         initAdapter(binding.staticRv)
         return binding.root

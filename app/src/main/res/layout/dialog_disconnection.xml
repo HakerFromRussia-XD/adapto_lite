@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        android:background="@color/black">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_andex_alert_dialog_layout_image_left1"
