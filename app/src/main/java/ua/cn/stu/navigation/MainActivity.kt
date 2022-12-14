@@ -46,7 +46,6 @@ import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTED_DEVI
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.CONNECTED_DEVICE_ADDRESS
 import ua.cn.stu.navigation.persistence.preference.PreferenceKeys.LAST_CONNECTED_DEVICE_ADDRESS
 import ua.cn.stu.navigation.rx.RxUpdateMainEvent
-import java.lang.Runnable
 import kotlin.properties.Delegates
 
 
@@ -133,6 +132,8 @@ class MainActivity : AppCompatActivity(), Navigator {
                 .commit()
         }
 
+        val i = Intent(this, ComposeActivity::class.java)
+        this.startActivity(i)
 
 //        setContent {
 //            JetpackComposeCanvasDrawImageTheme {
@@ -214,7 +215,8 @@ class MainActivity : AppCompatActivity(), Navigator {
         // инициализация блютуз
         checkLocationPermission()
         initBLEStructure()
-        scanLeDevice(true)
+        //TODO включить сканирование в продакшне
+//        scanLeDevice(true)
 
 
         //запуск очереди блютуз команд
@@ -226,6 +228,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         worker.start()
     }
+    @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
         if (!mBluetoothAdapter!!.isEnabled) {
@@ -245,6 +248,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         super.onPause()
         endFlag = true
     }
+    @SuppressLint("MissingPermission")
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
@@ -728,6 +732,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         return intentFilter
     }
     //TODO работаем с этими местами 4
+    @SuppressLint("MissingPermission")
     override fun scanLeDevice(enable: Boolean) {
         if (enable) {
             mScanning = true
@@ -740,6 +745,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             System.err.println("DeviceControlActivity------->   stopLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
         }
     }
+    @SuppressLint("MissingPermission")
     private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, _, _ ->
         runOnUiThread {
             if (device.name != null) {
@@ -842,6 +848,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         var bleReceivedCharacteristic: BluetoothGattCharacteristic? = null
         var mBluetoothLeService: BluetoothLeService? = null
 
+        @SuppressLint("MissingPermission")
         @JvmStatic
         fun send_to_ble(dg: ByteArray):Int {// вызов из NDK - отправить кодограмму в gatt.
             bleSendCharacteristic?.value = dg

@@ -159,5 +159,6 @@
         <item quantity="many">%1$d boxes</item>
         <item quantity="other">%1$d boxes</item>
     </plurals>
+    <string name="title_activity_compose">ComposeActivity</string>
 
 </resources>
