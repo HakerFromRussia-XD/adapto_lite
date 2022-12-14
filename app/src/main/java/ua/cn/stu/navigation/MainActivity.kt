@@ -135,72 +135,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         val i = Intent(this, ComposeActivity::class.java)
         this.startActivity(i)
 
-//        setContent {
-//            JetpackComposeCanvasDrawImageTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colors.background
-//                ) {
-//                    val vector = ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
-//                    val painter = rememberVectorPainter(image = vector)//convert to painter
-//                    /////////////////////
-//                    val image = ImageBitmap.imageResource(id = R.drawable.dog)//raster image
-//                    Canvas(
-//                        modifier = Modifier
-//                    ){
-//                        //draw the vector
-//                        withTransform(
-//                            {
-//                                //rotate(45f)
-//                                //translate(100f,50f)
-//                                //scale(1f,2f)
-//                                transform(
-//                                    Matrix().apply {
-//                                        rotateZ(0f)//good
-//                                        scale(2f,2f)
-//                                        translate(150f,75f)
-//                                    }
-//                                )
-//                            }
-//                        ){
-//                            //translate(
-//                            //    100f,50f
-//                            //) {
-//                            //    rotate(45f){
-//                            //        scale(
-//                            //            1f,1f
-//                            //        ){
-//                            with(painter) {
-//                                draw(
-//                                    painter.intrinsicSize
-//                                )
-//                            }
-//                            //        }
-//                            //    }
-//                            //}
-//
-//
-//
-//                            drawImage(
-//                                image = image,
-//                                topLeft = Offset(x = 150f, y = 500f)
-//                            )
-//                        }
-//                        drawImage(
-//                            image = image,
-//                            topLeft = Offset(x = 150f, y = 500f)
-//                        )
-//
-//                        with(painter) {
-//                            draw(
-//                                painter.intrinsicSize
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         createStatList()
         scanList = reinitScanList()
@@ -959,11 +893,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         var lastConnectDeviceAddress by Delegates.notNull<String>()
         var reconnectThreadFlag by Delegates.notNull<Boolean>()
         var flagScanWithoutConnect by Delegates.notNull<Boolean>()
-
-        //переменные чата
-        var typeCellsListMain by Delegates.notNull<ArrayList<String>>()
-        var massagesListMain by Delegates.notNull<ArrayList<String>>()
-        var timestampsListMain by Delegates.notNull<ArrayList<String>>()
 
 
         //настройки
