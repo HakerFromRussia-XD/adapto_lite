@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.compose.ui:ui-tooling-data:1.1.0-beta01@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e55b6d58f49cb81c1b522d583b3a9eaa/transformed/jetified-ui-tooling-data-1.1.0-beta01/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e55b6d58f49cb81c1b522d583b3a9eaa/transformed/jetified-ui-tooling-data-1.1.0-beta01/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e55b6d58f49cb81c1b522d583b3a9eaa/transformed/jetified-ui-tooling-data-1.1.0-beta01/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e55b6d58f49cb81c1b522d583b3a9eaa/transformed/jetified-ui-tooling-data-1.1.0-beta01/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

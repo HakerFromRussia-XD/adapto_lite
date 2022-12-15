@@ -132,8 +132,8 @@ class MainActivity : AppCompatActivity(), Navigator {
                 .commit()
         }
 
-        val i = Intent(this, ComposeActivity::class.java)
-        this.startActivity(i)
+//        val i = Intent(this, ComposeActivity::class.java)
+//        this.startActivity(i)
 
 
         createStatList()

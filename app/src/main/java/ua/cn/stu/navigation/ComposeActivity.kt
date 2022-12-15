@@ -1,9 +1,6 @@
 package ua.cn.stu.navigation
 
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
@@ -18,7 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import ua.cn.stu.navigation.MainActivity.Companion.param2name
+import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_HIGHT
+import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_WEIGHT
 import ua.cn.stu.navigation.ui.theme.NavigationTheme
 
 
@@ -26,12 +24,11 @@ class ComposeActivity : ComponentActivity() {
 
     private var size_pixel = 3.09f
     private val targetDisplayScale = 2.625f
-    private val targetDisplayDPI = 420
+//    private val targetDisplayDPI = 420
     private var scale = 0f
     private var dpi = 0
-    private var dpiCoefficent = 0
-    private var timer: CountDownTimer? = null
-    private var count: Int = 1
+//    private var timer: CountDownTimer? = null
+//    private var count: Int = 1
     private val bytearray = byteArrayOfInts(0x55, 0xA5)
     private val bitsets = ArrayList<String>()
 
@@ -56,22 +53,21 @@ class ComposeActivity : ComponentActivity() {
         }
 
 //        test2()
-        drow(132)
+        drow()
     }
 
-    private fun test2() {
-        timer = object : CountDownTimer(1000000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                drow(count)
-                count += 1
-                if (count == 132) { count = 0 }
-//                println("count = $count")
-            }
-            override fun onFinish() {}
-        }.start()
-    }
+//    private fun test2() {
+//        timer = object : CountDownTimer(1000000, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                drow()
+//                count += 1
+//                if (count == 132) { count = 0 }
+//            }
+//            override fun onFinish() {}
+//        }.start()
+//    }
 
-    private fun drow(value: Int) {
+    private fun drow() {
         setContent {
             NavigationTheme {
                 // A surface container using the 'background' color from the theme
@@ -87,9 +83,8 @@ class ComposeActivity : ComponentActivity() {
                         Canvas(
                             modifier = Modifier
                         ){
-                            //draw the vector
-                            for (i in 1 until value) {
-                                for (j in 2 until value) {
+                            for (i in 1 until TERMINAL_WEIGHT) {
+                                for (j in 2 until TERMINAL_HIGHT) {
                                     withTransform(
                                         {
                                             transform(
@@ -124,10 +119,10 @@ class ComposeActivity : ComponentActivity() {
         }
     }
 
-    private fun getDPICoefficient() :Float {
-        println("DPICoefficient : ${(dpi/(targetDisplayDPI / 100f))/100}")
-        return (dpi/(targetDisplayDPI / 100f))/100
-    }
+//    private fun getDPICoefficient() :Float {
+//        println("DPICoefficient : ${(dpi/(targetDisplayDPI / 100f))/100}")
+//        return (dpi/(targetDisplayDPI / 100f))/100
+//    }
     private fun byteArrayOfInts(vararg ints: Int) = ByteArray(ints.size) { pos -> ints[pos].toByte() }
 }
 
