@@ -24,24 +24,39 @@ import ua.cn.stu.navigation.ui.theme.NavigationTheme
 
 class ComposeActivity : ComponentActivity() {
 
-    private val size_pixel = 3.09f
+    private var size_pixel = 3.09f
+    private val targetDisplayScale = 2.625f
+    private val targetDisplayDPI = 420
     private var scale = 0f
     private var dpi = 0
+    private var dpiCoefficent = 0
     private var timer: CountDownTimer? = null
     private var count: Int = 1
+    private val bytearray = byteArrayOfInts(0x55, 0xA5)
+    private val bitsets = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         scale = resources.displayMetrics.density
         dpi = resources.displayMetrics.densityDpi
-        val coeff = scale*dpi
-        val displaymetrics = DisplayMetrics()
-        val dp =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, displaymetrics).toInt()
-        println("scale = $scale  dpi = $dpi   coeff = $coeff  dp = $dp" )
+        size_pixel = size_pixel / scale * targetDisplayScale
+        println("scale = $scale  dpi = $dpi" )
 
-        test2()
+
+        for (i in bytearray) {
+            bitsets.add(i.toString(2))
+            println("bitsets ${i.toString(2)}")
+            val intValue = i.toInt()
+
+            for (j in 0 until 8) {
+                if (intValue shr j and 0b00000001 == 1) { println("bitsets $i  $j-1") } else { println("bitsets $i  $j-0") }
+            }
+
+        }
+
+//        test2()
+        drow(132)
     }
 
     private fun test2() {
@@ -50,7 +65,7 @@ class ComposeActivity : ComponentActivity() {
                 drow(count)
                 count += 1
                 if (count == 132) { count = 0 }
-                println("count = $count")
+//                println("count = $count")
             }
             override fun onFinish() {}
         }.start()
@@ -66,7 +81,6 @@ class ComposeActivity : ComponentActivity() {
                 ) {
                     run {
                         val vector = ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
-//                        val  vector = ImageBitmap.imageResource(id = R.drawable.ic_drawing)
                         val painter = rememberVectorPainter(image = vector)//convert to painter
 //                        /////////////////////
 //                        val image = ImageBitmap.imageResource(id = R.drawable.ic_drawing)//raster image
@@ -82,18 +96,18 @@ class ComposeActivity : ComponentActivity() {
                                                 Matrix().apply {
                                                     scale(1f, 1f)
                                                     translate(
-                                                        i * size_pixel * scale,
-                                                        j * size_pixel * scale
+                                                        i * size_pixel * scale,// * getDPICoefficient(),
+                                                        j * size_pixel * scale// * getDPICoefficient()
                                                     )
                                                 }
                                             )
                                         }
                                     ) {
-                                        if (i == 1 ) {
-                                            println("paint param2name : ${param2name.value}")
-                                            println("paint i = $i    j = $j")
-                                            println("paint dot : " + (((i - 1) * 132) + j))
-                                        }
+//                                        if (i == 1 ) {
+//                                            println("paint param2name : ${param2name.value}")
+//                                            println("paint i = $i    j = $j")
+//                                            println("paint dot : " + (((i - 1) * 132) + j))
+//                                        }
 
                                         with(painter) {
                                             draw(
@@ -109,6 +123,12 @@ class ComposeActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun getDPICoefficient() :Float {
+        println("DPICoefficient : ${(dpi/(targetDisplayDPI / 100f))/100}")
+        return (dpi/(targetDisplayDPI / 100f))/100
+    }
+    private fun byteArrayOfInts(vararg ints: Int) = ByteArray(ints.size) { pos -> ints[pos].toByte() }
 }
 
 @Preview(showBackground = true)
