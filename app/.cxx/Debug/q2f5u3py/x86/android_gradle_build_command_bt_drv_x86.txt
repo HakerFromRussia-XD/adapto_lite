@@ -1,0 +1,7 @@
+Executable : /Users/motoricallc/Library/Android/sdk/cmake/3.18.1/bin/ninja
+arguments : 
+-C
+/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/x86
+bt_drv
+jvmArgs : 
+

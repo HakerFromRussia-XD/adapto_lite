@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a'
+ninja: no work to do.

@@ -1,0 +1,38 @@
+{
+  "buildFiles": [
+    "/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/motoricallc/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+      "-C",
+      "/Users/motoricallc/Documents/Android/Adapto/app/.cxx/RelWithDebInfo/355b1y3h/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/motoricallc/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+    "-C",
+    "/Users/motoricallc/Documents/Android/Adapto/app/.cxx/RelWithDebInfo/355b1y3h/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "bt_drv::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "armeabi-v7a",
+      "artifactName": "bt_drv",
+      "output": "/Users/motoricallc/Documents/Android/Adapto/app/build/intermediates/cxx/RelWithDebInfo/355b1y3h/obj/armeabi-v7a/libbt_drv.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+      "cppCompilerExecutable": "/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}

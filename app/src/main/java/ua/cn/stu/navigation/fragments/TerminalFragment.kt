@@ -30,4 +30,6 @@ class TerminalFragment : Fragment() {
         }
 //        return binding.root
     }
+
+
 }

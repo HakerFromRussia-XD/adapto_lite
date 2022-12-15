@@ -56,16 +56,7 @@ class ComposeActivity : ComponentActivity() {
         drow()
     }
 
-//    private fun test2() {
-//        timer = object : CountDownTimer(1000000, 1000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                drow()
-//                count += 1
-//                if (count == 132) { count = 0 }
-//            }
-//            override fun onFinish() {}
-//        }.start()
-//    }
+
 
     private fun drow() {
         setContent {
@@ -119,11 +110,24 @@ class ComposeActivity : ComponentActivity() {
         }
     }
 
+
+    private fun byteArrayOfInts(vararg ints: Int) = ByteArray(ints.size) { pos -> ints[pos].toByte() }
+
+//    private fun test2() {
+//        timer = object : CountDownTimer(1000000, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                drow()
+//                count += 1
+//                if (count == 132) { count = 0 }
+//            }
+//            override fun onFinish() {}
+//        }.start()
+//    }
+
 //    private fun getDPICoefficient() :Float {
 //        println("DPICoefficient : ${(dpi/(targetDisplayDPI / 100f))/100}")
 //        return (dpi/(targetDisplayDPI / 100f))/100
 //    }
-    private fun byteArrayOfInts(vararg ints: Int) = ByteArray(ints.size) { pos -> ints[pos].toByte() }
 }
 
 @Preview(showBackground = true)

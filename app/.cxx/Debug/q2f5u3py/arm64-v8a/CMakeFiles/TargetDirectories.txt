@@ -1,0 +1,3 @@
+/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a/CMakeFiles/bt_drv.dir
