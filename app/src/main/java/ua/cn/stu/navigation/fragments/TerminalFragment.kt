@@ -36,12 +36,11 @@ class TerminalFragment : Fragment() {
 
     private lateinit var binding: FragmentTerminalBinding
     private var size_pixel = 3.09f
-    private val heightCoefficient = 1488f
+    private val targetDisplayScale = 2.625f
     private var scaleCoefficient = Vector<Float>()
     private var scale = 0f
     private var dpi = 0
     private val bytes = ByteArray(1056)
-    private val bitsets = ArrayList<String>()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -50,14 +49,8 @@ class TerminalFragment : Fragment() {
         System.err.println("TERMINAL fragment started")
 
 
-        System.err.println("BYTES : "+bytes.contentToString())
-        nextBytes(bytes)
-        System.err.println("BYTES Random : "+bytes.contentToString())
-
-
+        size_pixel = size_pixel / scale * targetDisplayScale
         setScaleCoefficient()
-
-        dpi = resources.displayMetrics.densityDpi
 
         System.err.println("metrics 1 height = ${getScreenHight()}  width = ${getScreenWeight()}  dpi = $dpi" )
 
@@ -85,59 +78,60 @@ class TerminalFragment : Fragment() {
 
     private fun setScaleCoefficient() {
         dpi = resources.displayMetrics.densityDpi
+        scale = resources.displayMetrics.density
         when (dpi) {
             320 -> {
                 when(getScreenWeight()) {
-                    in 0..720 -> { scaleCoefficient.add(1.74f) }
+                    in 0..720 -> { scaleCoefficient.add(1.33f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..1280 -> { scaleCoefficient.add(2.12f) }
-                    in 1281..1440 -> { scaleCoefficient.add(2.4f) }
+                    in 0..1280 -> { scaleCoefficient.add(1.63f/scale) }
+                    in 1281..1440 -> { scaleCoefficient.add(2.4f/scale) }
                 }
             }
             400 -> {
                 when(getScreenWeight()) {
-                    in 0..1080 -> { scaleCoefficient.add(2.6f) }
+                    in 0..1080 -> { scaleCoefficient.add(2.5f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..2160 -> { scaleCoefficient.add(3.87f) }
+                    in 0..2160 -> { scaleCoefficient.add(3.7f/scale) }
                 }
             }
             420 -> {
                 when(getScreenWeight()) {
-                    in 0..1080 -> { scaleCoefficient.add(2.6f ) }
-                    in 1081..2200 -> { scaleCoefficient.add(5.3f) }
+                    in 0..1080 -> { scaleCoefficient.add(2.63f/scale) }
+                    in 1081..2200 -> { scaleCoefficient.add(5.35f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..1920 -> { scaleCoefficient.add(3.3f) }
-                    in 1921..2428 -> { scaleCoefficient.add(4.43f) }
-                    in 2429..2480 -> { scaleCoefficient.add(4.55f) }
+                    in 0..1920 -> { scaleCoefficient.add(3.31f/scale) }
+                    in 1921..2428 -> { scaleCoefficient.add(4.4f/scale) }
+                    in 2429..2480 -> { scaleCoefficient.add(4.53f/scale) }
                 }
             }
             440 -> {
                 when(getScreenWeight()) {
-                    in 0..1080 -> { scaleCoefficient.add(2.6f) }
+                    in 0..1080 -> { scaleCoefficient.add(2.74f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..2340 -> { scaleCoefficient.add(4.15f) }
+                    in 0..2340 -> { scaleCoefficient.add(4.4f/scale) }
                 }
             }
             480 -> {
                 when(getScreenWeight()) {
-                    in 0..1080 -> { scaleCoefficient.add(2.6f) }
+                    in 0..1080 -> { scaleCoefficient.add(3f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..1920 -> { scaleCoefficient.add(3.15f) }
-                    in 1921..2400 -> { scaleCoefficient.add(4.28f) }
-                    in 2401..2636 -> { scaleCoefficient.add(4.71f) }
+                    in 0..1920 -> { scaleCoefficient.add(3.65f/scale) }
+                    in 1921..2400 -> { scaleCoefficient.add(4.8f/scale) }
+                    in 2401..2636 -> { scaleCoefficient.add(5.4f/scale) }
                 }
             }
             560 -> {
                 when(getScreenWeight()) {
-                    in 0..1440 -> { scaleCoefficient.add(3.45f) }
+                    in 0..1440 -> { scaleCoefficient.add(4.65f/scale) }
                 }
                 when(getScreenHight()) {
-                    in 0..2560 -> { scaleCoefficient.add(4.33f) }
+                    in 0..2560 -> { scaleCoefficient.add(5.9f/scale) }
                 }
             }
         }
@@ -168,8 +162,8 @@ class TerminalFragment : Fragment() {
                                                     Matrix().apply {
                                                         scale(scaleCoefficient[0], scaleCoefficient[1])
                                                         translate(
-                                                            i * size_pixel * 1f,
-                                                            j * size_pixel * 1f
+                                                            i * size_pixel * scale * 1f,
+                                                            j * size_pixel * scale * 1f
                                                         )
                                                     }
                                                 )
@@ -231,6 +225,4 @@ class TerminalFragment : Fragment() {
         }
         return metrics.heightPixels
     }
-
-//    private fun byteArrayOfInts(vararg ints: Int) = ByteArray(ints.size) { pos -> ints[pos].toByte() }
 }
