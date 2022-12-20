@@ -22,13 +22,14 @@ import ua.cn.stu.navigation.ui.theme.NavigationTheme
 
 class ComposeActivity : ComponentActivity() {
 
-    private var size_pixel = 3.09f
-    private val targetDisplayScale = 2.625f
-//    private val targetDisplayDPI = 420
-    private var scale = 0f
-    private var dpi = 0
+
 //    private var timer: CountDownTimer? = null
 //    private var count: Int = 1
+//    private val targetDisplayDPI = 420
+    private var size_pixel = 3.09f
+    private val targetDisplayScale = 2.625f
+    private var scale = 0f
+    private var dpi = 0
     private val bytearray = byteArrayOfInts(0x55, 0xA5)
     private val bitsets = ArrayList<String>()
 
@@ -49,7 +50,6 @@ class ComposeActivity : ComponentActivity() {
             for (j in 0 until 8) {
                 if (intValue shr j and 0b00000001 == 1) { println("bitsets $i  $j-1") } else { println("bitsets $i  $j-0") }
             }
-
         }
 
 //        test2()

@@ -55,8 +55,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/guidline_1_4"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_right"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guidline_1_3" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
