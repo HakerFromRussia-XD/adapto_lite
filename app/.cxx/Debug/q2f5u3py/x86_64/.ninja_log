@@ -77,3 +77,5 @@
 659	769	1671195906	CMakeFiles/bt_drv.dir/lwip/netif/ethernet.c.o	1a22b02ee4f86afd
 657	778	1671195906	CMakeFiles/bt_drv.dir/lwip/core/ipv4/etharp.c.o	a8ee213f182fc309
 778	851	1671195906	/Users/motoricallc/Documents/Android/Adapto/app/build/intermediates/cxx/Debug/q2f5u3py/obj/x86_64/libbt_drv.so	36884ccaa7848ebb
+0	21	0	clean	8f6d7c04a556b2eb
+0	9	0	clean	8f6d7c04a556b2eb

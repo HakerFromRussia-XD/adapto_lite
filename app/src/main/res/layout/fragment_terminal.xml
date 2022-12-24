@@ -175,19 +175,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
 
-        <SeekBar
-            android:id="@+id/test_sb"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:max="172"
-            android:min="0"
-            android:progress="60"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guidline_right"
-            app:layout_constraintStart_toStartOf="@+id/guidline_left"
-            tools:ignore="MissingConstraints"
-            tools:targetApi="o" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -1,16 +1,19 @@
 package ua.cn.stu.navigation.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Matrix
@@ -19,20 +22,27 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.R
+import ua.cn.stu.navigation.TerminalViewModel
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentTerminalBinding
 import ua.cn.stu.navigation.persistence.TerminalConstants
 import ua.cn.stu.navigation.ui.theme.NavigationTheme
-import java.sql.DriverManager.println
 import java.util.*
-import kotlin.random.Random
 import kotlin.random.Random.Default.nextBytes
 
 
+@OptIn(DelicateCoroutinesApi::class)
 class TerminalFragment : Fragment() {
+    private var viewModel: TerminalViewModel = TerminalViewModel()
 
     private lateinit var binding: FragmentTerminalBinding
     private var size_pixel = 3.09f
@@ -40,7 +50,11 @@ class TerminalFragment : Fragment() {
     private var scaleCoefficient = Vector<Float>()
     private var scale = 0f
     private var dpi = 0
+
     private val bytes = ByteArray(1056)
+    private var myInflater: LayoutInflater? = null
+    private var myContainer: ViewGroup? = null
+    private var pixelsPool = 0
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -49,34 +63,123 @@ class TerminalFragment : Fragment() {
         System.err.println("TERMINAL fragment started")
 
 
-        size_pixel = size_pixel / scale * targetDisplayScale
-        setScaleCoefficient()
+        myInflater = inflater
+        myContainer = container
+
+        //create random bytes array
+        scale = resources.displayMetrics.density
+        setScaleCoefficients()
+        startTimer()
 
         System.err.println("metrics 1 height = ${getScreenHight()}  width = ${getScreenWeight()}  dpi = $dpi" )
 
-//        while (true) {
-//            for (i in bytes) {
-//                val bitsets = ArrayList<String>()
-//                bitsets.add(i.toString(2))
-//                System.err.println("BYTES bitsets ${i.toString(2)}")
-//                val intValue = i.toInt()
-//
-//                for (j in 0 until 8) {
-//                    if (intValue shr j and 0b00000001 == 1) {
-//                                                            System.err.println("BYTES bitsets $i  $j-1")
-//                    } else {
-//                                                            System.err.println("BYTES bitsets $i  $j-0")
-//                    }
-//                }
-//            }
-//            System.err.println("BYTES calculated frame")
-//        }
+        return drow(inflater, container) //binding.root
+    }
 
-        return drow(inflater, container)
+    private fun startTimer() {
+        object : CountDownTimer(100000000, 30) {
+            override fun onTick(millisUntilFinished: Long) {
+                viewModel.addNumber(millisUntilFinished.toInt())
+                System.err.println("TerminalViewModel plan")
+            }
+
+            override fun onFinish() {}
+        }.start()
     }
 
 
-    private fun setScaleCoefficient() {
+    @SuppressLint("UnrememberedMutableState")
+    private fun drow(inflater: LayoutInflater, container: ViewGroup?): View {
+        return inflater.inflate(R.layout.fragment_terminal , container, false).apply {
+            findViewById<ComposeView>(R.id.terminal_composable)?.setContent {
+                NavigationTheme {
+                    val count by viewModel.number.observeAsState(0)
+//                    var favourites: MutableList<String> by mutableStateOf(mutableListOf())
+//                    var count by remember { mutableStateOf(0) }
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color.Yellow.copy(alpha = 0f)
+                    ) {
+                        run {
+                            val vector =
+                                ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
+                            val painter = rememberVectorPainter(image = vector)//convert to painter
+                            nextBytes(bytes)
+                            val translateCoeff = size_pixel * scale
+                            val scaleXCoeff = scaleCoefficient[0]
+                            val scaleYCoeff = scaleCoefficient[1]
+                            count
+//                            System.err.println("TerminalViewModel fakt count $count")
+                            Canvas(
+                                modifier = Modifier
+                            ) {
+                                for (i in 1 until TerminalConstants.TERMINAL_WEIGHT) {
+                                    for (j in 1 until TerminalConstants.TERMINAL_HIGHT) {
+//                                        composableScope.launch {
+                                            pixelsPool = bytes[((i - 1) * 8) + (j - 1).div(8)].toInt()
+//                                        }
+
+                                        if (pixelsPool shr (j % 8) and 0b00000001 == 1) {
+//                                            System.err.println("BYTES bitsets $i  $j-1")
+                                                withTransform(
+                                                    {
+                                                        transform(
+                                                            Matrix().apply {
+                                                                scale(scaleXCoeff, scaleYCoeff)
+                                                                translate(
+                                                                    i * translateCoeff,
+                                                                    j * translateCoeff
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                ) {
+                                                    with(painter) {
+                                                        draw(
+                                                            painter.intrinsicSize
+                                                        )
+                                                    }
+                                                }
+                                        } else {
+//                                            System.err.println("BYTES bitsets $i  $j-0")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getScreenWeight(): Int {
+        val metrics = DisplayMetrics()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            @Suppress("DEPRECATION")
+            activity?.display?.getRealMetrics(metrics)
+        } else {
+            @Suppress("DEPRECATION")
+            activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        }
+        return metrics.widthPixels
+    }
+    private fun getScreenHight(): Int {
+        val metrics = DisplayMetrics()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            @Suppress("DEPRECATION")
+            activity?.display?.getRealMetrics(metrics)
+        } else {
+            @Suppress("DEPRECATION")
+            activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        }
+        return metrics.heightPixels
+    }
+    private fun setScaleCoefficients() {
+        size_pixel = size_pixel / scale * targetDisplayScale
         dpi = resources.displayMetrics.densityDpi
         scale = resources.displayMetrics.density
         when (dpi) {
@@ -135,94 +238,5 @@ class TerminalFragment : Fragment() {
                 }
             }
         }
-    }
-
-
-    private fun drow(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_terminal , container, false).apply {
-            findViewById<ComposeView>(R.id.terminal_composable)?.setContent {
-                NavigationTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize().background(Color.Transparent),
-                        color = Color.Yellow.copy(alpha = 0f)
-                    ) {
-                        run {
-                            val vector =
-                                ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
-                            val painter = rememberVectorPainter(image = vector)//convert to painter
-                            Canvas(
-                                modifier = Modifier
-                            ) {
-                                for (i in 1 until TerminalConstants.TERMINAL_WEIGHT) {
-                                    for (j in 1 until TerminalConstants.TERMINAL_HIGHT) {
-                                        withTransform(
-                                            {
-                                                transform(
-                                                    Matrix().apply {
-                                                        scale(scaleCoefficient[0], scaleCoefficient[1])
-                                                        translate(
-                                                            i * size_pixel * scale * 1f,
-                                                            j * size_pixel * scale * 1f
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        ) {
-//                                            while (true) {
-//                                                for (i in bytes) {
-//                                                    bitsets.add(i.toString(2))
-////                                                    System.err.println("BYTES bitsets ${i.toString(2)}")
-//                                                    val intValue = i.toInt()
-//
-//                                                    for (j in 0 until 8) {
-//                                                        if (intValue shr j and 0b00000001 == 1) {
-////                                                            System.err.println("BYTES bitsets $i  $j-1")
-//                                                        } else {
-////                                                            System.err.println("BYTES bitsets $i  $j-0")
-//                                                        }
-//                                                    }
-//                                                }
-//                                                System.err.println("BYTES calculated frame")
-//                                            }
-                                            with(painter) {
-                                                draw(
-                                                    painter.intrinsicSize
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getScreenWeight(): Int {
-        val metrics = DisplayMetrics()
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            @Suppress("DEPRECATION")
-            activity?.display?.getRealMetrics(metrics)
-        } else {
-            @Suppress("DEPRECATION")
-            activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        }
-        return metrics.widthPixels
-    }
-    private fun getScreenHight(): Int {
-        val metrics = DisplayMetrics()
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            @Suppress("DEPRECATION")
-            activity?.display?.getRealMetrics(metrics)
-        } else {
-            @Suppress("DEPRECATION")
-            activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        }
-        return metrics.heightPixels
     }
 }
