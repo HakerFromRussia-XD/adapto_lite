@@ -7,13 +7,15 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
+import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Matrix
@@ -21,17 +23,13 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.R
-import ua.cn.stu.navigation.TerminalViewModel
+import ua.cn.stu.navigation.services.TerminalViewModel
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentTerminalBinding
 import ua.cn.stu.navigation.persistence.TerminalConstants
@@ -40,7 +38,6 @@ import java.util.*
 import kotlin.random.Random.Default.nextBytes
 
 
-@OptIn(DelicateCoroutinesApi::class)
 class TerminalFragment : Fragment() {
     private var viewModel: TerminalViewModel = TerminalViewModel()
 
@@ -55,6 +52,7 @@ class TerminalFragment : Fragment() {
     private var myInflater: LayoutInflater? = null
     private var myContainer: ViewGroup? = null
     private var pixelsPool = 0
+    private var buttonScale = 70.dp
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -66,9 +64,10 @@ class TerminalFragment : Fragment() {
         myInflater = inflater
         myContainer = container
 
-        //create random bytes array
+
         scale = resources.displayMetrics.density
         setScaleCoefficients()
+        setButtonsScale()
         startTimer()
 
         System.err.println("metrics 1 height = ${getScreenHight()}  width = ${getScreenWeight()}  dpi = $dpi" )
@@ -80,7 +79,6 @@ class TerminalFragment : Fragment() {
         object : CountDownTimer(100000000, 30) {
             override fun onTick(millisUntilFinished: Long) {
                 viewModel.addNumber(millisUntilFinished.toInt())
-                System.err.println("TerminalViewModel plan")
             }
 
             override fun onFinish() {}
@@ -88,14 +86,13 @@ class TerminalFragment : Fragment() {
     }
 
 
+    @Suppress("UNUSED_EXPRESSION")
     @SuppressLint("UnrememberedMutableState")
     private fun drow(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(R.layout.fragment_terminal , container, false).apply {
             findViewById<ComposeView>(R.id.terminal_composable)?.setContent {
                 NavigationTheme {
                     val count by viewModel.number.observeAsState(0)
-//                    var favourites: MutableList<String> by mutableStateOf(mutableListOf())
-//                    var count by remember { mutableStateOf(0) }
                     // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -149,11 +146,63 @@ class TerminalFragment : Fragment() {
                             }
                         }
                     }
+
+                    Column( horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Bottom))
+                    {
+                        Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            ButtonDemo(R.drawable.arrow_cancel, "cancel")
+                            ButtonDemo(R.drawable.arrow_up, "up")
+                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                        }
+                        Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            ButtonDemo(R.drawable.arrow_left, "left")
+                            ButtonDemo(R.drawable.center, "center")
+                            ButtonDemo(R.drawable.arrow_right, "right")
+                        }
+                        Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                            ButtonDemo(R.drawable.arrow_down, "down")
+                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                        }
+                    }
+
                 }
             }
         }
     }
 
+    @Composable
+    fun ButtonDemo (@DrawableRes id: Int, idClick: String)  {
+        val context = LocalContext.current
+        Button(onClick = {
+            when(idClick) {
+                "cancel" -> { Toast.makeText(context, "Clicked on cancel", Toast.LENGTH_SHORT).show() }
+                "up" -> { Toast.makeText(context, "Clicked on up", Toast.LENGTH_SHORT).show() }
+                "down" -> { Toast.makeText(context, "Clicked on down", Toast.LENGTH_SHORT).show() }
+                "left" -> { Toast.makeText(context, "Clicked on left", Toast.LENGTH_SHORT).show() }
+                "right" -> { Toast.makeText(context, "Clicked on right", Toast.LENGTH_SHORT).show() }
+                "center" -> { Toast.makeText(context, "Clicked on center", Toast.LENGTH_SHORT).show() }
+            }},
+            modifier = Modifier.height(buttonScale).width(buttonScale),
+            shape = RoundedCornerShape(20),
+            border = BorderStroke(2.dp, Color.White),
+            colors = ButtonDefaults.textButtonColors(
+                backgroundColor = Color.DarkGray,
+                contentColor = Color.White
+            )
+        )
+        {
+            Image(
+                painter = painterResource(id = id),
+                contentDescription = "Image",
+                modifier = Modifier
+                    .height(buttonScale - 20.dp)
+                    .width(buttonScale - 20.dp)
+
+            )
+        }
+    }
     private fun getScreenWeight(): Int {
         val metrics = DisplayMetrics()
 
@@ -189,7 +238,7 @@ class TerminalFragment : Fragment() {
                 }
                 when(getScreenHight()) {
                     in 0..1280 -> { scaleCoefficient.add(1.63f/scale) }
-                    in 1281..1440 -> { scaleCoefficient.add(2.4f/scale) }
+                    in 1281..1440 -> { scaleCoefficient.add(1.9f/scale) }
                 }
             }
             400 -> {
@@ -237,6 +286,36 @@ class TerminalFragment : Fragment() {
                     in 0..2560 -> { scaleCoefficient.add(5.9f/scale) }
                 }
             }
+        }
+    }
+    private fun setButtonsScale() {
+        when (dpi) {
+            320 -> {
+                when(getScreenHight()) {
+                    in 0..1280 -> { buttonScale = 58.dp }
+                    in 1281..1440 -> { buttonScale = 70.dp }
+                }
+            }
+            400 -> { buttonScale = 85.dp }
+            420 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { buttonScale = 70.dp }
+                    in 1921..2428 -> { buttonScale = 95.dp }
+                    in 2429..2480 -> { buttonScale = 97.dp }
+                }
+            }
+            440 -> { buttonScale = 85.dp }
+            480 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { buttonScale = 57.dp }
+                    in 1921..2400 -> {
+//                        System.err.println("metrics getScreenHight 1921..2400")
+                        buttonScale = 80.dp
+                    }
+                    in 2401..2636 -> { buttonScale = 90.dp }
+                }
+            }
+            560 -> { buttonScale = 70.dp }
         }
     }
 }
