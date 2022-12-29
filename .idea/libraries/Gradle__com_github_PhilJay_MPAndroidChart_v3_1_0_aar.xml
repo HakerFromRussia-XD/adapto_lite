@@ -2,7 +2,6 @@
   <library name="Gradle: com.github.PhilJay:MPAndroidChart:v3.1.0@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0dd4d214ef4b229719ef63daafa24378/transformed/jetified-MPAndroidChart-v3.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0dd4d214ef4b229719ef63daafa24378/transformed/jetified-MPAndroidChart-v3.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0dd4d214ef4b229719ef63daafa24378/transformed/jetified-MPAndroidChart-v3.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

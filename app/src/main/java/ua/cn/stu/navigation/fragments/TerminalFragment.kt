@@ -29,6 +29,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_terminal.*
+import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.services.TerminalViewModel
 import ua.cn.stu.navigation.contract.navigator
@@ -50,7 +51,7 @@ class TerminalFragment : Fragment() {
     private var scale = 0f
     private var dpi = 0
 
-    private val bytes = ByteArray(1056)
+    private var bytes = ByteArray(1056)
     private var myInflater: LayoutInflater? = null
     private var myContainer: ViewGroup? = null
     private var pixelsPool = 0
@@ -64,6 +65,11 @@ class TerminalFragment : Fragment() {
 
         myInflater = inflater
         myContainer = container
+        if (MainActivity.bytesArrayFrame.value != null) {
+            bytes = MainActivity.bytesArrayFrame.value!!
+        } else {
+            nextBytes(bytes)
+        }
 
         scale = resources.displayMetrics.density
         setScaleCoefficients()

@@ -668,11 +668,11 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (enable) {
             mScanning = true
             scanList = reinitScanList()
-            mBluetoothAdapter!!.startLeScan(mLeScanCallback)
+            mBluetoothAdapter?.startLeScan(mLeScanCallback)
             System.err.println("DeviceControlActivity------->   startLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
         } else {
             mScanning = false
-            mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
+            mBluetoothAdapter?.stopLeScan(mLeScanCallback)
             System.err.println("DeviceControlActivity------->   stopLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
         }
     }
@@ -788,6 +788,11 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
         @JvmStatic
+        fun frame(array: ByteArray) {
+            bytesArrayFrame.value = array
+        }
+
+        @JvmStatic
         fun upd_status_param(par_no:Int, v: ByteArray, s: ByteArray) {// вызов из NDK - обновить значения переменных
             when(par_no) {
                 1 ->  { param1.postValue(String(v)); param1name.postValue(String(s)) }
@@ -824,6 +829,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             RxUpdateMainEvent.getInstance().updateDebugFragment()
             RxUpdateMainEvent.getInstance().updateHomeFragment()
         }
+
+        var bytesArrayFrame: MutableLiveData<ByteArray> = MutableLiveData<ByteArray>()
 
         var param1: MutableLiveData<String> = MutableLiveData<String>()
         var param2: MutableLiveData<String> = MutableLiveData<String>()
