@@ -122,18 +122,15 @@ class MainActivity : AppCompatActivity(), Navigator {
 
 
         if (savedInstanceState == null) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.fragmentContainer, ScanningFragment())
-//                .commit()
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragmentContainer, TerminalFragment())
+                .add(R.id.fragmentContainer, ScanningFragment())
                 .commit()
+//            supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.fragmentContainer, TerminalFragment())
+//                .commit()
         }
-
-//        val i = Intent(this, ComposeActivity::class.java)
-//        this.startActivity(i)
 
 
         createStatList()
@@ -150,7 +147,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         checkLocationPermission()
         initBLEStructure()
         //TODO включить сканирование в продакшне
-//        scanLeDevice(true)
+        scanLeDevice(true)
 
 
         //запуск очереди блютуз команд
@@ -173,10 +170,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             connectedDevice =  getString(CONNECTED_DEVICE)
             connectedDeviceAddress =  getString(CONNECTED_DEVICE_ADDRESS)
         }
-//        if (!mConnected) {
-//            reconnectThreadFlag = true
-//            reconnectThread()
-//        }
+        if (!mConnected) {
+            reconnectThreadFlag = true
+            reconnectThread()
+        }
     }
     override fun onPause() {
         super.onPause()

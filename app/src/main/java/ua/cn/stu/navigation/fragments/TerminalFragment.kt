@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -22,17 +21,20 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_terminal.*
 import ua.cn.stu.navigation.R
 import ua.cn.stu.navigation.services.TerminalViewModel
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentTerminalBinding
-import ua.cn.stu.navigation.persistence.TerminalConstants
+import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_HIGHT
+import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_WEIGHT
 import ua.cn.stu.navigation.ui.theme.NavigationTheme
 import java.util.*
 import kotlin.random.Random.Default.nextBytes
@@ -60,10 +62,8 @@ class TerminalFragment : Fragment() {
         navigator().showBottomNavigationMenu(true)
         System.err.println("TERMINAL fragment started")
 
-
         myInflater = inflater
         myContainer = container
-
 
         scale = resources.displayMetrics.density
         setScaleCoefficients()
@@ -72,8 +72,9 @@ class TerminalFragment : Fragment() {
 
         System.err.println("metrics 1 height = ${getScreenHight()}  width = ${getScreenWeight()}  dpi = $dpi" )
 
-        return drow(inflater, container) //binding.root
+        return drow(inflater, container)
     }
+
 
     private fun startTimer() {
         object : CountDownTimer(100000000, 30) {
@@ -86,10 +87,11 @@ class TerminalFragment : Fragment() {
     }
 
 
+
     @Suppress("UNUSED_EXPRESSION")
     @SuppressLint("UnrememberedMutableState")
     private fun drow(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_terminal , container, false).apply {
+        val myCompouseView = inflater.inflate(R.layout.fragment_terminal , container, false).apply {
             findViewById<ComposeView>(R.id.terminal_composable)?.setContent {
                 NavigationTheme {
                     val count by viewModel.number.observeAsState(0)
@@ -109,35 +111,60 @@ class TerminalFragment : Fragment() {
                             count
 //                            System.err.println("TerminalViewModel fakt count $count")
                             Canvas(
-                                modifier = Modifier
+                                modifier = Modifier.pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = {
+                                            if ((calculateXPixel((it.x).toInt()) in 1..TERMINAL_WEIGHT) && (calculateYPixel(
+                                                    (it.y).toInt()
+                                                ) in 1..TERMINAL_HIGHT
+                                                        )
+                                            ) {
+                                                System.err.println(
+                                                    "motionEvent onTap X: ${it.x}  pix:${
+                                                        calculateXPixel(
+                                                            (it.x).toInt()
+                                                        )
+                                                    }"
+                                                )
+                                                System.err.println(
+                                                    "motionEvent onTap Y: ${it.y}  pix:${
+                                                        calculateYPixel(
+                                                            (it.y).toInt()
+                                                        )
+                                                    }"
+                                                )
+                                            }
+                                        }
+                                    )
+                                }
                             ) {
-                                for (i in 1 until TerminalConstants.TERMINAL_WEIGHT) {
-                                    for (j in 1 until TerminalConstants.TERMINAL_HIGHT) {
+                                for (i in 1 until TERMINAL_WEIGHT) {
+                                    for (j in 1 until TERMINAL_HIGHT) {
 //                                        composableScope.launch {
-                                            pixelsPool = bytes[((i - 1) * 8) + (j - 1).div(8)].toInt()
+                                        pixelsPool = bytes[((i - 1) * 8) + (j - 1).div(8)].toInt()
 //                                        }
 
                                         if (pixelsPool shr (j % 8) and 0b00000001 == 1) {
 //                                            System.err.println("BYTES bitsets $i  $j-1")
-                                                withTransform(
-                                                    {
-                                                        transform(
-                                                            Matrix().apply {
-                                                                scale(scaleXCoeff, scaleYCoeff)
-                                                                translate(
-                                                                    i * translateCoeff,
-                                                                    j * translateCoeff
-                                                                )
-                                                            }
-                                                        )
-                                                    }
-                                                ) {
-                                                    with(painter) {
-                                                        draw(
-                                                            painter.intrinsicSize
-                                                        )
-                                                    }
+                                            withTransform(
+                                                {
+                                                    transform(
+                                                        Matrix().apply {
+                                                            scale(scaleXCoeff, scaleYCoeff)
+                                                            translate(
+                                                                i * translateCoeff,
+                                                                j * translateCoeff
+                                                            )
+                                                        }
+                                                    )
                                                 }
+                                            ) {
+                                                with(painter) {
+                                                    draw(
+                                                        painter.intrinsicSize
+                                                    )
+                                                }
+                                            }
                                         } else {
 //                                            System.err.println("BYTES bitsets $i  $j-0")
                                         }
@@ -148,12 +175,15 @@ class TerminalFragment : Fragment() {
                     }
 
                     Column( horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Bottom))
+                        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Bottom))
                     {
                         Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             ButtonDemo(R.drawable.arrow_cancel, "cancel")
                             ButtonDemo(R.drawable.arrow_up, "up")
-                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                            Box(modifier = Modifier
+                                .background(Color.Transparent)
+                                .height(buttonScale)
+                                .width(buttonScale))
                         }
                         Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             ButtonDemo(R.drawable.arrow_left, "left")
@@ -161,15 +191,23 @@ class TerminalFragment : Fragment() {
                             ButtonDemo(R.drawable.arrow_right, "right")
                         }
                         Row (horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                            Box(modifier = Modifier
+                                .background(Color.Transparent)
+                                .height(buttonScale)
+                                .width(buttonScale))
                             ButtonDemo(R.drawable.arrow_down, "down")
-                            Box(modifier = Modifier.background(Color.Transparent).height(buttonScale).width(buttonScale))
+                            Box(modifier = Modifier
+                                .background(Color.Transparent)
+                                .height(buttonScale)
+                                .width(buttonScale))
                         }
                     }
 
                 }
             }
         }
+
+        return myCompouseView
     }
 
     @Composable
@@ -184,7 +222,9 @@ class TerminalFragment : Fragment() {
                 "right" -> { Toast.makeText(context, "Clicked on right", Toast.LENGTH_SHORT).show() }
                 "center" -> { Toast.makeText(context, "Clicked on center", Toast.LENGTH_SHORT).show() }
             }},
-            modifier = Modifier.height(buttonScale).width(buttonScale),
+            modifier = Modifier
+                .height(buttonScale)
+                .width(buttonScale),
             shape = RoundedCornerShape(20),
             border = BorderStroke(2.dp, Color.White),
             colors = ButtonDefaults.textButtonColors(
@@ -317,5 +357,91 @@ class TerminalFragment : Fragment() {
             }
             560 -> { buttonScale = 70.dp }
         }
+    }
+    private fun calculateXPixel(x: Int): Int {
+        val minX = intArrayOf(46, 17, 14, 9, 11, 6, 13, 5, 7, 10)
+        val maxX = intArrayOf(1044, 2182, 1075, 1070, 1070, 1074, 1069, 711, 1070, 1425)
+        var konfig = 0
+        when (dpi) {
+            320 -> {
+                when(getScreenHight()) {
+                    in 0..1280 -> { konfig = 7 }
+                    in 1281..1440 -> { scaleCoefficient.add(1.9f/scale) }
+                }
+            }
+            400 -> {
+                when(getScreenHight()) {
+                    in 0..2160 -> { konfig = 8 }
+                }
+            }
+            420 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { konfig = 2 }
+                    in 1921..2428 -> { konfig = 5 }
+                    in 2429..2480 -> { konfig = 1 }
+                }
+            }
+            440 -> {
+                when(getScreenHight()) {
+                    in 0..2340 -> { konfig = 3 }
+                }
+            }
+            480 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { konfig = 6 }
+                    in 1921..2400 -> { konfig = 0 }
+                    in 2401..2636 -> { konfig = 4 }
+                }
+            }
+            560 -> {
+                when(getScreenHight()) {
+                    in 0..2560 -> { konfig = 9 }
+                }
+            }
+        }
+        return ((x - minX[konfig]) / ((maxX[konfig] - minX[konfig]).toFloat() / (TERMINAL_WEIGHT))).toInt() + 1
+    }
+    private fun calculateYPixel(y: Int): Int {
+        val minY = intArrayOf(9, 17, 13, 19, 30, 28, 23, 14, 20, 20)
+        val maxY = intArrayOf(810, 899, 654, 822, 920, 859, 623, 420, 757, 866)
+        var konfig = 0
+        when (dpi) {
+            320 -> {
+                when(getScreenHight()) {
+                    in 0..1280 -> { konfig = 7 }
+                    in 1281..1440 -> { scaleCoefficient.add(1.9f/scale) }
+                }
+            }
+            400 -> {
+                when(getScreenHight()) {
+                    in 0..2160 -> { konfig = 8 }
+                }
+            }
+            420 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { konfig = 2 }
+                    in 1921..2428 -> { konfig = 5 }
+                    in 2429..2480 -> { konfig = 1 }
+                }
+            }
+            440 -> {
+                when(getScreenHight()) {
+                    in 0..2340 -> { konfig = 3 }
+                }
+            }
+            480 -> {
+                when(getScreenHight()) {
+                    in 0..1920 -> { konfig = 6 }
+                    in 1921..2400 -> { konfig = 0 }
+                    in 2401..2636 -> { konfig = 4 }
+                }
+            }
+            560 -> {
+                when(getScreenHight()) {
+                    in 0..2560 -> { konfig = 9 }
+                }
+            }
+        }
+        return ((y - minY[konfig]) / ( (maxY[konfig] - minY[konfig]).toFloat() / (TERMINAL_HIGHT - 1) )).toInt() + 1
     }
 }
