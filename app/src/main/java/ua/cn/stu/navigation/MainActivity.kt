@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
@@ -663,17 +664,31 @@ class MainActivity : AppCompatActivity(), Navigator {
         return intentFilter
     }
     //TODO работаем с этими местами 4
+    private fun isPermissionsGranted(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+        } else {
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        }
+    }
     @SuppressLint("MissingPermission")
     override fun scanLeDevice(enable: Boolean) {
-        if (enable) {
-            mScanning = true
-            scanList = reinitScanList()
-            mBluetoothAdapter?.startLeScan(mLeScanCallback)
-            System.err.println("DeviceControlActivity------->   startLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
+        if (isPermissionsGranted(context = baseContext)) {
+            System.err.println("DeviceControlActivity------->   isPermissionsGranted = true")
+            if (enable) {
+                mScanning = true
+                scanList = reinitScanList()
+                mBluetoothAdapter!!.startLeScan(mLeScanCallback)
+                System.err.println("DeviceControlActivity------->   startLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
+            } else {
+                mScanning = false
+                mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
+                System.err.println("DeviceControlActivity------->   stopLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
+            }
         } else {
-            mScanning = false
-            mBluetoothAdapter?.stopLeScan(mLeScanCallback)
-            System.err.println("DeviceControlActivity------->   stopLeScan flagScanWithoutConnect=$flagScanWithoutConnect")
+            System.err.println("DeviceControlActivity------->   isPermissionsGranted = false")
         }
     }
     @SuppressLint("MissingPermission")

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
@@ -17,11 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Navigation">
-        <activity
-            android:name=".ComposeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_compose"
-            android:theme="@style/Theme.Navigation" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
