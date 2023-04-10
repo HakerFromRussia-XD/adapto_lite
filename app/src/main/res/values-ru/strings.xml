@@ -159,4 +159,5 @@
         <item quantity="many">%1$d коробок</item>
         <item quantity="other">%1$d коробок</item>
     </plurals>
+    <string name="title_activity_compose">ComposeActivity</string>
 </resources>

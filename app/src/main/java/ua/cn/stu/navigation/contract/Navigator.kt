@@ -32,7 +32,8 @@ interface Navigator {
     fun reconnectThread()
 //    fun showGoBolusDialog(title: String, massage: String, numberOfHundredthsInsulin: Int, numberOfHundredStrechedInsulin: Int, timeBolus: Int)
 
-
+    fun sendCoordFromTerminal(xPix: Int, yPix: Int)
+    fun sendButtonFromTerminal(buttonId: Int)
     fun firstOpenHome()
     fun goBack()
     fun goToMenu()

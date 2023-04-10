@@ -1,8 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.trello.rxlifecycle2:rxlifecycle-components:2.2.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c25183bd8ce184ba8c6ed50254234495/transformed/jetified-rxlifecycle-components-2.2.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c25183bd8ce184ba8c6ed50254234495/transformed/jetified-rxlifecycle-components-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a2015ae83c0e10f768c13c494f73f6a8/transformed/jetified-rxlifecycle-components-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a2015ae83c0e10f768c13c494f73f6a8/transformed/jetified-rxlifecycle-components-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a2015ae83c0e10f768c13c494f73f6a8/transformed/jetified-rxlifecycle-components-2.2.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2532a933456a1f3e532593e62db9a9b1/transformed/jetified-rxlifecycle-components-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2532a933456a1f3e532593e62db9a9b1/transformed/jetified-rxlifecycle-components-2.2.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2532a933456a1f3e532593e62db9a9b1/transformed/jetified-rxlifecycle-components-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/64b32e177b645d7f07bb560e1a4b5a88/transformed/jetified-rxlifecycle-components-2.2.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/64b32e177b645d7f07bb560e1a4b5a88/transformed/jetified-rxlifecycle-components-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/64b32e177b645d7f07bb560e1a4b5a88/transformed/jetified-rxlifecycle-components-2.2.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.trello.rxlifecycle2/rxlifecycle-components/2.2.2/8960645a2ffa6f27706a87228197a38a7c4649d3/rxlifecycle-components-2.2.2-javadoc.jar!/" />

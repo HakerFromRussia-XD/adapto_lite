@@ -2,7 +2,6 @@ package ua.cn.stu.navigation.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.Toast
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_terminal.*
 import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.R
@@ -36,6 +36,7 @@ import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentTerminalBinding
 import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_HIGHT
 import ua.cn.stu.navigation.persistence.TerminalConstants.TERMINAL_WEIGHT
+import ua.cn.stu.navigation.rx.RxUpdateMainEvent
 import ua.cn.stu.navigation.ui.theme.NavigationTheme
 import java.util.*
 import kotlin.random.Random.Default.nextBytes
@@ -50,7 +51,7 @@ class TerminalFragment : Fragment() {
     private var scaleCoefficient = Vector<Float>()
     private var scale = 0f
     private var dpi = 0
-
+    private var frameCount = 0
     private var bytes = ByteArray(1056)
     private var myInflater: LayoutInflater? = null
     private var myContainer: ViewGroup? = null
@@ -66,30 +67,28 @@ class TerminalFragment : Fragment() {
         myInflater = inflater
         myContainer = container
         if (MainActivity.bytesArrayFrame.value != null) {
+            System.err.println("bytesArrayFrame NOT NULL!!!!")
             bytes = MainActivity.bytesArrayFrame.value!!
         } else {
+            System.err.println("bytesArrayFrame NULL")
             nextBytes(bytes)
         }
 
         scale = resources.displayMetrics.density
         setScaleCoefficients()
         setButtonsScale()
-        startTimer()
+//        startTimer()
 
-        System.err.println("metrics 1 height = ${getScreenHight()}  width = ${getScreenWeight()}  dpi = $dpi" )
-
-        return drow(inflater, container)
-    }
-
-
-    private fun startTimer() {
-        object : CountDownTimer(100000000, 30) {
-            override fun onTick(millisUntilFinished: Long) {
-                viewModel.addNumber(millisUntilFinished.toInt())
+        RxUpdateMainEvent.getInstance().terminalFragmentObservable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                bytes = MainActivity.bytesArrayFrame.value!!
+                viewModel.addNumber(frameCount++)
             }
 
-            override fun onFinish() {}
-        }.start()
+
+
+        return drow(inflater, container)
     }
 
 
@@ -110,12 +109,10 @@ class TerminalFragment : Fragment() {
                             val vector =
                                 ImageVector.vectorResource(id = R.drawable.ic_drawing)//drawable vector
                             val painter = rememberVectorPainter(image = vector)//convert to painter
-                            nextBytes(bytes)
                             val translateCoeff = size_pixel * scale
                             val scaleXCoeff = scaleCoefficient[0]
                             val scaleYCoeff = scaleCoefficient[1]
                             count
-//                            System.err.println("TerminalViewModel fakt count $count")
                             Canvas(
                                 modifier = Modifier.pointerInput(Unit) {
                                     detectTapGestures(
@@ -125,20 +122,7 @@ class TerminalFragment : Fragment() {
                                                 ) in 1..TERMINAL_HIGHT
                                                         )
                                             ) {
-                                                System.err.println(
-                                                    "motionEvent onTap X: ${it.x}  pix:${
-                                                        calculateXPixel(
-                                                            (it.x).toInt()
-                                                        )
-                                                    }"
-                                                )
-                                                System.err.println(
-                                                    "motionEvent onTap Y: ${it.y}  pix:${
-                                                        calculateYPixel(
-                                                            (it.y).toInt()
-                                                        )
-                                                    }"
-                                                )
+                                                navigator().sendCoordFromTerminal(calculateXPixel((it.x).toInt()), calculateYPixel((it.y).toInt()))
                                             }
                                         }
                                     )
@@ -221,12 +205,30 @@ class TerminalFragment : Fragment() {
         val context = LocalContext.current
         Button(onClick = {
             when(idClick) {
-                "cancel" -> { Toast.makeText(context, "Clicked on cancel", Toast.LENGTH_SHORT).show() }
-                "up" -> { Toast.makeText(context, "Clicked on up", Toast.LENGTH_SHORT).show() }
-                "down" -> { Toast.makeText(context, "Clicked on down", Toast.LENGTH_SHORT).show() }
-                "left" -> { Toast.makeText(context, "Clicked on left", Toast.LENGTH_SHORT).show() }
-                "right" -> { Toast.makeText(context, "Clicked on right", Toast.LENGTH_SHORT).show() }
-                "center" -> { Toast.makeText(context, "Clicked on center", Toast.LENGTH_SHORT).show() }
+                "cancel" -> {
+                    Toast.makeText(context, "Clicked on cancel", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(1)
+                }
+                "up" -> {
+                    Toast.makeText(context, "Clicked on up", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(2)
+                }
+                "down" -> {
+                    Toast.makeText(context, "Clicked on down", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(3)
+                }
+                "left" -> {
+                    Toast.makeText(context, "Clicked on left", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(4)
+                }
+                "right" -> {
+                    Toast.makeText(context, "Clicked on right", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(5)
+                }
+                "center" -> {
+                    Toast.makeText(context, "Clicked on center", Toast.LENGTH_SHORT).show()
+                    navigator().sendButtonFromTerminal(6)
+                }
             }},
             modifier = Modifier
                 .height(buttonScale)

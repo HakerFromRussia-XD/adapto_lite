@@ -1,8 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.trello.rxlifecycle2:rxlifecycle-android:2.2.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f630ec14252b7079577a4a711a955c65/transformed/jetified-rxlifecycle-android-2.2.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f630ec14252b7079577a4a711a955c65/transformed/jetified-rxlifecycle-android-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/841369ad8e2caafec432e2dfcf3384ca/transformed/jetified-rxlifecycle-android-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/841369ad8e2caafec432e2dfcf3384ca/transformed/jetified-rxlifecycle-android-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/841369ad8e2caafec432e2dfcf3384ca/transformed/jetified-rxlifecycle-android-2.2.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63b1acab24b11bd97a83d29481ed79a3/transformed/jetified-rxlifecycle-android-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63b1acab24b11bd97a83d29481ed79a3/transformed/jetified-rxlifecycle-android-2.2.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/63b1acab24b11bd97a83d29481ed79a3/transformed/jetified-rxlifecycle-android-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5bf31c61695e2dce2e5ec5551da031a9/transformed/jetified-rxlifecycle-android-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5bf31c61695e2dce2e5ec5551da031a9/transformed/jetified-rxlifecycle-android-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5bf31c61695e2dce2e5ec5551da031a9/transformed/jetified-rxlifecycle-android-2.2.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.trello.rxlifecycle2/rxlifecycle-android/2.2.2/f008789192356ce4f5c14dd9554647687935d854/rxlifecycle-android-2.2.2-javadoc.jar!/" />

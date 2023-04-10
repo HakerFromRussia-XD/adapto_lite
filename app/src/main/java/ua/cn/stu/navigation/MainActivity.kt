@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     private val listUUID = "UUID"
     private var actionState = WRITE
 
-    //TODO работаем с этими местами 1
+
     private val mServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, service: IBinder) {
             mBluetoothLeService = (service as BluetoothLeService.LocalBinder).service
@@ -106,8 +106,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private external fun new_dg_from_bt(dgram: ByteArray)// отправить пакет gatt в обработку
     external fun eth_ble_stack_control(status: Int)// оповестить обработчик пакетов что статус подключения поменялся
-    external fun change_dbg_scr(scr: Int);// оповещаем какой дебаг экран показывать
-    external fun tap_detected(area: Int);// оповещаем какая область экрана была нажата
+    external fun change_dbg_scr(scr: Int)// оповещаем какой дебаг экран показывать
+    external fun tap_detected(area: Int)// оповещаем какая область экрана была нажата
+    private external fun coord_from_terminal(xPix: Int, yPix: Int)// передаём координаты места касания вью терминала
+    private external fun button_from_terminal(buttonId: Int)// передаём координаты места касания вью терминала
 
 
     @SuppressLint("SetTextI18n", "CheckResult")
@@ -215,12 +217,24 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun showStatisticScreen() { launchFragmentWihtoutStack(StatisticFragment()) }
     override fun showHomeScreen() { launchFragmentWihtoutStack(HomeFragment()) }
     override fun showBMSScreen() { launchFragmentWihtoutStack(BMSFragment()) }
-    override fun showDebugScreen() { launchFragmentWihtoutStack(DebugFragment()) }
+    //TODO исправить терминал на дебаг
+    override fun showDebugScreen() {
+        launchFragmentWihtoutStack(TerminalFragment())
+//        launchFragmentWihtoutStack(DebugFragment())
+    }
     override fun showBottomNavigationMenu (show: Boolean) {
         if (show) bottom_menu_cl.visibility = View.VISIBLE
         else bottom_menu_cl.visibility = View.GONE
     }
 
+    override fun sendCoordFromTerminal(xPix: Int, yPix: Int) {
+        coord_from_terminal(xPix, yPix)
+        System.err.println("motionEvent X pix:${xPix}")
+        System.err.println("motionEvent Y pix:${yPix}")
+    }
+    override fun sendButtonFromTerminal(buttonId: Int) {
+        button_from_terminal(buttonId)
+    }
     override fun firstOpenHome() {
         supportFragmentManager
             .beginTransaction()
@@ -284,15 +298,6 @@ class MainActivity : AppCompatActivity(), Navigator {
             countActivatedTitleFragment = 0
         }
 
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            return_rl.visibility = View.VISIBLE
-            battery_rl.visibility = View.GONE
-        } else {
-            battery_rl.visibility = View.VISIBLE
-            return_rl.visibility = View.GONE
-        }
-
-        if (fragment is HasReturnAction) { returned(fragment.getReturnAction()) }
         if (fragment is HasDisconnectionAction) { connectionClicked(fragment.getDisconnectionAction()) }
         if (fragment is HasCustomAction) { createCustomToolbarAction(fragment.getCustomAction())
         } else { binding.toolbar.menu.clear() }
@@ -313,12 +318,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun returned(action: ReturnAction) {
-        return_btn.setOnClickListener {
-            action.onReturnAction.run()
-            return@setOnClickListener
-        }
-    }
     private fun connectionClicked(action: DisconnectionAction) {
         connection_btn.setOnClickListener {
             action.onDisconnectionAction.run()
@@ -360,7 +359,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         listA.add("statistic 5 cell")
         listA.add("statistic 6 cell")
         listA.add("statistic 7 cell")
-        listA.add("statistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cellstatistic 8 cell")
+        listA.add("statistic 8 cell")
         listA.add("statistic 9 cell")
         listA.add("statistic 10 cell")
         listA.add("statistic 11 cell")
@@ -376,7 +375,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
 
-    //TODO работаем с этими местами 2
     @SuppressLint("InflateParams")
     override fun showDisconnectDialog() {
         val dialogBinding = layoutInflater.inflate(R.layout.dialog_disconnection, null)
@@ -589,7 +587,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         mGattServicesList!!.setAdapter(gattServiceAdapter)
         if (mScanning) { scanLeDevice(false) }
     }
-    //TODO работаем с этими местами 3
     override fun reconnectThread() {
         System.err.println("--> reconnectThread started")
         var j = 1
@@ -663,7 +660,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE)
         return intentFilter
     }
-    //TODO работаем с этими местами 4
     private fun isPermissionsGranted(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -744,7 +740,6 @@ class MainActivity : AppCompatActivity(), Navigator {
 //            showLocationPermissionDialog()
         }
     }
-    //TODO работаем с этими местами 5
     private fun addLEDeviceToScanList(item: String, device: BluetoothDevice?) {
         var canAdd = true
         for (i in scanList.indices) {
@@ -804,7 +799,9 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         @JvmStatic
         fun frame(array: ByteArray) {
-            bytesArrayFrame.value = array
+            System.err.println("frame array = ${array.size}")
+            bytesArrayFrame.postValue(array)
+            RxUpdateMainEvent.getInstance().updateTerminalFragment()
         }
 
         @JvmStatic

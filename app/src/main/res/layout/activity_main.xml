@@ -31,41 +31,6 @@
                 tools:ignore="DisableBaselineAlignment,UselessParent">
 
                 <RelativeLayout
-                    android:id="@+id/return_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:visibility="gone">
-
-                    <View
-                        android:id="@+id/return_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:id="@+id/back_arrow_iv"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="-10dp"
-                        android:src="@drawable/back_arrow"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="-5dp"
-                        android:layout_toEndOf="@+id/back_arrow_iv"
-                        android:fontFamily="@font/sf_pro_display_light"
-                        android:text="@string/return_str"
-                        android:textColor="@color/system_blue"
-                        android:textSize="17sp"
-                        tools:ignore="SpUsage" />
-                </RelativeLayout>
-
-                <RelativeLayout
                     android:id="@+id/battery_rl"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

@@ -158,8 +158,7 @@ class HomeFragment : Fragment(), HasDisconnectionAction {
         RxUpdateMainEvent.getInstance().homeFragmentObservable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                System.err.println("param2name  ${param2name.value?.toFloat()}")
-                binding.testSb.progress = param2name.value!!.toInt()
+//                binding.testSb.progress = param2name.value!!.toInt()
             }
 
         return binding.root

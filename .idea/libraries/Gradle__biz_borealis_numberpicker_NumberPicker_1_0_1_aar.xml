@@ -1,9 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: biz.borealis.numberpicker:NumberPicker:1.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5230692bd1e6a74ad7896e8e53439f52/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5230692bd1e6a74ad7896e8e53439f52/transformed/jetified-NumberPicker-1.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5230692bd1e6a74ad7896e8e53439f52/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d1d8cdd62f3447bb2c8fe76fef1967d6/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d1d8cdd62f3447bb2c8fe76fef1967d6/transformed/jetified-NumberPicker-1.0.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d1d8cdd62f3447bb2c8fe76fef1967d6/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1111b1b2df28157295f3c197308e2dfe/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1111b1b2df28157295f3c197308e2dfe/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1111b1b2df28157295f3c197308e2dfe/transformed/jetified-NumberPicker-1.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/76702898bf25745a53196f7dada4262a/transformed/jetified-NumberPicker-1.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76702898bf25745a53196f7dada4262a/transformed/jetified-NumberPicker-1.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76702898bf25745a53196f7dada4262a/transformed/jetified-NumberPicker-1.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/biz.borealis.numberpicker/NumberPicker/1.0.1/fe980dba6ab3fdafb212723489785c1a8287d42f/NumberPicker-1.0.1-javadoc.jar!/" />

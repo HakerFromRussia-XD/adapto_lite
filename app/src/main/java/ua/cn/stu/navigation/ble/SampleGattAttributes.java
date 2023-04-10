@@ -6,7 +6,7 @@ import java.util.HashMap;
  * This class includes a small subset of standard GATT attributes for demonstration purposes.
  */
 public class SampleGattAttributes {
-    private static final HashMap<String, String> attributes = new HashMap();
+    private static final HashMap attributes = new HashMap();
     // Sample Characteristics.
     public static String NOTIFICATION_PUMP_STATUS = "c8b61521-a676-4fba-968b-cbccbdd224c9";
     public static String LOG_POINTER = "c8b61522-a676-4fba-968b-cbccbdd224c9";
@@ -74,7 +74,7 @@ public class SampleGattAttributes {
     }
 
     public static String lookup(String uuid, String defaultName) {
-        String name = attributes.get(uuid);
-        return name == null ? defaultName : name;
+        Object name = attributes.get(uuid);
+        return name == null ? defaultName : (String) name;
     }
 }

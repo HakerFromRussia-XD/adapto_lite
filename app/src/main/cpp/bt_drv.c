@@ -17,6 +17,7 @@
 #include "ble_eth.h"
 #include "lwip/lwip.h"
 #include "eth_nat.h"
+#include "lwip/net_topology.h"
 //#include "lwip/opt.h"
 //#include "lwip/mem.h"
 //#include "lwip/memp.h"
@@ -34,6 +35,7 @@ JNIEnv* send_env;
 JNIEnv* status_upd_env;
 
 jmethodID send_method;
+jmethodID frame_method;
 jmethodID status_upd_method;
 
 volatile int ble_connection_status=0;// 2 - connection up.
@@ -220,6 +222,40 @@ Java_ua_cn_stu_navigation_MainActivity_change_1dbg_1scr(JNIEnv *env, jobject thi
   dbg_scr_num=scr;
 }
 
+pthread_t frameThreadHandle;
+extern uint8_t imageCubes[];
+extern uint8_t imageWolf[];
+JNIEnv* frame_env;
+
+void frameThread(void *argsw)
+{
+    JavaVMAttachArgs args;
+    args.version = JNI_VERSION_1_6; // choose your JNI version
+    args.name = NULL;
+    args.group = NULL;
+    jint ret=(*gJvm)->AttachCurrentThread(gJvm, &frame_env, &args);
+    if (ret) return;
+    static unsigned char parity;
+    while(1)
+    {
+        usleep(50000);
+        if (frame_method)
+        {
+            JNIEnv *env = frame_env;
+            jbyteArray dgramm = (*env)->NewByteArray(env, 132 * 8);
+            if (dgramm == NULL) continue;
+            (*env)->SetByteArrayRegion (env, dgramm, 0, 132 * 8, ! parity ? imageWolf : imageCubes);
+            (*env)->CallStaticVoidMethod(env, bleserv, frame_method, dgramm);
+            (*env)->DeleteLocalRef(env, dgramm);
+            parity = !parity;
+        }
+    }
+}
+
+void frameThreadInit()
+{
+    TaskCreate (frameThread, &frameThreadHandle);
+}
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     gJvm = pjvm;
@@ -232,6 +268,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     if (bleserv1 == NULL) return JNI_ERR;
     send_method = (*env)->GetStaticMethodID(env, bleserv, "send_to_ble","([B)I");
     if (send_method == NULL) return JNI_ERR;
+    frame_method = (*env)->GetStaticMethodID(env, bleserv, "frame", "([B)V");
+    if (frame_method == NULL) return JNI_ERR;
     status_upd_method = (*env)->GetStaticMethodID(env, bleserv, "upd_status_param","(I[B[B)V");
     if (status_upd_method == NULL) return JNI_ERR;
 
@@ -241,6 +279,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved) {
     ble_tcp_init();
 
     MX_LWIP_Init();
+//    topology_init();
+    frameThreadInit();
     return JNI_VERSION_1_6;
 }
 
@@ -285,6 +325,21 @@ JNIEXPORT void JNICALL
 Java_ua_cn_stu_navigation_MainActivity_tap_1detected(JNIEnv *env, jobject thiz, jint area) {
     //    tap_detected(area);
     dbg[2]++;
+}
+
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_MainActivity_coord_1from_1terminal(JNIEnv *env, jobject thiz, jint x_pix,
+                                                             jint y_pix) {
+    static volatile char x;
+    x++;
+    // TODO: implement coord_from_terminal()
+}
+
+JNIEXPORT void JNICALL
+Java_ua_cn_stu_navigation_MainActivity_button_1from_1terminal(JNIEnv *env, jobject thiz,
+                                                              jint button_id) {
+    volatile int lol = button_id;
+    // TODO: implement button_from_terminal()
 }
 
 //JNIEXPORT void JNICALL Java_ua_cn_stu_navigation_MainActivity_eth_1ble_1stack_1control(JNIEnv *env, jobject thiz, jint status) {

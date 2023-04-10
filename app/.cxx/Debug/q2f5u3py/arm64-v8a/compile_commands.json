@@ -46,6 +46,11 @@
 },
 {
   "directory": "/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a",
+  "command": "/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=aarch64-none-linux-android23 --gcc-toolchain=/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dbt_drv_EXPORTS -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/. -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/bt_drv.dir/images.c.o -c /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c",
+  "file": "/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c"
+},
+{
+  "directory": "/Users/motoricallc/Documents/Android/Adapto/app/.cxx/Debug/q2f5u3py/arm64-v8a",
   "command": "/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=aarch64-none-linux-android23 --gcc-toolchain=/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dbt_drv_EXPORTS -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/. -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip -I/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/bt_drv.dir/lwip/dnsproxy.c.o -c /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/dnsproxy.c",
   "file": "/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/dnsproxy.c"
 },

@@ -140,6 +140,8 @@ dbg[0]++;
         snd_blk_len=len;
       }
 
+
+
       if (len || (ack_notify_request && ack_sent_value!=rx_nack_blk )) {// шлем если есть что слать, либо пора отправить обновление по ACK
         uint32_t ack=rx_nack_blk;
 

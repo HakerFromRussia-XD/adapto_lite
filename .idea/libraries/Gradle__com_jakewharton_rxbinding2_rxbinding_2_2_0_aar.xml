@@ -1,8 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding2:rxbinding:2.2.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d728e4cfc18caf0c528efde5d8a0cb01/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d728e4cfc18caf0c528efde5d8a0cb01/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b925156187c84c67c5ee58941dac6cf9/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b925156187c84c67c5ee58941dac6cf9/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b925156187c84c67c5ee58941dac6cf9/transformed/jetified-rxbinding-2.2.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d464734392438c22e816277f8380d00c/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d464734392438c22e816277f8380d00c/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d464734392438c22e816277f8380d00c/transformed/jetified-rxbinding-2.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7a557f87f09f3332057df322431a351f/transformed/jetified-rxbinding-2.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7a557f87f09f3332057df322431a351f/transformed/jetified-rxbinding-2.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7a557f87f09f3332057df322431a351f/transformed/jetified-rxbinding-2.2.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jakewharton.rxbinding2/rxbinding/2.2.0/2451ae574a8c45f839f95290ab58975ee469ca03/rxbinding-2.2.0-javadoc.jar!/" />

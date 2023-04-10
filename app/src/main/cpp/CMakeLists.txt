@@ -31,6 +31,8 @@ add_library( # Sets the name of the library.
         eth_queue.c
         xlib.c
         settings.c
+        images.c
+
 
 #        LWIP
 #        lwip/api/api_lib.c

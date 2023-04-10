@@ -10,6 +10,7 @@ public class RxUpdateMainEvent {
   private final PublishSubject<ScanItem> scanListSubject;
   private final PublishSubject<Boolean> backPresedIventSubject;
   private final PublishSubject<Boolean> updateDebugSubject;
+  private final PublishSubject<Boolean> updateTerminalSubject;
   private final PublishSubject<Boolean> updateHomeSubject;
 
 
@@ -17,6 +18,7 @@ public class RxUpdateMainEvent {
     scanListSubject = PublishSubject.create();
     backPresedIventSubject = PublishSubject.create();
     updateDebugSubject = PublishSubject.create();
+    updateTerminalSubject = PublishSubject.create();
     updateHomeSubject = PublishSubject.create();
   }
 
@@ -29,11 +31,13 @@ public class RxUpdateMainEvent {
 
   public void updateScanList(ScanItem scanItem) { scanListSubject.onNext(scanItem); }
   public void updateDebugFragment() { updateDebugSubject.onNext(true); }
+  public void updateTerminalFragment() { updateTerminalSubject.onNext(true); }
   public void updateHomeFragment() { updateHomeSubject.onNext(true); }
   public void updateBackPresedIvent() { backPresedIventSubject.onNext(true); }
 
 
   public Observable<ScanItem> getScanListObservable() { return scanListSubject; }
   public Observable<Boolean> getDebugFragmentObservable() { return updateDebugSubject; }
+  public Observable<Boolean> getTerminalFragmentObservable() { return updateTerminalSubject; }
   public Observable<Boolean> getHomeFragmentObservable() { return updateHomeSubject; }
 }
