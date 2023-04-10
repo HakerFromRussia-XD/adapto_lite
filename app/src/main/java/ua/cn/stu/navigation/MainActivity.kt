@@ -10,16 +10,14 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
-import android.os.Build
-import android.os.Bundle
-import android.os.IBinder
-import android.os.Parcelable
+import android.os.*
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListView
 import android.widget.SimpleExpandableListAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -148,6 +146,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         // инициализация блютуз
         checkLocationPermission()
+        askPermissions()
         initBLEStructure()
         //TODO включить сканирование в продакшне
         scanLeDevice(true)
@@ -162,11 +161,19 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         worker.start()
     }
-    @SuppressLint("MissingPermission")
+
     override fun onResume() {
         super.onResume()
         if (!mBluetoothAdapter!!.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED")
+                return
+            }
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
         if (mBluetoothLeService != null) {
@@ -740,6 +747,49 @@ class MainActivity : AppCompatActivity(), Navigator {
 //            showLocationPermissionDialog()
         }
     }
+    private fun askPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Handler().postDelayed({
+                requestMultiplePermissions.launch(arrayOf(
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT))
+            }, 300)
+        }
+        else{
+//            Dexter.withActivity(this).withPermissions(
+//                Manifest.permission.BLUETOOTH,
+//                Manifest.permission.BLUETOOTH_ADMIN,
+//                Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            )
+//                .withListener(object : MultiplePermissionsListener {
+//                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+//                        if (report.areAllPermissionsGranted()) {
+////                            System.err.println(" LOLOLOEFWEF --->  onPermissionsChecked true")
+//                            val intent = Intent(this@SplashScreen, ScanActivity::class.java)
+//                            startActivity(intent)
+//                            finish()
+//                        } else {
+////                            System.err.println(" LOLOLOEFWEF --->  onPermissionsChecked false")
+//                            askPermissions()
+//                        }
+//                    }
+//
+//                    override fun onPermissionRationaleShouldBeShown(
+//                        permissions: List<PermissionRequest>,
+//                        token: PermissionToken
+//                    ) {
+//                        token.continuePermissionRequest()
+//                    }
+//                }).check()
+        }
+    }
+    @SuppressLint("LogNotTimber")
+    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        permissions.entries.forEach {
+                System.err.println("LOLOLOEFWEF --->  ${it.key} = ${it.value}")
+        }
+    }
     private fun addLEDeviceToScanList(item: String, device: BluetoothDevice?) {
         var canAdd = true
         for (i in scanList.indices) {
@@ -799,7 +849,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         @JvmStatic
         fun frame(array: ByteArray) {
-            System.err.println("frame array = ${array.size}")
+//            System.err.println("frame array = ${array.size}")
             bytesArrayFrame.postValue(array)
             RxUpdateMainEvent.getInstance().updateTerminalFragment()
         }

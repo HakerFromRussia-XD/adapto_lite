@@ -4,13 +4,7 @@ ninja: Entering directory `/Users/motoricallc/Documents/Android/Adapto/app/.cxx/
   {// struct DS
   ^~~~~~~~~~~~~
 1 warning generated.
-[2/39] Building C object CMakeFiles/bt_drv.dir/ble_tcp.c.o
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/ble_tcp.c:189:29: warning: incompatible function pointer types assigning to 'void (*)(sigval_t)' (aka 'void (*)(union sigval)') from 'void (*)(void *)' [-Wincompatible-function-pointer-types]
-  sev.sigev_notify_function = &tcp_tmr;
-                            ^ ~~~~~~~~
-1 warning generated.
-[3/39] Building C object CMakeFiles/bt_drv.dir/eth_queue.c.o
-[4/39] Building C object CMakeFiles/bt_drv.dir/xlib.c.o
+[2/39] Building C object CMakeFiles/bt_drv.dir/xlib.c.o
 /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/xlib.c:37:47: warning: incompatible function pointer types passing 'void (*)(void *)' to parameter of type 'void *(*)(void *)' [-Wincompatible-function-pointer-types]
   int tid1=pthread_create(pxCreatedTask, &ta, callback_fn, NULL);
                                               ^~~~~~~~~~~
@@ -31,74 +25,9 @@ int pthread_create(pthread_t* __pthread_ptr, pthread_attr_t const* __attr, void*
 int __android_log_write(int prio, const char* tag, const char* text);
                                                                ^
 4 warnings generated.
-[5/39] Building C object CMakeFiles/bt_drv.dir/eth_router.c.o
-[6/39] Building C object CMakeFiles/bt_drv.dir/ble_eth.c.o
-[7/39] Building C object CMakeFiles/bt_drv.dir/images.c.o
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c:2:8: warning: excess elements in scalar initializer
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
-              ^~~~
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c:71:8: warning: excess elements in scalar initializer
-        0xff, 0xff, 0xff, 0x8f, 0xe3, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x9f, 0xf3, 0xff, 0xff, 0xff, 
-              ^~~~
-2 warnings generated.
-[8/39] Building C object CMakeFiles/bt_drv.dir/eth_mem.c.o
-[9/39] Building C object CMakeFiles/bt_drv.dir/eth_nat.c.o
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:119:9: warning: 'htons' macro redefined [-Wmacro-redefined]
-#define htons(x) lwip_htons(x)
-        ^
-/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:63:9: note: previous definition is here
-#define htons(x) __swap16(x)
-        ^
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:120:9: warning: 'ntohs' macro redefined [-Wmacro-redefined]
-#define ntohs(x) lwip_ntohs(x)
-        ^
-/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:65:9: note: previous definition is here
-#define ntohs(x) __swap16(x)
-        ^
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:121:9: warning: 'htonl' macro redefined [-Wmacro-redefined]
-#define htonl(x) lwip_htonl(x)
-        ^
-/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:62:9: note: previous definition is here
-#define htonl(x) __swap32(x)
-        ^
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:122:9: warning: 'ntohl' macro redefined [-Wmacro-redefined]
-#define ntohl(x) lwip_ntohl(x)
-        ^
-/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:64:9: note: previous definition is here
-#define ntohl(x) __swap32(x)
-        ^
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:66:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
-  uint8_t* ip=&pkt->ip_src;
-           ^  ~~~~~~~~~~~~
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:68:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
-  uint8_t* dip=&pkt->ip_dst;
-           ^   ~~~~~~~~~~~~
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:126:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
-  uint8_t* ip=&pkt->ip_src;
-           ^  ~~~~~~~~~~~~
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:128:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
-  uint8_t* dip=&pkt->ip_dst;
-           ^   ~~~~~~~~~~~~
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:408:18: warning: cast to 'void *' from smaller integer type 'int' [-Wint-to-void-pointer-cast]
-    tcp_arg(pcb, (void*)(entry+1));// arg for this TCP connection
-                 ^
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:463:13: warning: implicit declaration of function 'pipe2' is invalid in C99 [-Wimplicit-function-declaration]
-    int ret=pipe2(&nat_task_pipe, O_NONBLOCK);
-            ^
-10 warnings generated.
-[10/39] Building C object CMakeFiles/bt_drv.dir/lwip/dnsproxy.c.o
+[3/39] Building C object CMakeFiles/bt_drv.dir/eth_queue.c.o
+[4/39] Building C object CMakeFiles/bt_drv.dir/eth_router.c.o
+[5/39] Building C object CMakeFiles/bt_drv.dir/lwip/dnsproxy.c.o
 In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/dnsproxy.c:8:
 In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/udp.h:46:
 In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/netif.h:46:
@@ -161,16 +90,23 @@ int getaddrinfo(const char* __node, const char* __service, const struct addrinfo
 void             udp_recv       (struct udp_pcb *pcb, udp_recv_fn recv,
                                                                   ^
 8 warnings generated.
-[11/39] Building C object CMakeFiles/bt_drv.dir/lwip/lwip.c.o
-In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/lwip.c:7:
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/./eth_nat.h:38:24: warning: declaration of 'struct ETH_QUEUE' will not be visible outside of this function [-Wvisibility]
-int forward_nat(struct ETH_QUEUE* block);
-                       ^
-/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/./eth_nat.h:39:25: warning: declaration of 'struct ETH_QUEUE' will not be visible outside of this function [-Wvisibility]
-int backward_nat(struct ETH_QUEUE* block);
-                        ^
+[6/39] Building C object CMakeFiles/bt_drv.dir/ble_tcp.c.o
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/ble_tcp.c:189:29: warning: incompatible function pointer types assigning to 'void (*)(sigval_t)' (aka 'void (*)(union sigval)') from 'void (*)(void *)' [-Wincompatible-function-pointer-types]
+  sev.sigev_notify_function = &tcp_tmr;
+                            ^ ~~~~~~~~
+1 warning generated.
+[7/39] Building C object CMakeFiles/bt_drv.dir/eth_mem.c.o
+[8/39] Building C object CMakeFiles/bt_drv.dir/images.c.o
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c:2:8: warning: excess elements in scalar initializer
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
+              ^~~~
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/images.c:71:8: warning: excess elements in scalar initializer
+        0xff, 0xff, 0xff, 0x8f, 0xe3, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x9f, 0xf3, 0xff, 0xff, 0xff, 
+              ^~~~
 2 warnings generated.
-[12/39] Building C object CMakeFiles/bt_drv.dir/bt_drv.c.o
+[9/39] Building C object CMakeFiles/bt_drv.dir/ble_eth.c.o
+[10/39] Building C object CMakeFiles/bt_drv.dir/lwip/net_topology.c.o
+[11/39] Building C object CMakeFiles/bt_drv.dir/bt_drv.c.o
 /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/bt_drv.c:50:55: warning: passing 'uint8_t *' (aka 'unsigned char *') to parameter of type 'const jbyte *' (aka 'const signed char *') converts between pointers to integer types with different sign [-Wpointer-sign]
     (*env)->SetByteArrayRegion (env, dgram, 0, dglen, dgr);
                                                       ^~~
@@ -193,24 +129,81 @@ int backward_nat(struct ETH_QUEUE* block);
 void process_gatt_data(uint8_t* data, uint16_t len);
                                 ^
 6 warnings generated.
-[13/39] Building C object CMakeFiles/bt_drv.dir/lwip/net_topology.c.o
+[12/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/def.c.o
+[13/39] Building C object CMakeFiles/bt_drv.dir/lwip/lwip.c.o
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/lwip.c:7:
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/./eth_nat.h:38:24: warning: declaration of 'struct ETH_QUEUE' will not be visible outside of this function [-Wvisibility]
+int forward_nat(struct ETH_QUEUE* block);
+                       ^
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/./eth_nat.h:39:25: warning: declaration of 'struct ETH_QUEUE' will not be visible outside of this function [-Wvisibility]
+int backward_nat(struct ETH_QUEUE* block);
+                        ^
+2 warnings generated.
 [14/39] Building C object CMakeFiles/bt_drv.dir/lwip/eth_router_if_lwip.c.o
 /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/eth_router_if_lwip.c:135:23: warning: comparison between pointer and integer ('pthread_t' (aka 'long') and 'void *') [-Wpointer-integer-compare]
   if (xLWIP_input_task==NULL) {
       ~~~~~~~~~~~~~~~~^ ~~~~
 1 warning generated.
-[15/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ip.c.o
-[16/39] Building C object CMakeFiles/bt_drv.dir/lwip/net_raw.c.o
-[17/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/init.c.o
-[18/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/def.c.o
-[19/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/inet_chksum.c.o
-[20/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/mem.c.o
-[21/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/raw.c.o
-[22/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/memp.c.o
-[23/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/sys.c.o
-[24/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/netif.c.o
-[25/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/stats.c.o
-[26/39] Building C object CMakeFiles/bt_drv.dir/lwip/dhcp_server.c.o
+[15/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/inet_chksum.c.o
+[16/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ip.c.o
+[17/39] Building C object CMakeFiles/bt_drv.dir/eth_nat.c.o
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:119:9: warning: 'htons' macro redefined [-Wmacro-redefined]
+#define htons(x) lwip_htons(x)
+        ^
+/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:63:9: note: previous definition is here
+#define htons(x) __swap16(x)
+        ^
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:120:9: warning: 'ntohs' macro redefined [-Wmacro-redefined]
+#define ntohs(x) lwip_ntohs(x)
+        ^
+/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:65:9: note: previous definition is here
+#define ntohs(x) __swap16(x)
+        ^
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:121:9: warning: 'htonl' macro redefined [-Wmacro-redefined]
+#define htonl(x) lwip_htonl(x)
+        ^
+/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:62:9: note: previous definition is here
+#define htonl(x) __swap32(x)
+        ^
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:10:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/tcp.h:48:
+In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/ip.h:42:
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/include/lwip/def.h:122:9: warning: 'ntohl' macro redefined [-Wmacro-redefined]
+#define ntohl(x) lwip_ntohl(x)
+        ^
+/Users/motoricallc/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/endian.h:64:9: note: previous definition is here
+#define ntohl(x) __swap32(x)
+        ^
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:66:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
+  uint8_t* ip=&pkt->ip_src;
+           ^  ~~~~~~~~~~~~
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:68:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
+  uint8_t* dip=&pkt->ip_dst;
+           ^   ~~~~~~~~~~~~
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:126:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
+  uint8_t* ip=&pkt->ip_src;
+           ^  ~~~~~~~~~~~~
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:128:12: warning: incompatible pointer types initializing 'uint8_t *' (aka 'unsigned char *') with an expression of type 'uint32_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
+  uint8_t* dip=&pkt->ip_dst;
+           ^   ~~~~~~~~~~~~
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:408:18: warning: cast to 'void *' from smaller integer type 'int' [-Wint-to-void-pointer-cast]
+    tcp_arg(pcb, (void*)(entry+1));// arg for this TCP connection
+                 ^
+/Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/eth_nat.c:463:13: warning: implicit declaration of function 'pipe2' is invalid in C99 [-Wimplicit-function-declaration]
+    int ret=pipe2(&nat_task_pipe, O_NONBLOCK);
+            ^
+10 warnings generated.
+[18/39] Building C object CMakeFiles/bt_drv.dir/lwip/net_raw.c.o
+[19/39] Building C object CMakeFiles/bt_drv.dir/lwip/dhcp_server.c.o
 In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/dhcp_server.c:18:
 /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/dhcpserver_options.h:19:9: warning: 'DHCPS_LEASE_UNIT' macro redefined [-Wmacro-redefined]
 #define DHCPS_LEASE_UNIT 1000
@@ -226,18 +219,24 @@ In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/c
     if (num_dhcps_pool > MAX_STATION_NUM) {
         ~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~
 3 warnings generated.
-[27/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/pbuf.c.o
-[28/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/timeouts.c.o
-[29/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4_addr.c.o
-[30/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/icmp.c.o
-[31/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4_frag.c.o
-[32/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4.c.o
-[33/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/udp.c.o
-[34/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/tcp.c.o
-[35/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/tcp_out.c.o
+[20/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/raw.c.o
+[21/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/stats.c.o
+[22/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/mem.c.o
+[23/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/sys.c.o
+[24/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/init.c.o
+[25/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/memp.c.o
+[26/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/timeouts.c.o
+[27/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/netif.c.o
+[28/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4_addr.c.o
+[29/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/icmp.c.o
+[30/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/udp.c.o
+[31/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/pbuf.c.o
+[32/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4_frag.c.o
+[33/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/ip4.c.o
+[34/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/tcp_out.c.o
+[35/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/tcp.c.o
 [36/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/tcp_in.c.o
-[37/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/etharp.c.o
-[38/39] Building C object CMakeFiles/bt_drv.dir/lwip/netif/ethernet.c.o
+[37/39] Building C object CMakeFiles/bt_drv.dir/lwip/netif/ethernet.c.o
 /Users/motoricallc/Documents/Android/Adapto/app/src/main/cpp/lwip/netif/ethernet.c:236:11: warning: implicit declaration of function 'lwip_customproto' is invalid in C99 [-Wimplicit-function-declaration]
       if (LWIP_HOOK_UNKNOWN_ETH_PROTOCOL(p, netif) == ERR_OK) {
           ^
@@ -245,4 +244,5 @@ In file included from /Users/motoricallc/Documents/Android/Adapto/app/src/main/c
 #define LWIP_HOOK_UNKNOWN_ETH_PROTOCOL lwip_customproto
                                        ^
 1 warning generated.
+[38/39] Building C object CMakeFiles/bt_drv.dir/lwip/core/ipv4/etharp.c.o
 [39/39] Linking C shared library /Users/motoricallc/Documents/Android/Adapto/app/build/intermediates/cxx/Debug/q2f5u3py/obj/x86_64/libbt_drv.so

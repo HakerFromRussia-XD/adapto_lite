@@ -5,6 +5,7 @@ import static ua.cn.stu.navigation.ble.SampleGattAttributes.READ;
 import static ua.cn.stu.navigation.ble.SampleGattAttributes.SHOW_EVERYONE_RECEIVE_BYTE;
 import static ua.cn.stu.navigation.ble.SampleGattAttributes.WRITE;
 
+import android.Manifest;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -17,8 +18,12 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
+
+import androidx.core.app.ActivityCompat;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +70,12 @@ public class BluetoothLeService extends Service {
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
+
+                if (ActivityCompat.checkSelfPermission(BluetoothLeService.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
+                    return;
+                }
+
                 mBluetoothGatt.discoverServices();
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
@@ -75,7 +86,7 @@ public class BluetoothLeService extends Service {
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            System.err.println("lol BluetoothGatt.GATT_SUCCESS = "+status);
+            System.err.println("lol BluetoothGatt.GATT_SUCCESS = " + status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             }
@@ -107,22 +118,28 @@ public class BluetoothLeService extends Service {
             broadcastUpdate(characteristic, NOTIFY);
         }
     };
+
     private void broadcastUpdate(final String action) {
         final Intent intent = new Intent(action);
         sendBroadcast(intent);
     }
+
     private void broadcastUpdate(final BluetoothGattCharacteristic characteristic, final String state) {
         final Intent intent = new Intent(BluetoothLeService.ACTION_DATA_AVAILABLE);
 
         final byte[] data = characteristic.getValue();
 
         if (data != null && data.length > 0) {
-            for(byte byteChar : data){
-                if(SHOW_EVERYONE_RECEIVE_BYTE) System.err.println("BluetoothLeService-------------> append massage: " + String.format("%02X ", byteChar));
+            for (byte byteChar : data) {
+                if (SHOW_EVERYONE_RECEIVE_BYTE)
+                    System.err.println("BluetoothLeService-------------> append massage: " + String.format("%02X ", byteChar));
             }
 
-            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.TX_CHAR)){
-                if (state.equals(NOTIFY)) { intent.putExtra(TX_CHAR, data); intent.putExtra(ACTION_STATE, WRITE);}
+            if (String.valueOf(characteristic.getUuid()).equals(SampleGattAttributes.TX_CHAR)) {
+                if (state.equals(NOTIFY)) {
+                    intent.putExtra(TX_CHAR, data);
+                    intent.putExtra(ACTION_STATE, WRITE);
+                }
             }
         }
         sendBroadcast(intent);
@@ -191,6 +208,9 @@ public class BluetoothLeService extends Service {
         if (address.equals(mBluetoothDeviceAddress)
                 && mBluetoothGatt != null) {
 //            Timber.d("Trying to use an existing mBluetoothGatt for connection.");
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
             if (mBluetoothGatt.connect()) {
                 mConnectionState = STATE_CONNECTING;
                 return true;
@@ -199,7 +219,7 @@ public class BluetoothLeService extends Service {
             }
         }
 
-        System.err.println("address: "+address);
+        System.err.println("address: " + address);
         final BluetoothDevice device;
         device = mBluetoothAdapter.getRemoteDevice(address);
 
@@ -208,7 +228,9 @@ public class BluetoothLeService extends Service {
         }
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
+
         mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+
         mBluetoothGatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
@@ -226,6 +248,10 @@ public class BluetoothLeService extends Service {
 //            Timber.tag(TAG).w("BluetoothAdapter not initialized");
             return;
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
+            return;
+        }
         mBluetoothGatt.disconnect();
     }
 
@@ -235,6 +261,10 @@ public class BluetoothLeService extends Service {
      */
     public void close() {
         if (mBluetoothGatt == null) {
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
             return;
         }
         mBluetoothGatt.close();
@@ -253,6 +283,10 @@ public class BluetoothLeService extends Service {
 //            Timber.tag(TAG).w("BluetoothAdapter not initialized");
             return;
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
+            return;
+        }
         mBluetoothGatt.readCharacteristic(characteristic);
     }
 
@@ -266,6 +300,10 @@ public class BluetoothLeService extends Service {
     public void writeCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 //            Timber.tag(TAG).w("BluetoothAdapter not initialized");
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
             return;
         }
         mBluetoothGatt.writeCharacteristic(characteristic);
@@ -282,6 +320,10 @@ public class BluetoothLeService extends Service {
         System.err.println("Notify setCharacteristicNotification");
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             System.err.println("Notify setCharacteristicNotification return");
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            System.err.println("BLUETOOTH_CONNECT PERMISSION NOT GRANTED");
             return;
         }
         try {

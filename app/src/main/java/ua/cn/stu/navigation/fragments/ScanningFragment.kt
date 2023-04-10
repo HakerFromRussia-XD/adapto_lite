@@ -64,7 +64,9 @@ class ScanningFragment : Fragment(), HasCustomTitle, HasReturnAction {
     @SuppressLint("NotifyDataSetChanged")
     private fun addScanListItem() {
         activity?.runOnUiThread {
-            adapter?.notifyItemChanged(adapter?.itemCount?.minus(1) ?: 0)
+            System.err.println("addScanListItem itemCount="+adapter?.getItemCount())
+//            adapter?.notifyItemChanged(adapter?.getItemCount()!!.minus(1))
+            adapter?.notifyDataSetChanged()
         }
     }
 

@@ -31,6 +31,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_terminal.*
 import ua.cn.stu.navigation.MainActivity
 import ua.cn.stu.navigation.R
+import ua.cn.stu.navigation.contract.DisconnectionAction
+import ua.cn.stu.navigation.contract.HasDisconnectionAction
 import ua.cn.stu.navigation.services.TerminalViewModel
 import ua.cn.stu.navigation.contract.navigator
 import ua.cn.stu.navigation.databinding.FragmentTerminalBinding
@@ -42,7 +44,7 @@ import java.util.*
 import kotlin.random.Random.Default.nextBytes
 
 
-class TerminalFragment : Fragment() {
+class TerminalFragment : Fragment(), HasDisconnectionAction {
     private var viewModel: TerminalViewModel = TerminalViewModel()
 
     private lateinit var binding: FragmentTerminalBinding
@@ -451,5 +453,16 @@ class TerminalFragment : Fragment() {
             }
         }
         return ((y - minY[konfig]) / ( (maxY[konfig] - minY[konfig]).toFloat() / (TERMINAL_HIGHT - 1) )).toInt() + 1
+    }
+
+    override fun getDisconnectionAction(): DisconnectionAction {
+        return DisconnectionAction(
+            onDisconnectionAction = {
+                showDisconnectionDialog()
+            }
+        )
+    }
+    private fun showDisconnectionDialog() {
+        navigator().showDisconnectDialog()
     }
 }
